@@ -1,0 +1,18 @@
+#ifndef DEFINES_H
+# define DEFINES_H
+
+# define TRUE 1
+# define FALSE 0
+# define FAIL 999
+
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
+
+# define TERMINAL_PROMPT "\x1b[1;32mminishell$\x1b[0m  "
+# define MAX_TOKENS 1024
+
+/* File */
+# define PERMISSION 0644
+
+#endif
