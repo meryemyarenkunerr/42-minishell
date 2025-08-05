@@ -22,16 +22,16 @@ OBJB = $(BONUS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	ar $(ARFLAGS) $(NAME) $(OBJ)
+	@ar $(ARFLAGS) $(NAME) $(OBJ)
 
 bonus: $(OBJB)
-	ar $(ARFLAGS) $(NAME) $(OBJB)
+	@ar $(ARFLAGS) $(NAME) $(OBJB)
 
 clean:
-	$(RM) $(OBJ) $(OBJB)
+	@$(RM) $(OBJ) $(OBJB)
 
 fclean: clean
-	$(RM) $(NAME)
+	@$(RM) $(NAME)
 
 re: fclean all
 
