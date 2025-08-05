@@ -11,6 +11,8 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <errno.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 /* Own Headers */
 # include <../libft/libft.h>
@@ -19,12 +21,19 @@
 
 /* Functions */
 /* init_shell.c */
-void	init_shell(t_shell *mini, char **env);
+void	init_shell(t_shell *shell, char **env);
 
-/* init_env.c */
+/* env_utils.c */
+t_env	*init_env(char **env);
 
+/* free.c */
+void	free_env_list(t_env *env);
+void	free_at_exit(t_shell *shell);
 
-/* utils.c */
+/* shell_loop.c */
+void	shell_loop(t_shell *shell);
 
+/* signals.c */
+void	setup_signal_handler();
 
 #endif
