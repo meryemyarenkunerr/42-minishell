@@ -1,6 +1,8 @@
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
+# include <termios.h>
+
 /* Token Types */
 typedef enum e_token_types
 {
@@ -53,8 +55,11 @@ typedef struct s_env
 /* Shell Structure */
 typedef struct s_shell
 {
-	t_env	*environment;
-	int		exit_status;
+	t_env			*environment;
+	struct termios	term_backup;
+	int				exit_status;
+	char			*prompt;
+	int				cmd_has_been_executed;
 }	t_shell;
 
 #endif

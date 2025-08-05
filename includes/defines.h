@@ -10,6 +10,8 @@
 # define STDERR 2
 
 # define PROMPT "\x1b[1;32mminishell$\x1b[0m  "
+# define PROMPT_WO_DOLLAR "\x1b[1;32mminishell>\x1b[0m  "
+# define DOLLAR_SIGN "$ "
 # define MAX_TOKENS 1024
 
 /* File */
