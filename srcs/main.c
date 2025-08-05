@@ -1,8 +1,12 @@
 #include "../includes/minishell.h"
 
-int	main(int ac, char **av, char **env)
+int	main(int argc, char **argv, char **env)
 {
-	t_shell	mini;
+	t_shell	shell;
 
-	init_shell(&mini, env);
+	(void)argc;
+	(void)argv;
+	init_shell(&shell, env);
+	shell_loop(&shell);
+	free_at_exit(&shell);
 }
