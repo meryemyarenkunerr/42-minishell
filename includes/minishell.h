@@ -11,9 +11,9 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <errno.h>
-# include <../libft/libft.h>
 
 /* Own Headers */
+# include <../libft/libft.h>
 # include "defines.h"
 # include "structs.h"
 

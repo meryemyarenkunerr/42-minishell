@@ -9,7 +9,7 @@
 # define STDOUT 1
 # define STDERR 2
 
-# define TERMINAL_PROMPT "\x1b[1;32mminishell$\x1b[0m  "
+# define PROMPT "\x1b[1;32mminishell$\x1b[0m  "
 # define MAX_TOKENS 1024
 
 /* File */
