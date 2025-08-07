@@ -3,25 +3,42 @@
 int	process_command(t_shell *shell, char *command)
 {
 	t_token		*tokens;
-	t_command	*cmd_list;
+	t_pipeline	*pipeline;
 
 	if (*command == '\0') // enter'a basılmışsa
 		return TRUE;
+	tokens = NULL;
+	shell->commands = NULL;
+	pipeline = NULL;
 	tokens = advanced_lexer(command);
 	if (tokens)
 	{
 		improved_expand_tokens(tokens, shell->environment); // Use improved expander
 		remove_quotes_from_tokens(tokens); // Remove quotes FIRST
 		post_expansion_tokenize(&tokens); // Then re-tokenize
-		cmd_list = parser(tokens);
-		if (cmd_list)
+		pipeline = split_by_pipes(tokens);
+		if (pipeline)
 		{
-			// executer bölümü
-			free_commands(cmd_list);
+			classify_pipeline_tokens(pipeline);
+			shell->commands = parser(tokens);
+			if (shell->commands)
+			{
+				// executer(shell, pipeline, tokens, cmd_list);
+				free_commands(shell->commands);
+			}
+			free_pipeline(pipeline);
 		}
 		free_tokens(tokens);
 		add_history(command);
 	}
+	// şimdilik executer'ı burada başlatıyorum
+	tokens = build_token_list();
+	pipeline = split_pipeline(tokens);
+	shell->commands = build_commands(pipeline);
+	executer(shell, pipeline, tokens);
+	free_commands_temp(shell->commands);
+	free_pipeline_temp(pipeline);
+	free_token_list_temp(tokens);
 	return TRUE;
 }
 
@@ -56,7 +73,7 @@ void	shell_loop(t_shell *shell)
 		setup_signal_handler(&shell->term_backup); // sinyal işlemleri ve terminal ayarı
 		build_prompt(shell); // prompt'un dinamik bir şekilde oluşturulması
 		command = read_line(shell);
-		printf("Komut: %s\n", command);
+		// printf("Komut: %s\n", command);
 		if (!command) // Ctrl-D veya EOF
 		{
 			printf("bye bye <3\n");
