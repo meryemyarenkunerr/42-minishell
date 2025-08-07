@@ -71,4 +71,44 @@ void		free_array(char **array);
 char		*get_env_value(t_env *env, char *key);
 void		set_env_value(t_env **env, char *key, char *value);
 
+/* pipeline_tokenizer.c */
+t_pipeline	*split_by_pipes(t_token *tokens);
+void		free_pipeline(t_pipeline *pipeline);
+
+/* token_classifier.c */
+void		classify_pipeline_tokens(t_pipeline *pipeline);
+
+/* executer.c */
+void	executer(t_shell *shell, t_pipeline *pipeline, t_token *tokens);
+
+/* redirections.c */
+int	check_redirection_syntax(t_shell *shell, t_token *tokens);
+
+/* heredoc.c */
+int	has_heredoc(t_token *tokens);
+
+
+
+
+
+
+
+
+
+
+
+/* temp_creator.c */
+t_token	*create_token_temp(char *content, t_token_types type);
+void append_token(t_token **head, t_token *new_token);
+t_token *build_token_list();
+t_pipeline *split_pipeline(t_token *tokens);
+t_command *build_commands(t_pipeline *pipeline);
+void print_commands(t_command *cmds);
+void print_tokens(t_token *head);
+void print_pipeline(t_pipeline *pipeline);
+void free_token_list_temp(t_token *head);
+void free_pipeline_temp(t_pipeline *pipeline);
+void free_commands_temp(t_command *cmd);
+void free_token_list(t_token *token);
+
 #endif

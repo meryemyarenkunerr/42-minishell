@@ -30,9 +30,11 @@ typedef struct s_token
 /* Command Structure */
 typedef struct s_command
 {
+	char				*cmd;				// yeni eklendi, execve() için gerekli
 	char				**arguments;
 	char				*input_file;
 	char				*output_file;
+	char				*heredoc_delimeter;
 	int					append_mode;
 	struct s_command	*next;
 }	t_command;
@@ -60,6 +62,7 @@ typedef struct s_shell
 	int				exit_status;
 	char			*prompt;
 	int				cmd_has_been_executed;
+	t_command		*commands;
 }	t_shell;
 
 #endif
