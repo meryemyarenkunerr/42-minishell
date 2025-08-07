@@ -24,6 +24,12 @@ SRCS		= $(SRCDIR)/main.c \
 			  $(SRCDIR)/parser.c \
 			  $(SRCDIR)/lexer.c \
 			  $(SRCDIR)/utils.c \
+			  $(SRCDIR)/pipeline_tokenizer.c \
+			  $(SRCDIR)/token_classifier.c \
+			  $(SRCDIR)/executer.c \
+			  $(SRCDIR)/temp_creator.c \
+			  $(SRCDIR)/redirections.c \
+			  $(SRCDIR)/heredoc.c \
 
 # Object Files
 OBJS		= $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
