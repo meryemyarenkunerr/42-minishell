@@ -16,6 +16,14 @@ SRCS		= $(SRCDIR)/main.c \
 			  $(SRCDIR)/free.c \
 			  $(SRCDIR)/shell_loop.c \
 			  $(SRCDIR)/signals.c \
+			  $(SRCDIR)/prompt_utils.c \
+			  $(SRCDIR)/advanced_lexer.c \
+			  $(SRCDIR)/improved_expander.c \
+			  $(SRCDIR)/quote_remover.c \
+			  $(SRCDIR)/post_expander.c \
+			  $(SRCDIR)/parser.c \
+			  $(SRCDIR)/lexer.c \
+			  $(SRCDIR)/utils.c \
 
 # Object Files
 OBJS		= $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
