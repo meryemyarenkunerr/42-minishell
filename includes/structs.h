@@ -30,19 +30,21 @@ typedef struct s_token
 /* Command Structure */
 typedef struct s_command
 {
-	char				*cmd;				// yeni eklendi, execve() için gerekli
+	char				*cmd;					// yeni eklendi, execve() için gerekli
 	char				**arguments;
 	char				*input_file;
 	char				*output_file;
-	char				*heredoc_delimeter;
+	char				**heredoc_delimeter;	// birden fazla delimeter olabilir
 	int					append_mode;
 	struct s_command	*next;
+	struct s_pipeline	*pipeline;
 }	t_command;
 
 /* Pipeline Structure - Token Lists seperated by pipes */
 typedef struct s_pipeline
 {
 	t_token	**token_lists;
+	int		*heredoc_count;
 	int		count;
 }	t_pipeline;
 
@@ -63,6 +65,8 @@ typedef struct s_shell
 	char			*prompt;
 	int				cmd_has_been_executed;
 	t_command		*commands;
+	char			*home_dir;
+	char			*current_dir;
 }	t_shell;
 
 #endif

@@ -23,25 +23,23 @@
 int		g_sigint_received;
 
 /* Functions */
-/* init_shell.c */
-void		init_shell(t_shell *shell, char **env);
+/* main */
+void	init_shell(t_shell *shell, char **env);
+void	shell_loop(t_shell *shell);
+void	build_prompt(t_shell *shell);
+char	*read_line(t_shell *shell);
+int		is_exit_command_received(t_shell *shell, char *command);
+void	sigint_received(t_shell *shell);
+int		process_command(t_shell *shell, char *command);
 
-/* env_utils.c */
-t_env		*init_env(char **env);
-void		free_env_list(t_env *env);
+/* signal */
+int		handle_signal_and_exit(t_shell *shell, char **command);
+void	setup_signal_handler(struct termios *term_backup);
+
 
 /* free.c */
 void		free_env_list(t_env *env);
 void		free_at_exit(t_shell *shell);
-
-/* shell_loop.c */
-void		shell_loop(t_shell *shell);
-
-/* signals.c */
-void		setup_signal_handler(struct termios *term_backup);
-
-/* prompt_utils.c */
-void		build_prompt(t_shell *shell);
 
 /* advanced_lexer.c */
 t_token		*advanced_lexer(char *input);
@@ -98,17 +96,14 @@ int	has_heredoc(t_token *tokens);
 
 
 /* temp_creator.c */
-t_token	*create_token_temp(char *content, t_token_types type);
-void append_token(t_token **head, t_token *new_token);
-t_token *build_token_list();
-t_pipeline *split_pipeline(t_token *tokens);
-t_command *build_commands(t_pipeline *pipeline);
-void print_commands(t_command *cmds);
-void print_tokens(t_token *head);
-void print_pipeline(t_pipeline *pipeline);
-void free_token_list_temp(t_token *head);
-void free_pipeline_temp(t_pipeline *pipeline);
-void free_commands_temp(t_command *cmd);
-void free_token_list(t_token *token);
+char **create_arguments_temp_fixed(int count, const char **args);
+char **create_heredoc_delimiters_temp_fixed(int count, const char **delims);
+t_command *create_command_temp(const char *cmd, char **arguments,
+                              char *input_file, char *output_file,
+                              int append_mode, char **heredoc_delim);
+t_command *build_commands_for_example_temp(void);
+void free_arguments_temp(char **args);
+void free_heredoc_delimiters_temp(char **heredocs);
+void free_command_temp(t_command *cmd);
 
 #endif
