@@ -9,27 +9,29 @@ SRCDIR		= srcs
 OBJDIR		= obj
 LIBFTDIR	= libft
 
-# Executables
-SRCS		= $(SRCDIR)/main.c \
-			  $(SRCDIR)/env_utils.c \
-			  $(SRCDIR)/init_shell.c \
-			  $(SRCDIR)/free.c \
-			  $(SRCDIR)/shell_loop.c \
-			  $(SRCDIR)/signals.c \
-			  $(SRCDIR)/prompt_utils.c \
-			  $(SRCDIR)/advanced_lexer.c \
-			  $(SRCDIR)/improved_expander.c \
-			  $(SRCDIR)/quote_remover.c \
-			  $(SRCDIR)/post_expander.c \
-			  $(SRCDIR)/parser.c \
-			  $(SRCDIR)/lexer.c \
-			  $(SRCDIR)/utils.c \
-			  $(SRCDIR)/pipeline_tokenizer.c \
-			  $(SRCDIR)/token_classifier.c \
-			  $(SRCDIR)/executer.c \
-			  $(SRCDIR)/temp_creator.c \
-			  $(SRCDIR)/redirections.c \
-			  $(SRCDIR)/heredoc.c \
+# Source files
+SRCS 		= srcs/cleanup_tools/free.c \
+			  srcs/error/errors.c \
+			  srcs/executer/executer.c \
+			  srcs/executer/heredoc.c \
+			  srcs/executer/redirections.c \
+			  srcs/main/init.c \
+			  srcs/main/main.c \
+			  srcs/main/prompt.c \
+			  srcs/main/utils.c \
+			  srcs/main/shell_loop.c \
+			  srcs/main/process_command.c \
+			  srcs/parser_lexer/advanced_lexer.c \
+			  srcs/parser_lexer/improved_expander.c \
+			  srcs/parser_lexer/lexer.c \
+			  srcs/parser_lexer/parser.c \
+			  srcs/parser_lexer/pipeline_tokenizer.c \
+			  srcs/parser_lexer/post_expander.c \
+			  srcs/parser_lexer/quote_remover.c \
+			  srcs/parser_lexer/token_classifier.c \
+			  srcs/parser_lexer/utils.c \
+			  srcs/signal/signals.c \
+			  srcs/temp_creator.c
 
 # Object Files
 OBJS		= $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
