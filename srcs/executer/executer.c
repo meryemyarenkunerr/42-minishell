@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	executer(t_shell *shell, t_pipeline *pipeline, t_token *tokens)
 {

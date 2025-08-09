@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 char	*ft_strndup(const char *s, size_t n)
 {
@@ -47,6 +47,7 @@ t_env	*init_env(char **env)
 	t_env	*new;
 
 	head = NULL;
+	tail = NULL;
 	while (*env)
 	{
 		new = create_new_env_node(*env);
@@ -68,4 +69,25 @@ t_env	*init_env(char **env)
 		env++;
 	}
 	return (head);
+}
+
+void	init_shell(t_shell *shell, char **env)
+{
+	char	*home;
+
+	shell->cmd_has_been_executed = TRUE; // sorun çıkmasın başlangıçta diye
+	shell->commands = NULL;
+	shell->current_dir = getcwd(NULL, 0);	// malloc ile alan açar, freele
+	if (!shell->current_dir)
+		shell->current_dir = ft_strdup("");
+	shell->environment = init_env(env);
+	shell->exit_status = 0;
+	home = getenv("HOME");
+	if (home)
+		shell->home_dir = ft_strdup(home);	// freelenmeli
+	else
+		shell->home_dir = NULL;
+	shell->prompt = NULL;
+	if (tcgetattr(STDIN_FILENO, &shell->term_backup) == -1)
+		perror("tcgetattr");
 }

@@ -1,314 +1,108 @@
 #include "../includes/minishell.h"
 
-t_token *create_token_temp(char *content, t_token_types type)
+// Yardımcı: string copy
+static char *strdup_simple_temp(const char *s)
 {
-    t_token *new = malloc(sizeof(t_token));
-    if (!new) return NULL;  // malloc başarısız olursa NULL döndür
-
-    new->content = strdup(content);
-    if (!new->content) {    // strdup başarısızsa allocated hafızayı freele
-        free(new);
+    size_t len = strlen(s);
+    char *copy = malloc(len + 1);
+    if (!copy)
         return NULL;
-    }
-    new->type = type;
-    new->prev = NULL;
-    new->next = NULL;
-    return new;
+    strcpy(copy, s);
+    return copy;
 }
 
-void append_token(t_token **head, t_token *new_token)
+// Sabit uzunluklu argüman dizisi oluşturur, NULL ile sonlandırır
+char **create_arguments_temp_fixed(int count, const char **args)
 {
-	t_token *tmp;
-
-	if (!*head)
-	{
-		*head = new_token;
-		return;
-	}
-	tmp = *head;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new_token;
-	new_token->prev = tmp;
+    char **array = malloc(sizeof(char*) * (count + 1));
+    if (!array)
+        return NULL;
+    for (int i = 0; i < count; i++)
+        array[i] = strdup_simple_temp(args[i]);
+    array[count] = NULL;
+    return array;
 }
 
-/* Tokenizer (Statik olarak elle yazılmış hali) */
-t_token *build_token_list()
+// Sabit uzunluklu heredoc delimiters dizisi oluşturur, NULL ile sonlandırır
+char **create_heredoc_delimiters_temp_fixed(int count, const char **delims)
 {
-	t_token *head = NULL;
-	t_token *current = NULL;
-
-	// cat
-	head = create_token_temp("cat", TOKEN_WORD);
-	current = head;
-
-	// << heredoc başlatıcısı
-	current->next = create_token_temp("<<", TOKEN_HEREDOC); // TOKEN_HEREDOC tanımlı olmalı
-	if (!current->next)
-		return head;
-	current->next->prev = current;
-	current = current->next;
-
-	// heredoc delimiter
-	current->next = create_token_temp("EOF", TOKEN_ARGUMENT);
-	if (!current->next)
-		return head;
-	current->next->prev = current;
-	current = current->next;
-
-	// pipe
-	current->next = create_token_temp("|", TOKEN_PIPE);
-	if (!current->next)
-		return head;
-	current->next->prev = current;
-	current = current->next;
-
-	// wc
-	current->next = create_token_temp("wc", TOKEN_WORD);
-	if (!current->next)
-		return head;
-	current->next->prev = current;
-	current = current->next;
-
-	// -l
-	current->next = create_token_temp("-l", TOKEN_ARGUMENT);
-	if (!current->next)
-		return head;
-	current->next->prev = current;
-	current = current->next;
-
-	return head;
+    char **array = malloc(sizeof(char*) * (count + 1));
+    if (!array)
+        return NULL;
+    for (int i = 0; i < count; i++)
+        array[i] = strdup_simple_temp(delims[i]);
+    array[count] = NULL;
+    return array;
 }
 
-/* Split tokens by pipes */
-t_token *copy_token(const t_token *src)
+t_command *create_command_temp(const char *cmd, char **arguments,
+                              char *input_file, char *output_file,
+                              int append_mode, char **heredoc_delim)
 {
-	t_token *copy = malloc(sizeof(t_token));
-	if (!copy)
-		return NULL;
-
-	copy->content = strdup(src->content);
-	copy->type = src->type;
-	copy->prev = NULL;
-	copy->next = NULL;
-	return copy;
+    t_command *command = malloc(sizeof(t_command));
+    if (!command)
+        return NULL;
+    command->cmd = strdup_simple_temp(cmd);
+    command->arguments = arguments; // dışarıdan malloc'lu array
+    command->input_file = input_file ? strdup_simple_temp(input_file) : NULL;
+    command->output_file = output_file ? strdup_simple_temp(output_file) : NULL;
+    command->append_mode = append_mode;
+    command->heredoc_delimeter = heredoc_delim; // NULL veya malloc'lu array
+    command->next = NULL;
+    command->pipeline = NULL;
+    return command;
 }
 
-t_token *copy_token_list(t_token *start, t_token *end_exclusive)
+t_command *build_commands_for_example_temp(void)
 {
-	t_token *new_head = NULL;
-	t_token *current = NULL;
+    // 1. komut: cat << EOF
+    const char *cat_args[] = {"cat"};
+    char **cat_args_arr = create_arguments_temp_fixed(1, cat_args);
 
-	while (start && start != end_exclusive)
-	{
-		t_token *new_token = malloc(sizeof(t_token));
-		if (!new_token)
-			return NULL;
+    const char *heredocs[] = {"EOF"};
+    char **cat_heredoc_arr = create_heredoc_delimiters_temp_fixed(1, heredocs);
 
-		new_token->content = strdup(start->content);
-		new_token->type = start->type;
-		new_token->prev = NULL;
-		new_token->next = NULL;
+    t_command *cmd1 = create_command_temp("cat", cat_args_arr, NULL, NULL, 0, cat_heredoc_arr);
 
-		if (!new_head)
-		{
-			new_head = new_token;
-			current = new_token;
-		}
-		else
-		{
-			current->next = new_token;
-			new_token->prev = current;
-			current = new_token;
-		}
+    // 2. komut: wc -l
+    const char *wc_args[] = {"wc", "-l"};
+    char **wc_args_arr = create_arguments_temp_fixed(2, wc_args);
+    t_command *cmd2 = create_command_temp("wc", wc_args_arr, NULL, NULL, 0, NULL);
 
-		start = start->next;
-	}
-	return new_head;
+    cmd1->next = cmd2;
+
+    // Pipeline pointer ayarla (opsiyonel)
+    cmd1->pipeline = NULL;
+    cmd2->pipeline = NULL;
+
+    return cmd1; // komut listesinin başı
 }
 
-t_pipeline *split_pipeline(t_token *tokens)
+void free_arguments_temp(char **args)
 {
-	t_pipeline *result = malloc(sizeof(t_pipeline));
-	t_token **lists = malloc(sizeof(t_token *) * 10); // max 10 komut
-	int count = 0;
-
-	t_token *start = tokens;
-	t_token *current = tokens;
-
-	while (current)
-	{
-		if (current->type == TOKEN_PIPE)
-		{
-			lists[count++] = copy_token_list(start, current);
-			start = current->next;
-		}
-		current = current->next;
-	}
-
-	// son parçayı da ekle
-	if (start)
-		lists[count++] = copy_token_list(start, NULL);
-
-	result->token_lists = lists;
-	result->count = count;
-	return result;
+    if (!args) return;
+    for (int i = 0; args[i]; i++)
+        free(args[i]);
+    free(args);
 }
 
-/* Convert token list to command struct */
-t_command *build_commands(t_pipeline *pipeline)
+void free_heredoc_delimiters_temp(char **heredocs)
 {
-	t_command *head = NULL;
-	t_command *last = NULL;
-
-	for (int i = 0; i < pipeline->count; i++)
-	{
-		t_token *token = pipeline->token_lists[i];
-		int arg_count = 0;
-
-		// argüman sayısını say (komut + argümanlar)
-		t_token *tmp = token;
-		while (tmp)
-		{
-			if (tmp->type == TOKEN_WORD || tmp->type == TOKEN_ARGUMENT)
-				arg_count++;
-			tmp = tmp->next;
-		}
-
-		char **args = malloc(sizeof(char *) * (arg_count + 1));
-		int j = 0;
-		tmp = token;
-		while (tmp)
-		{
-			if (tmp->type == TOKEN_WORD || tmp->type == TOKEN_ARGUMENT)
-				args[j++] = strdup(tmp->content);
-			tmp = tmp->next;
-		}
-		args[j] = NULL;
-
-		t_command *cmd = malloc(sizeof(t_command));
-		cmd->cmd = strdup(pipeline->token_lists[i]->content); // Komutun kendisi (ilk token)
-		cmd->arguments = args;
-		cmd->input_file = NULL;
-		cmd->output_file = NULL;
-		cmd->append_mode = 0;
-		cmd->next = NULL;
-
-		if (!head)
-			head = cmd;
-		else
-			last->next = cmd;
-		last = cmd;
-	}
-	return head;
+    if (!heredocs) return;
+    for (int i = 0; heredocs[i]; i++)
+        free(heredocs[i]);
+    free(heredocs);
 }
 
-/* Print for test */
-void print_commands(t_command *cmds)
+void free_command_temp(t_command *cmd)
 {
-	int i = 1;
-	while (cmds)
-	{
-		printf("Command %d:\n", i++);
-		printf("Command Name: %s\n", cmds->cmd);
-		for (int j = 0; cmds->arguments[j]; j++)
-		{
-			printf("  Arg[%d]: %s\n", j, cmds->arguments[j]);
-		}
-		cmds = cmds->next;
-	}
-}
-
-void print_tokens(t_token *head)
-{
-	int i = 0;
-	const char *type_names[] = {
-		"TOKEN_NONE", "TOKEN_WORD", "TOKEN_COMMAND", "TOKEN_ARGUMENT",
-		"TOKEN_FILE", "TOKEN_PIPE", "TOKEN_REDIRECT_IN", "TOKEN_REDIRECT_OUT",
-		"TOKEN_APPEND", "TOKEN_HEREDOC"
-	};
-
-	printf("Token List:\n");
-	while (head)
-	{
-		printf("  [%d] content = '%s', type = %s\n", i++, head->content, type_names[head->type]);
-		head = head->next;
-	}
-}
-
-void print_pipeline(t_pipeline *pipeline)
-{
-	printf("Pipeline (%d command%s):\n", pipeline->count, pipeline->count == 1 ? "" : "s");
-	for (int i = 0; i < pipeline->count; i++)
-	{
-		printf(" Command %d tokens:\n", i + 1);
-		print_tokens(pipeline->token_lists[i]);
-	}
-}
-
-void free_token_list_temp(t_token *head)
-{
-    t_token *tmp;
-    while (head)
-    {
-        tmp = head;
-        head = head->next;
-        free(tmp->content);
-        // printf("token->content freed\n");
-        free(tmp);
-        // printf("token freed\n");
-    }
-}
-
-void free_pipeline_temp(t_pipeline *pipeline)
-{
-    if (!pipeline)
+    if (!cmd)
         return;
-
-    free(pipeline->token_lists);
-    // printf("pipeline->token_lists temizlendi\n");
-    free(pipeline);
-    // printf("pipeline temizlendi\n");
-}
-
-void free_commands_temp(t_command *cmd)
-{
-	t_command *tmp;
-	while (cmd)
-	{
-		tmp = cmd;
-		cmd = cmd->next;
-
-		// Argümanları boşalt
-		if (tmp->arguments)
-		{
-			for (int i = 0; tmp->arguments[i]; i++)
-			{
-				free(tmp->arguments[i]);
-				// printf("free_commands_list argüman temizleme\n");
-			}
-			free(tmp->arguments);
-		}
-
-		// Eğer input_file/output_file strdup ile atanıyorsa onları da freele:
-		if (tmp->input_file)
-			free(tmp->input_file);
-		if (tmp->output_file)
-			free(tmp->output_file);
-
-		free(tmp);
-	}
-}
-
-void free_token_list(t_token *token)
-{
-	t_token *tmp;
-	while (token)
-	{
-		// printf("free_token_list\n");
-		tmp = token->next;
-		free(token->content);
-		free(token);
-		token = tmp;
-	}
+    free(cmd->cmd);
+    free_arguments_temp(cmd->arguments);
+    free(cmd->input_file);
+    free(cmd->output_file);
+    free_heredoc_delimiters_temp(cmd->heredoc_delimeter);
+    free_command_temp(cmd->next);
+    free(cmd);
 }

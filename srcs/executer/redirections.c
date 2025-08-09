@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int	check_redirection_syntax(t_shell *shell, t_token *tokens)
 {
