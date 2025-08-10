@@ -19,7 +19,7 @@ int	process_command(t_shell *shell, char *command)
 		free_pipeline_temp(shell->pipeline);
 		shell->pipeline = NULL;
 	}
-	fill_shell_echo_append_temp(shell);
+	fill_shell_commands_and_pipeline_temp(shell);
 	executer(shell);
 	// print_shell_info(shell);
 	return TRUE;

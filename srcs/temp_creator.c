@@ -23,15 +23,6 @@ char **create_args_temp(int count, char **args)
     return res;
 }
 
-static char **create_heredoc_delims_temp(int count, char **delims)
-{
-	char **res = malloc(sizeof(char *) * (count + 1));
-	for (int i = 0; i < count; i++)
-		res[i] = strdup(delims[i]);
-	res[count] = NULL;
-	return res;
-}
-
 // t_command geçici doldurma
 t_command *create_command_cat_heredoc_temp(void)
 {
@@ -40,13 +31,13 @@ t_command *create_command_cat_heredoc_temp(void)
 
 	cmd->cmd = strdup("cat");
 
-	cmd->arguments = create_args_temp(3, (char *[]){"cat", "<<", "EOF"});
+	cmd->arguments = create_args_temp(3, (char *[]){"cat", "<<", "EOF", NULL });
 
 	cmd->input_file = NULL;
 	cmd->output_file = NULL;
 
-	cmd->heredoc_count = 1;
-	cmd->heredoc_delimeter = create_heredoc_delims_temp(1, (char *[]){"EOF"});
+	cmd->heredoc_count = 0;
+	cmd->heredoc_delimeter = NULL;
 
 	cmd->append_mode = 0;
 
