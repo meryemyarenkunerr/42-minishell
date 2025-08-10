@@ -13,8 +13,9 @@ LIBFTDIR	= libft
 SRCS 		= srcs/cleanup_tools/free.c \
 			  srcs/error/errors.c \
 			  srcs/executer/executer.c \
-			  srcs/executer/heredoc.c \
-			  srcs/executer/redirections.c \
+			  srcs/executer/cmd_filler.c \
+			  srcs/executer/cmd_controller.c \
+			  srcs/executer/cmd_setter.c \
 			  srcs/main/init.c \
 			  srcs/main/main.c \
 			  srcs/main/prompt.c \
@@ -31,7 +32,10 @@ SRCS 		= srcs/cleanup_tools/free.c \
 			  srcs/parser_lexer/token_classifier.c \
 			  srcs/parser_lexer/utils.c \
 			  srcs/signal/signals.c \
-			  srcs/temp_creator.c
+			  srcs/temp_creator.c \
+			  srcs/temp_creator_redir_in.c \
+			  srcs/temp_creator_redir_out.c \
+			  srcs/temp_creator_redir_append.c \
 
 # Object Files
 OBJS		= $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
