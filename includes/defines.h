@@ -22,7 +22,13 @@
 /* File */
 # define PERMISSION 0644
 
-
+/* shell loop */
 # define EXIT "exit"
+
+/* Redirection Signs */
+# define REDIRECTION_IN "<"
+# define REDIRECTION_OUT ">"
+# define REDIRECTION_APPEND ">>"
+# define REDIRECTION_HEREDOC "<<"
 
 #endif

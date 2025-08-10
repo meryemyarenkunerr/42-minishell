@@ -38,14 +38,14 @@ void		setup_signal_handler(struct termios *term_backup);
 
 /* executer */
 void		executer(t_shell *shell);
-void		filler_commands(t_command *commands);
-void		set_output_file(t_command *cmd, char *file, int append);
-void		set_input_file(t_command *cmd, char *file);
+int			filler_commands(t_shell *shell);
+void		set_input_file(t_shell *shell, t_command *cmd, char *file, int *flag);
+void		set_output_file(t_shell *shell, t_command *cmd, char *file, int append, int *flag);
 int			is_input_redirection(const char *arg);
 int			is_output_redirection(const char *arg);
 int			is_appended_redirection(const char *arg);
-
-
+int			is_heredoc_redirection(const char *arg);
+int			fill_heredoc_delimeter_and_count(t_shell *shell, t_command *cmd);
 
 
 /* free.c */
@@ -113,5 +113,7 @@ void fill_shell_commands_and_pipeline_temp(t_shell *shell);
 void fill_shell_cat_input_temp(t_shell *shell);
 void fill_shell_echo_output_temp(t_shell *shell);
 void fill_shell_echo_append_temp(t_shell *shell);
+void fill_shell_cat_heredocs_temp(t_shell *shell);
+void fill_shell_heredoc_append_temp(t_shell *shell);
 
 #endif
