@@ -87,6 +87,7 @@ void	init_shell(t_shell *shell, char **env)
 		shell->home_dir = ft_strdup(home);	// freelenmeli
 	else
 		shell->home_dir = NULL;
+	shell->pipeline = NULL;
 	shell->prompt = NULL;
 	if (tcgetattr(STDIN_FILENO, &shell->term_backup) == -1)
 		perror("tcgetattr");
