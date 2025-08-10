@@ -16,6 +16,7 @@ SRCS 		= srcs/cleanup_tools/free.c \
 			  srcs/executer/cmd_filler.c \
 			  srcs/executer/cmd_controller.c \
 			  srcs/executer/cmd_setter.c \
+			  srcs/executer/heredoc_filler.c \
 			  srcs/main/init.c \
 			  srcs/main/main.c \
 			  srcs/main/prompt.c \
@@ -36,6 +37,8 @@ SRCS 		= srcs/cleanup_tools/free.c \
 			  srcs/temp_creator_redir_in.c \
 			  srcs/temp_creator_redir_out.c \
 			  srcs/temp_creator_redir_append.c \
+			  srcs/temp_creator_multiple_heredoc.c \
+			  srcs/temp_creator_heredoc_plus_append.c \
 
 # Object Files
 OBJS		= $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
