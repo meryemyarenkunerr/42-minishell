@@ -35,16 +35,15 @@ typedef struct s_command
 	char				*input_file;
 	char				*output_file;
 	char				**heredoc_delimeter;	// birden fazla delimeter olabilir
+	int					heredoc_count;			// pipeline içerisindeydi ama burada olması daha doğru
 	int					append_mode;
 	struct s_command	*next;
-	struct s_pipeline	*pipeline;
 }	t_command;
 
 /* Pipeline Structure - Token Lists seperated by pipes */
 typedef struct s_pipeline
 {
 	t_token	**token_lists;
-	int		*heredoc_count;
 	int		count;
 }	t_pipeline;
 
@@ -59,14 +58,15 @@ typedef struct s_env
 /* Shell Structure */
 typedef struct s_shell
 {
-	t_env			*environment;
-	struct termios	term_backup;
-	int				exit_status;
-	char			*prompt;
-	int				cmd_has_been_executed;
-	t_command		*commands;
-	char			*home_dir;
-	char			*current_dir;
+	t_env				*environment;
+	struct termios		term_backup;
+	int					exit_status;
+	char				*prompt;
+	int					cmd_has_been_executed;
+	t_command			*commands;
+	char				*home_dir;
+	char				*current_dir;
+	t_pipeline			*pipeline;
 }	t_shell;
 
 #endif

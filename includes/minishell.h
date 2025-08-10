@@ -24,17 +24,28 @@ int		g_sigint_received;
 
 /* Functions */
 /* main */
-void	init_shell(t_shell *shell, char **env);
-void	shell_loop(t_shell *shell);
-void	build_prompt(t_shell *shell);
-char	*read_line(t_shell *shell);
-int		is_exit_command_received(t_shell *shell, char *command);
-void	sigint_received(t_shell *shell);
-int		process_command(t_shell *shell, char *command);
+void		init_shell(t_shell *shell, char **env);
+void		shell_loop(t_shell *shell);
+void		build_prompt(t_shell *shell);
+char		*read_line(t_shell *shell);
+int			is_exit_command_received(t_shell *shell, char *command);
+void		sigint_received(t_shell *shell);
+int			process_command(t_shell *shell, char *command);
 
 /* signal */
-int		handle_signal_and_exit(t_shell *shell, char **command);
-void	setup_signal_handler(struct termios *term_backup);
+int			handle_signal_and_exit(t_shell *shell, char **command);
+void		setup_signal_handler(struct termios *term_backup);
+
+/* executer */
+void		executer(t_shell *shell);
+void		filler_commands(t_command *commands);
+void		set_output_file(t_command *cmd, char *file, int append);
+void		set_input_file(t_command *cmd, char *file);
+int			is_input_redirection(const char *arg);
+int			is_output_redirection(const char *arg);
+int			is_appended_redirection(const char *arg);
+
+
 
 
 /* free.c */
@@ -76,14 +87,6 @@ void		free_pipeline(t_pipeline *pipeline);
 /* token_classifier.c */
 void		classify_pipeline_tokens(t_pipeline *pipeline);
 
-/* executer.c */
-void	executer(t_shell *shell, t_pipeline *pipeline, t_token *tokens);
-
-/* redirections.c */
-int	check_redirection_syntax(t_shell *shell, t_token *tokens);
-
-/* heredoc.c */
-int	has_heredoc(t_token *tokens);
 
 
 
@@ -93,17 +96,22 @@ int	has_heredoc(t_token *tokens);
 
 
 
-
-
-/* temp_creator.c */
-char **create_arguments_temp_fixed(int count, const char **args);
-char **create_heredoc_delimiters_temp_fixed(int count, const char **delims);
-t_command *create_command_temp(const char *cmd, char **arguments,
-                              char *input_file, char *output_file,
-                              int append_mode, char **heredoc_delim);
-t_command *build_commands_for_example_temp(void);
+/* temp files */
+t_command *create_command_cat_heredoc_temp(void);
+t_command *create_command_wc_l_temp(void);
+t_pipeline *create_pipeline_cat_wc_temp(void);
 void free_arguments_temp(char **args);
 void free_heredoc_delimiters_temp(char **heredocs);
 void free_command_temp(t_command *cmd);
+void free_pipeline_token_lists_temp(t_pipeline *pipeline);
+void free_pipeline_temp(t_pipeline *pipeline);
+void print_shell_info(t_shell *shell);
+char **create_args_temp(int count, char **args);
+
+// farklı komut kombinasyonları
+void fill_shell_commands_and_pipeline_temp(t_shell *shell);
+void fill_shell_cat_input_temp(t_shell *shell);
+void fill_shell_echo_output_temp(t_shell *shell);
+void fill_shell_echo_append_temp(t_shell *shell);
 
 #endif
