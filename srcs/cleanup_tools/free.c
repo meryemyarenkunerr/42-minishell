@@ -28,6 +28,8 @@ void	free_at_exit(t_shell *shell)
 		free(shell->current_dir);
 	if (shell->home_dir)
 		free(shell->home_dir);
+	if (shell->pipeline)
+		free_pipeline_temp(shell->pipeline);
 	if (shell->commands)
 		free_command_temp(shell->commands);
 	rl_clear_history();
