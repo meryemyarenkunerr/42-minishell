@@ -14,7 +14,7 @@ t_command *create_command_echo_append_temp(void)
         return NULL;
     }
 
-    cmd->arguments = create_args_temp(4, (char *[]){"echo", "hello", ">>", "out.txt"});
+    cmd->arguments = create_args_temp(4, (char *[]){"echo", "hello", ">>", "out.txt", NULL});
     if (!cmd->arguments)
     {
         free(cmd->cmd);
@@ -23,21 +23,12 @@ t_command *create_command_echo_append_temp(void)
     }
 
     cmd->input_file = NULL;
-    cmd->output_file = strdup("out.txt");
-    if (!cmd->output_file)
-    {
-        for (int i = 0; cmd->arguments[i]; i++)
-            free(cmd->arguments[i]);
-        free(cmd->arguments);
-        free(cmd->cmd);
-        free(cmd);
-        return NULL;
-    }
+    cmd->output_file = NULL;
 
     cmd->heredoc_count = 0;
     cmd->heredoc_delimeter = NULL;
 
-    cmd->append_mode = 1;  // Append modu
+    cmd->append_mode = 0;  // Append modu
     cmd->next = NULL;
 
     return cmd;

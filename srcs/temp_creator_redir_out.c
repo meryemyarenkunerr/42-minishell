@@ -14,7 +14,7 @@ t_command *create_command_echo_output_temp(void)
 
     // output_file set ediliyor
     cmd->input_file = NULL;
-    cmd->output_file = strdup("out.txt");
+    cmd->output_file = NULL;
 
     cmd->heredoc_count = 0;
     cmd->heredoc_delimeter = NULL;
