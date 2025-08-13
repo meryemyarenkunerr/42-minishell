@@ -1,6 +1,18 @@
 #include "../../includes/minishell.h"
 
-int	fill_heredoc_delimeter(t_shell *shell, t_command *cmd)
+static void	cleanup_partial_heredoc_delimeters(char **delimeters, int count)
+{
+	int	i;
+
+	i = 0;
+	while (i < count)
+	{
+		free(delimeters[i]);
+		i++;
+	}
+}
+
+static int	fill_heredoc_delimeter(t_shell *shell, t_command *cmd)
 {
 	int	i;
 	int	j;
@@ -9,11 +21,12 @@ int	fill_heredoc_delimeter(t_shell *shell, t_command *cmd)
 	j = 0;
 	while (cmd->arguments[i])
 	{
-		if (ft_strncmp(cmd->arguments[i], REDIRECTION_HEREDOC, 2) == 0 && cmd->arguments[i + 1])
+		if (is_heredoc_redirection(cmd->arguments[i]) && cmd->arguments[i + 1])
 		{
 			cmd->heredoc_delimeter[j] = ft_strdup(cmd->arguments[i + 1]);
 			if (!cmd->heredoc_delimeter[j])
 			{
+				cleanup_partial_heredoc_delimeters(cmd->heredoc_delimeter, j);
 				printf("error: malloc failed\n");
 				shell->exit_status = 1;
 				return FALSE;
@@ -26,7 +39,7 @@ int	fill_heredoc_delimeter(t_shell *shell, t_command *cmd)
 	return TRUE;
 }
 
-int	count_heredocs_in_command(t_command *cmd)
+static int	count_heredocs_in_command(t_command *cmd)
 {
 	int	i;
 	int	count;
@@ -46,13 +59,13 @@ int	count_heredocs_in_command(t_command *cmd)
 int	fill_heredoc_delimeter_and_count(t_shell *shell, t_command *cmd)
 {
 	if (!cmd || !cmd->arguments)
-		return printf("cmd ya da cmd->arguments yok\n"), FALSE;
+		return FALSE;
 	cmd->heredoc_count = count_heredocs_in_command(cmd);
-	//if (cmd->heredoc_count == 0)	// gerek olamayabilir
-	//	return TRUE;
+	if (cmd->heredoc_delimeter)
+		free_heredoc_delimiters(cmd->heredoc_delimeter);
 	cmd->heredoc_delimeter = malloc(sizeof(char *) * (cmd->heredoc_count + 1)); // +1 -> NULL
 	if (!cmd->heredoc_delimeter)
-		return printf("heredoc_delimeter oluşmadi\n"), FALSE;
+		return FALSE;
 	if (!fill_heredoc_delimeter(shell, cmd))
 	{
 		printf("error: malloc failed\n");
