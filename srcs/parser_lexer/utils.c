@@ -75,7 +75,7 @@ char	*get_env_value(t_env *env, char *key)
 {
 	while (env)
 	{
-		if (ft_strncmp(env->key, key, ft_strlen(key) + 1) == 0)
+		if (ft_strcmp(env->key, key) == 0)
 			return (env->value);
 		env = env->next;
 	}
@@ -90,7 +90,7 @@ void	set_env_value(t_env **env, char *key, char *value)
 	current = *env;
 	while (current)
 	{
-		if (ft_strncmp(current->key, key, ft_strlen(key) + 1) == 0)
+		if (ft_strcmp(current->key, key) == 0)
 		{
 			free(current->value);
 			current->value = ft_strdup(value);

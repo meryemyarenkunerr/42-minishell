@@ -32,15 +32,15 @@ void	add_token_to_list(t_token **head, t_token *new_token)
 
 static t_token_types	get_token_type(char *str)
 {
-	if (ft_strncmp(str, "|", 2) == 0)
+	if (ft_strcmp(str, "|") == 0)
 		return (TOKEN_PIPE);
-	else if (ft_strncmp(str, "<<", 3) == 0)
+	else if (ft_strcmp(str, "<<") == 0)
 		return (TOKEN_HEREDOC);
-	else if (ft_strncmp(str, ">>", 3) == 0)
+	else if (ft_strcmp(str, ">>") == 0)
 		return (TOKEN_APPEND);
-	else if (ft_strncmp(str, "<", 2) == 0)
+	else if (ft_strcmp(str, "<") == 0)
 		return (TOKEN_REDIRECT_IN);
-	else if (ft_strncmp(str, ">", 2) == 0)
+	else if (ft_strcmp(str, ">") == 0)
 		return (TOKEN_REDIRECT_OUT);
 	else
 		return (TOKEN_WORD);
