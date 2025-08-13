@@ -9,4 +9,5 @@ int	main(int argc, char **argv, char **env)
 	init_shell(&shell, env);
 	shell_loop(&shell);
 	free_at_exit(&shell);
+	return (shell.exit_status);
 }

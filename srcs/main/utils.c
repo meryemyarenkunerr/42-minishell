@@ -21,7 +21,7 @@ int	is_exit_command_received(t_shell *shell, char *command)
 {
 	char	*stat;
 
-	if (ft_strncmp(command, EXIT, 4) == 0 &&
+	if (ft_strcmp(command, EXIT) == 0 &&
 		(command[4] == '\0' || command[4] == ' '))
 	{
 		printf("bye bye <3\n");
@@ -39,12 +39,6 @@ int	is_exit_command_received(t_shell *shell, char *command)
 		return TRUE;
 	}
 	return FALSE;
-}
-
-void	sigint_received(t_shell *shell)
-{
-	shell->exit_status = 130; // POSIX standardı (Ctrl+C için)
-	g_sigint_received = FALSE;
 }
 
 char	*read_line(t_shell *shell)

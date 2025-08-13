@@ -89,6 +89,10 @@ void	init_shell(t_shell *shell, char **env)
 		shell->home_dir = NULL;
 	shell->pipeline = NULL;
 	shell->prompt = NULL;
+	shell->std_fds[0] = dup(STDIN_FILENO);   // stdin backup
+	shell->std_fds[1] = dup(STDOUT_FILENO);  // stdout backup
+	shell->child_pids = NULL;
+	shell->child_count = 0;
 	if (tcgetattr(STDIN_FILENO, &shell->term_backup) == -1)
 		perror("tcgetattr");
 }

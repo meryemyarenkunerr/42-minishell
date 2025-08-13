@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-void	update_current_dir(t_shell *shell)
+static void	update_current_dir_before_command(t_shell *shell)
 {
 	char	*cwd;
 
@@ -19,7 +19,7 @@ void	build_prompt(t_shell *shell)
 	char	*temp;
 	char	*colored_path;
 
-	update_current_dir(shell);
+	update_current_dir_before_command(shell);
 	if (shell->prompt)
 		free(shell->prompt);
 	if (!shell->current_dir)
