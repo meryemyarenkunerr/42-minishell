@@ -1,5 +1,14 @@
 #include "../../includes/minishell.h"
 
+void free_heredoc_delimiters(char **heredocs)
+{
+	if (!heredocs)
+		return;
+	for (int i = 0; heredocs[i]; i++)
+		free(heredocs[i]);
+	free(heredocs);
+}
+
 void	free_env_list(t_env *env)
 {
 	t_env	*temp;
