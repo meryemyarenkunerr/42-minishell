@@ -17,6 +17,15 @@ SRCS 		= srcs/cleanup_tools/free.c \
 			  srcs/executer/cmd_controller.c \
 			  srcs/executer/cmd_setter.c \
 			  srcs/executer/heredoc_filler.c \
+			  srcs/executer/single_command.c \
+			  srcs/executer/builtins_basics.c \
+			  srcs/executer/builtins_cd.c \
+			  srcs/executer/builtins_export.c \
+			  srcs/executer/builtins_export_util.c \
+			  srcs/executer/builtins_unset.c \
+			  srcs/executer/external.c \
+			  srcs/executer/multiple_command.c \
+			  srcs/executer/utils.c \
 			  srcs/main/init.c \
 			  srcs/main/main.c \
 			  srcs/main/prompt.c \
@@ -39,6 +48,20 @@ SRCS 		= srcs/cleanup_tools/free.c \
 			  srcs/temp_creator_redir_append.c \
 			  srcs/temp_creator_multiple_heredoc.c \
 			  srcs/temp_creator_heredoc_plus_append.c \
+			  srcs/temp_creator_builtins_pwd.c \
+			  srcs/temp_creator_builtins_echo.c \
+			  srcs/temp_creator_builtins_echo_w_n.c \
+			  srcs/temp_creator_builtins_env.c \
+			  srcs/temp_creator_builtins_cd_home.c \
+			  srcs/temp_creator_builtins_cd_w_dir.c \
+			  srcs/temp_creator_builtins_cd_parent.c \
+			  srcs/temp_creator_builtins_unset.c \
+			  srcs/temp_creator_builtins_export.c \
+			  srcs/temp_creator_builtins_export_set.c \
+			  srcs/temp_creator_builtins_export_multiple.c \
+			  srcs/temp_creator_builtins_export_mark.c \
+			  srcs/temp_creator_builtins_export_invalid.c \
+			  srcs/temp_creator_builtins_export_empty.c \
 
 # Object Files
 OBJS		= $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
