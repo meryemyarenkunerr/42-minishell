@@ -29,12 +29,13 @@ void		shell_loop(t_shell *shell);
 void		build_prompt(t_shell *shell);
 char		*read_line(t_shell *shell);
 int			is_exit_command_received(t_shell *shell, char *command);
-void		sigint_received(t_shell *shell);
 int			process_command(t_shell *shell, char *command);
+int			ft_strcmp(const char *s1, const char *s2);
 
 /* signal */
 int			handle_signal_and_exit(t_shell *shell, char **command);
 void		setup_signal_handler(struct termios *term_backup);
+void		sigint_received(t_shell *shell);
 
 /* executer */
 void		executer(t_shell *shell);
@@ -46,11 +47,29 @@ int			is_output_redirection(const char *arg);
 int			is_appended_redirection(const char *arg);
 int			is_heredoc_redirection(const char *arg);
 int			fill_heredoc_delimeter_and_count(t_shell *shell, t_command *cmd);
+void		execute_single_command(t_shell *shell);
+int			is_builtin_command(const char *cmd);
+void		execute_builtin(t_shell *shell, t_command *cmd);
+void		execute_builtin_pwd(t_shell *shell, t_command *cmd);
+void		execute_builtin_echo(t_shell *shell, t_command *cmd);
+void		execute_builtin_cd(t_shell *shell, t_command *cmd);
+void		execute_builtin_env(t_shell *shell, t_command *cmd);
+void		execute_builtin_unset(t_shell *shell, t_command *cmd);
+void		execute_builtin_export(t_shell *shell, t_command *cmd);
+void		set_env_variable(t_shell *shell, const char *var_value);
+t_env		*find_env_variable(t_env *env_list, const char *key);
+void		add_env_variable(t_shell *shell, const char *key, const char *value);
+void		execute_external(t_shell *shell, t_command *cmd);
+void		execute_pipeline(t_shell *shell);
 
-
-/* free.c */
+/* cleanup_tools */
 void		free_env_list(t_env *env);
 void		free_at_exit(t_shell *shell);
+void		free_heredoc_delimiters(char **heredocs);
+
+/* error */
+void	handle_export_error(t_shell *shell, const char *arg);
+
 
 /* advanced_lexer.c */
 t_token		*advanced_lexer(char *input);
@@ -101,7 +120,6 @@ t_command *create_command_cat_heredoc_temp(void);
 t_command *create_command_wc_l_temp(void);
 t_pipeline *create_pipeline_cat_wc_temp(void);
 void free_arguments_temp(char **args);
-void free_heredoc_delimiters_temp(char **heredocs);
 void free_command_temp(t_command *cmd);
 void free_pipeline_token_lists_temp(t_pipeline *pipeline);
 void free_pipeline_temp(t_pipeline *pipeline);
@@ -115,5 +133,20 @@ void fill_shell_echo_output_temp(t_shell *shell);
 void fill_shell_echo_append_temp(t_shell *shell);
 void fill_shell_cat_heredocs_temp(t_shell *shell);
 void fill_shell_heredoc_append_temp(t_shell *shell);
+void fill_shell_pwd_temp(t_shell *shell);
+void fill_shell_echo_temp(t_shell *shell);
+void fill_shell_echo_n_temp(t_shell *shell);
+void fill_shell_env_temp(t_shell *shell);
+void fill_shell_cd_home_temp(t_shell *shell);
+void fill_shell_cd_tmp_temp(t_shell *shell);
+void fill_shell_cd_parent_temp(t_shell *shell);
+void fill_shell_unset_single_temp(t_shell *shell);
+void fill_shell_unset_multiple_temp(t_shell *shell);
+void fill_shell_export_list_temp(t_shell *shell);
+void fill_shell_export_empty_temp(t_shell *shell);
+void fill_shell_export_invalid_temp(t_shell *shell);
+void fill_shell_export_mark_temp(t_shell *shell);
+void fill_shell_export_multiple_temp(t_shell *shell);
+void fill_shell_export_set_temp(t_shell *shell);
 
 #endif
