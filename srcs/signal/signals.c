@@ -1,26 +1,9 @@
 #include "../../includes/minishell.h"
 
-int	handle_signal_and_exit(t_shell *shell, char **command)
+void	sigint_received(t_shell *shell)
 {
-	if (!*command)										// Ctrl-D veya EOF
-	{
-		printf("bye bye <3\n");
-		return 0;										// shell'den çık
-	}
-	if (g_sigint_received)								// Ctrl+C ile komut iptal edildiyse
-	{
-		sigint_received(shell);
-		free(*command);
-		*command = NULL;
-		return 1;										// döngü devam etsin
-	}
-	if (is_exit_command_received(shell, *command))		// exit komutu
-	{
-		free(*command);
-		*command = NULL;
-		return 0;										// shell'den çık
-	}
-	return 2;											// normal devam et
+	shell->exit_status = 130; // POSIX standardı (Ctrl+C için)
+	g_sigint_received = FALSE;
 }
 
 // Sinyal işlemi: Ctrl+C (SIGINT) geldiğinde promptu temizle ve yeni satır başlat
@@ -66,4 +49,27 @@ void	setup_signal_handler(struct termios *term_backup)
 	sa_quit.sa_flags = SA_RESTART;
 	sigemptyset(&sa_quit.sa_mask);
 	check_and_warn(sigaction(SIGQUIT, &sa_quit, NULL), "sigaction(SIGQUIT)");
+}
+
+int	handle_signal_and_exit(t_shell *shell, char **command)
+{
+	if (!*command)										// Ctrl-D veya EOF
+	{
+		printf("bye bye <3\n");
+		return 0;										// shell'den çık
+	}
+	if (g_sigint_received)								// Ctrl+C ile komut iptal edildiyse
+	{
+		sigint_received(shell);
+		free(*command);
+		*command = NULL;
+		return 1;										// döngü devam etsin
+	}
+	if (is_exit_command_received(shell, *command))		// exit komutu
+	{
+		free(*command);
+		*command = NULL;
+		return 0;										// shell'den çık
+	}
+	return 2;											// normal devam et
 }
