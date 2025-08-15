@@ -7,11 +7,11 @@ void	sigint_received(t_shell *shell)
 }
 
 // Sinyal işlemi: Ctrl+C (SIGINT) geldiğinde promptu temizle ve yeni satır başlat
-static void	handle_sigint(int signo)
+void	handle_sigint(int signo)
 {
 	if (signo == SIGINT)
 	{
-		g_sigint_received = TRUE;		// Ctrl+C'ye basıldı
+		g_sigint_received = 1;			// Ctrl+C'ye basıldı
 		write(STDOUT_FILENO, "\n", 1);	// Yeni satır
 		rl_replace_line("", 0);			// input satırını sil
 		rl_on_new_line();				// yeni satıra geç
@@ -27,20 +27,22 @@ static void	check_and_warn(int ret, const char *msg)
 }
 
 // Terminal ve sinyal ayarlarını yapılandır
-void	setup_signal_handler(struct termios *term_backup)
+void	setup_signal_handler()
 {
 	struct sigaction	sa_int;
 	struct sigaction	sa_quit;
-	struct termios		modified;
+	struct termios		term;
 
-	// Terminalde ^C, ^\ gibi karakterlerin görünmesini engelle
-	modified = *term_backup;
-	modified.c_lflag &= ~ECHOCTL;
-	check_and_warn(tcsetattr(STDIN_FILENO, TCSAFLUSH, &modified), "tcsetattr");
+	// Terminal ayarları - ^C karakterini gizle
+	if (tcgetattr(STDIN_FILENO, &term) != -1)
+	{
+		term.c_lflag &= ~ECHOCTL;  // Control karakterleri gizle
+		tcsetattr(STDIN_FILENO, TCSAFLUSH, &term);
+	}
 
 	// SIGINT (Ctrl+C) için özel handler ata
 	sa_int.sa_handler = handle_sigint;
-	sa_int.sa_flags = SA_RESTART;
+	sa_int.sa_flags = SA_RESTART | SA_NODEFER;
 	sigemptyset(&sa_int.sa_mask);
 	check_and_warn(sigaction(SIGINT, &sa_int, NULL), "sigaction(SIGINT)");
 
