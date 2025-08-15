@@ -26,6 +26,9 @@ SRCS 		= srcs/cleanup_tools/free.c \
 			  srcs/executer/external.c \
 			  srcs/executer/multiple_command.c \
 			  srcs/executer/utils.c \
+			  srcs/executer/heredoc_handler.c \
+			  srcs/executer/heredoc_parent.c \
+			  srcs/executer/heredoc_child.c \
 			  srcs/main/init.c \
 			  srcs/main/main.c \
 			  srcs/main/prompt.c \
@@ -42,6 +45,7 @@ SRCS 		= srcs/cleanup_tools/free.c \
 			  srcs/parser_lexer/token_classifier.c \
 			  srcs/parser_lexer/utils.c \
 			  srcs/signal/signals.c \
+			  srcs/signal/signals_2.c \
 			  srcs/temp_creator.c \
 			  srcs/temp_creator_redir_in.c \
 			  srcs/temp_creator_redir_out.c \
@@ -62,6 +66,8 @@ SRCS 		= srcs/cleanup_tools/free.c \
 			  srcs/temp_creator_builtins_export_mark.c \
 			  srcs/temp_creator_builtins_export_invalid.c \
 			  srcs/temp_creator_builtins_export_empty.c \
+			  srcs/temp_creator_heredoc_normal.c \
+			  srcs/temp_creator_heredoc_redirection.c \
 
 # Object Files
 OBJS		= $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
