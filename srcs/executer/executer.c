@@ -13,6 +13,11 @@ void	executer(t_shell *shell)
 		shell->exit_status = 1;
 		return ;
 	}
+	if (!handle_heredocs(shell))
+	{
+		shell->exit_status = 1;
+		return ;
+	}
 	if (has_pipeline(shell))
 		execute_pipeline(shell);
 	else
