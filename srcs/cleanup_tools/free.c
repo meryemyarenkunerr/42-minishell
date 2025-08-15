@@ -27,9 +27,6 @@ void	free_env_list(t_env *env)
 
 void	free_at_exit(t_shell *shell)
 {
-	// terminal ayarlarını eski haline getirmek için
-	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &shell->term_backup) == -1)
-		perror("tcsetattr");
 	free_env_list(shell->environment);
 	if (shell->prompt)
 		free(shell->prompt);
