@@ -57,15 +57,10 @@ t_env	*init_env(char **env)
 			return (NULL);
 		}
 		if (!head)
-		{
 			head = new;
-			tail = new;
-		}
 		else
-		{
 			tail->next = new;
-			tail = new;
-		}
+		tail = new;
 		env++;
 	}
 	return (head);
@@ -75,24 +70,18 @@ void	init_shell(t_shell *shell, char **env)
 {
 	char	*home;
 
-	shell->cmd_has_been_executed = TRUE; // sorun çıkmasın başlangıçta diye
+	shell->cmd_has_been_executed = TRUE;			// sorun çıkmasın başlangıçta diye
 	shell->commands = NULL;
-	shell->current_dir = getcwd(NULL, 0);	// malloc ile alan açar, freele
+	shell->current_dir = getcwd(NULL, 0);			// malloc ile alan açar, freele
 	if (!shell->current_dir)
 		shell->current_dir = ft_strdup("");
 	shell->environment = init_env(env);
 	shell->exit_status = 0;
 	home = getenv("HOME");
 	if (home)
-		shell->home_dir = ft_strdup(home);	// freelenmeli
+		shell->home_dir = ft_strdup(home);			// freelenmeli
 	else
 		shell->home_dir = NULL;
 	shell->pipeline = NULL;
 	shell->prompt = NULL;
-	shell->std_fds[0] = dup(STDIN_FILENO);   // stdin backup
-	shell->std_fds[1] = dup(STDOUT_FILENO);  // stdout backup
-	shell->child_pids = NULL;
-	shell->child_count = 0;
-	if (tcgetattr(STDIN_FILENO, &shell->term_backup) == -1)
-		perror("tcgetattr");
 }

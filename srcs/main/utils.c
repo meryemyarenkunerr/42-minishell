@@ -51,6 +51,12 @@ char	*read_line(t_shell *shell)
 		command = readline(shell->prompt);
 		if (!command)
 			return NULL;
+		if (g_sigint_received)
+		{
+			g_sigint_received = 0;
+			free(command);
+			return (ft_strdup(""));
+		}
 	}
 	else
 	{
@@ -61,6 +67,12 @@ char	*read_line(t_shell *shell)
 		free(temp);
 		if (!command)
 			return NULL;
+		if (g_sigint_received)
+		{
+			g_sigint_received = 0;
+			free(command);
+			return (ft_strdup(""));
+		}
 	}
 	return (command);
 }
