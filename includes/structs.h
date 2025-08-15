@@ -37,6 +37,9 @@ typedef struct s_command
 	char				**heredoc_delimeter;	// birden fazla delimeter olabilir
 	int					heredoc_count;			// pipeline içerisindeydi ama burada olması daha doğru
 	int					append_mode;
+	int					fd_in;
+	int					fd_out;
+	pid_t				pid;
 	struct s_command	*next;
 }	t_command;
 
@@ -59,7 +62,6 @@ typedef struct s_env
 typedef struct s_shell
 {
 	t_env			*environment;
-	struct termios	term_backup;
 	int				exit_status;
 	char			*prompt;
 	int				cmd_has_been_executed;
@@ -67,9 +69,6 @@ typedef struct s_shell
 	char			*home_dir;
 	char			*current_dir;
 	t_pipeline		*pipeline;
-	int				std_fds[2];
-	pid_t			*child_pids;
-	int				child_count;
 }	t_shell;
 
 #endif

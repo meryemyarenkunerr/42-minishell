@@ -20,7 +20,7 @@
 # include "structs.h"
 
 /* Global Variable */
-int		g_sigint_received;
+extern volatile sig_atomic_t	g_sigint_received;
 
 /* Functions */
 /* main */
@@ -34,8 +34,10 @@ int			ft_strcmp(const char *s1, const char *s2);
 
 /* signal */
 int			handle_signal_and_exit(t_shell *shell, char **command);
-void		setup_signal_handler(struct termios *term_backup);
+void		setup_signal_handler();
 void		sigint_received(t_shell *shell);
+void		handle_sigint(int signo);
+void		heredoc_signal_handler(int signo);
 
 /* executer */
 void		executer(t_shell *shell);
@@ -61,6 +63,9 @@ t_env		*find_env_variable(t_env *env_list, const char *key);
 void		add_env_variable(t_shell *shell, const char *key, const char *value);
 void		execute_external(t_shell *shell, t_command *cmd);
 void		execute_pipeline(t_shell *shell);
+int			handle_heredocs(t_shell *shell);
+void		heredoc_child_process(int write_fd[2], const char *delimeter);
+int			heredoc_parent_process(int fds[2], pid_t pid);
 
 /* cleanup_tools */
 void		free_env_list(t_env *env);
@@ -68,7 +73,8 @@ void		free_at_exit(t_shell *shell);
 void		free_heredoc_delimiters(char **heredocs);
 
 /* error */
-void	handle_export_error(t_shell *shell, const char *arg);
+void		handle_export_error(t_shell *shell, const char *arg);
+int			fork_error_handler(int fds[2], t_shell *shell);
 
 
 /* advanced_lexer.c */
@@ -148,5 +154,8 @@ void fill_shell_export_invalid_temp(t_shell *shell);
 void fill_shell_export_mark_temp(t_shell *shell);
 void fill_shell_export_multiple_temp(t_shell *shell);
 void fill_shell_export_set_temp(t_shell *shell);
+void fill_shell_heredoc_normal_temp(t_shell *shell);
+void fill_shell_heredoc_redirect_temp(t_shell *shell);
+
 
 #endif

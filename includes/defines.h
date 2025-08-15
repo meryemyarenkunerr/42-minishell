@@ -17,6 +17,8 @@
 # define PROMPT "\x1b[1;32mminishell$\x1b[0m  "
 # define PROMPT_WO_DOLLAR GREEN "minishell > " RESET
 # define DOLLAR_SIGN "$ "
+# define PROMPT_HEREDOC BLUE "heredoc> " RESET
+
 # define MAX_TOKENS 1024
 
 /* File */
