@@ -1,56 +1,70 @@
 #include "../includes/minishell.h"
 
-// PWD komutu için test mock
-t_command *create_command_pwd_temp(void)
+// 1. pwd (basic usage)
+t_pipeline *test_pwd_basic()
 {
-	t_command *cmd = malloc(sizeof(t_command));
-	if (!cmd)
-		return NULL;
+    t_pipeline *pipeline = malloc(sizeof(t_pipeline));
+    pipeline->count = 1;
+    pipeline->token_lists = malloc(1 * sizeof(t_token*));
 
-	cmd->cmd = strdup("pwd");
+    t_token *tokens[1];
+    tokens[0] = create_token("pwd", TOKEN_COMMAND);
 
-	// pwd'de sadece komut adı var, başka argument yok
-	cmd->arguments = create_args_temp(1, (char *[]){"pwd"});
+    link_tokens(tokens, 1);
+    pipeline->token_lists[0] = tokens[0];
 
-	cmd->input_file = NULL;
-	cmd->output_file = NULL;
-
-	cmd->heredoc_count = 0;
-	cmd->heredoc_delimeter = NULL;
-
-	cmd->append_mode = 0;
-	cmd->next = NULL;
-
-	return cmd;
+    return pipeline;
 }
 
-// PWD için pipeline (tek komut, redirection yok)
-t_pipeline *create_pipeline_pwd_temp(void)
+// 2. pwd with argument (should ignore)
+t_pipeline *test_pwd_with_arg()
 {
-	t_pipeline *pipeline = malloc(sizeof(t_pipeline));
-	if (!pipeline)
-		return NULL;
+    t_pipeline *pipeline = malloc(sizeof(t_pipeline));
+    pipeline->count = 1;
+    pipeline->token_lists = malloc(1 * sizeof(t_token*));
 
-	pipeline->count = 1;
-	pipeline->token_lists = malloc(sizeof(t_token *) * pipeline->count);
+    t_token *tokens[2];
+    tokens[0] = create_token("pwd", TOKEN_COMMAND);
+    tokens[1] = create_token("ignored_arg", TOKEN_ARGUMENT);
 
-	// Tek token: "pwd"
-	t_token *t1 = malloc(sizeof(t_token));
-	t1->content = strdup("pwd");
-	t1->type = TOKEN_COMMAND;  // veya TOKEN_WORD
-	t1->prev = NULL;
-	t1->next = NULL;
+    link_tokens(tokens, 2);
+    pipeline->token_lists[0] = tokens[0];
 
-	pipeline->token_lists[0] = t1;
-
-	return pipeline;
+    return pipeline;
 }
 
-// Shell yapısını pwd komutu ile doldur
-void fill_shell_pwd_temp(t_shell *shell)
+// 3. pwd > output.txt (redirection)
+t_pipeline *test_pwd_redirect_output()
 {
-	t_command *cmd1 = create_command_pwd_temp();
+    t_pipeline *pipeline = malloc(sizeof(t_pipeline));
+    pipeline->count = 1;
+    pipeline->token_lists = malloc(1 * sizeof(t_token*));
 
-	shell->commands = cmd1;
-	shell->pipeline = create_pipeline_pwd_temp();
+    t_token *tokens[3];
+    tokens[0] = create_token("pwd", TOKEN_COMMAND);
+    tokens[1] = create_token(">", TOKEN_REDIRECT_OUT);
+    tokens[2] = create_token("pwd_output.txt", TOKEN_FILE);
+
+    link_tokens(tokens, 3);
+    pipeline->token_lists[0] = tokens[0];
+
+    return pipeline;
+}
+
+// 4. pwd >> append.txt (append redirection)
+t_pipeline *test_pwd_append()
+{
+    t_pipeline *pipeline = malloc(sizeof(t_pipeline));
+    pipeline->count = 1;
+    pipeline->token_lists = malloc(1 * sizeof(t_token*));
+
+    t_token *tokens[3];
+    tokens[0] = create_token("pwd", TOKEN_COMMAND);
+    tokens[1] = create_token(">>", TOKEN_APPEND);
+    tokens[2] = create_token("pwd_output.txt", TOKEN_FILE);
+
+    link_tokens(tokens, 3);
+    pipeline->token_lists[0] = tokens[0];
+
+    return pipeline;
 }
