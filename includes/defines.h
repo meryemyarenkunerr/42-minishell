@@ -33,4 +33,13 @@
 # define REDIRECTION_APPEND ">>"
 # define REDIRECTION_HEREDOC "<<"
 
+/* Builtins */
+# define ECHO "echo"
+# define CD "cd"
+# define PWD "pwd"
+# define EXPORT "export"
+# define UNSET "unset"
+# define ENV "env"
+# define EXIT "exit"
+
 #endif

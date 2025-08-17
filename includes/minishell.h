@@ -11,6 +11,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <errno.h>
+# include <fcntl.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
@@ -20,97 +21,144 @@
 # include "structs.h"
 
 /* Global Variable */
-extern volatile sig_atomic_t	g_sigint_received;
+extern int	g_sigint_received;
 
 /* Functions */
-/* main */
-void		init_shell(t_shell *shell, char **env);
-void		shell_loop(t_shell *shell);
-void		build_prompt(t_shell *shell);
-char		*read_line(t_shell *shell);
-int			is_exit_command_received(t_shell *shell, char *command);
-int			process_command(t_shell *shell, char *command);
-int			ft_strcmp(const char *s1, const char *s2);
 
 /* signal */
+/* signals.c */
 int			handle_signal_and_exit(t_shell *shell, char **command);
-void		setup_signal_handler();
-void		sigint_received(t_shell *shell);
+void		check_and_warn(int ret, const char *msg);
 void		handle_sigint(int signo);
+void		sigint_received(t_shell *shell);
+
+/* signals_2.c */
 void		heredoc_signal_handler(int signo);
 
+/* main */
+/* init_env.c */
+int			add_key_value_pair(t_env **env, char *env_pair);
+int			extract_key_value(char *env_pair, char **key, char **val);
+t_env		*create_env_node(char *key, char *val);
+t_env		*create_env_node_empty();
+void		add_new_env_node(t_env **env, t_env *tail);
+
+/* init.c */
+void		init_shell(t_shell *shell, char **env);
+t_env		*init_env(char **env);
+void		init_signal();
+void		init_simple_signal(int signo);
+
+/* process_command.c */
+void		process_command(t_shell *shell, char *command);
+
+/* prompt.c */
+char		*build_prompt();
+
+/* shell_loop.c */
+void		shell_loop(t_shell *shell);
+int			is_exit(t_shell *shell);
+
+/* error */
+/* errors.c */
+int			handle_fork_error(int fds[2]);
+void		handle_export_error(t_shell *shell, const char *arg);
+
+/* cleanup_tools */
+/* free.c */
+void		cleanup_previous_state(t_shell *shell);
+void		free_at_exit(t_shell *shell);
+
+/* free_env.c */
+void		free_env_list(t_env *env);
+void		free_env_node(t_env *node);
+
+/* free_pipeline.c */
+void	free_pipeline(t_pipeline *pipeline);
+void	free_token_array(t_token *tokens);
+
+/* free_command.c */
+void		free_command_list(t_command *commands);
+void		free_single_command(t_command *command);
+void		free_string_array(char **array);
+
+/* close_fds.c */
+void		close_command_fds(t_command *cmd);
+void		close_all_command_fds(t_shell *shell);
+
 /* executer */
-void		executer(t_shell *shell);
-int			filler_commands(t_shell *shell);
-void		set_input_file(t_shell *shell, t_command *cmd, char *file, int *flag);
-void		set_output_file(t_shell *shell, t_command *cmd, char *file, int append, int *flag);
-int			is_input_redirection(const char *arg);
-int			is_output_redirection(const char *arg);
-int			is_appended_redirection(const char *arg);
-int			is_heredoc_redirection(const char *arg);
-int			fill_heredoc_delimeter_and_count(t_shell *shell, t_command *cmd);
-void		execute_single_command(t_shell *shell);
-int			is_builtin_command(const char *cmd);
-void		execute_builtin(t_shell *shell, t_command *cmd);
+/* builtins_basics.c */
 void		execute_builtin_pwd(t_shell *shell, t_command *cmd);
 void		execute_builtin_echo(t_shell *shell, t_command *cmd);
-void		execute_builtin_cd(t_shell *shell, t_command *cmd);
 void		execute_builtin_env(t_shell *shell, t_command *cmd);
-void		execute_builtin_unset(t_shell *shell, t_command *cmd);
+
+/* builtins_cd.c */
+void		execute_builtin_cd(t_shell *shell, t_command *cmd);
+char		*get_cd_path(t_shell *shell, t_command *cmd);
+int			update_current_dir(t_shell *shell);
+
+/* builtins_export.c */
 void		execute_builtin_export(t_shell *shell, t_command *cmd);
+int			validate_export_arg(const char *arg);
+void		process_export_arg(t_shell *shell, const char *arg);
+void		mark_variable_exported(t_shell *shell, const char *key);
+void		print_export_format(t_shell *shell);
+
+/* builtins_export_util.c */
 void		set_env_variable(t_shell *shell, const char *var_value);
 t_env		*find_env_variable(t_env *env_list, const char *key);
 void		add_env_variable(t_shell *shell, const char *key, const char *value);
-void		execute_external(t_shell *shell, t_command *cmd);
-void		execute_pipeline(t_shell *shell);
-int			handle_heredocs(t_shell *shell);
-void		heredoc_child_process(int write_fd[2], const char *delimeter);
-int			heredoc_parent_process(int fds[2], pid_t pid);
+void		append_env_node(t_shell *shell, t_env *new_env);
 
-/* cleanup_tools */
-void		free_env_list(t_env *env);
-void		free_at_exit(t_shell *shell);
-void		free_heredoc_delimiters(char **heredocs);
+/* builtins_unset.c */
+void		execute_builtin_unset(t_shell *shell, t_command *cmd);
+void		remove_env_variable(t_shell *shell, const char *key);
 
-/* error */
-void		handle_export_error(t_shell *shell, const char *arg);
-int			fork_error_handler(int fds[2], t_shell *shell);
+/* cmd_filler.c */
+int			builds_commands_from_pipeline(t_shell *shell);
+t_command	*create_command_from_tokens(t_token *token_list);
 
+/* executer.c */
+void		executer(t_shell *shell);
 
-/* advanced_lexer.c */
-t_token		*advanced_lexer(char *input);
+/* cmd_builder.c */
+int			builds_commands_from_pipeline(t_shell *shell);
+int			extract_command_and_args(t_command *cmd, t_token *token_list);
+void		extract_redirections_and_heredocs(t_command *cmd, t_token *token_list);
 
-/* improved_expander.c */
-void		improved_expand_tokens(t_token *tokens, t_env *env);
+/* cmd_filler.c */
+t_command	*create_command_from_tokens(t_token *token_list);
+int			fill_command_arguments(t_command *cmd, t_token *token_list, int arg_count);
+void		add_heredoc_delimiter(t_command *cmd, const char *delimiter);
 
-/* quote_remover.c */
-void		remove_quotes_from_tokens(t_token *tokens);
-
-/* post_expander.c */
-void		post_expansion_tokenize(t_token **head);
-
-/* parser.c */
-t_command	*parser(t_token *tokens);
-void		free_commands(t_command *cmd_list);
-
-/* lexer.c */
-t_token		*lexer(char *input);
-void		free_tokens(t_token *tokens);
-t_token		*create_token(char *content, t_token_types type);
-void		add_token_to_list(t_token **head, t_token *new_token);
+/* cmd_utils.c */
+int			argument_counter(t_token *token_list);
+int			cleanup_and_return_error(t_shell *shell);
 
 /* utils.c */
-t_env		*copy_env(char **envp);
-void		free_array(char **array);
-char		*get_env_value(t_env *env, char *key);
-void		set_env_value(t_env **env, char *key, char *value);
+int			ft_strcmp(const char *s1, const char *s2);
+int			is_builtin_command(const char *cmd);
+void		execute_builtin(t_shell *shell, t_command *cmd);
 
-/* pipeline_tokenizer.c */
-t_pipeline	*split_by_pipes(t_token *tokens);
-void		free_pipeline(t_pipeline *pipeline);
+/* redirections.c */
+int			setup_file_descriptors(t_shell *shell);
+int			setup_command_fds(t_command *cmd);
+int			setup_output_redirection(t_command *cmd);
+int			setup_input_redirection(t_command *cmd);
 
-/* token_classifier.c */
-void		classify_pipeline_tokens(t_pipeline *pipeline);
+/* heredoc_handler.c */
+int			setup_heredoc_fds(t_command *cmd);
+
+/* heredoc_parent.c */
+void		execute_heredoc_parent(t_command *cmd, int fds[2], pid_t pid);
+
+/* heredoc_child.c */
+void		execute_heredoc_child(t_command *cmd, int fds[2]);
+void		handle_heredoc_input(t_command *cmd, int write_fd);
+void		process_single_heredoc(char *delimiter, int write_fd);
+
+/* single_command.c */
+void		execute_single_command(t_shell *shell, t_command *cmd);
 
 
 
@@ -121,41 +169,35 @@ void		classify_pipeline_tokens(t_pipeline *pipeline);
 
 
 
-/* temp files */
-t_command *create_command_cat_heredoc_temp(void);
-t_command *create_command_wc_l_temp(void);
-t_pipeline *create_pipeline_cat_wc_temp(void);
-void free_arguments_temp(char **args);
-void free_command_temp(t_command *cmd);
-void free_pipeline_token_lists_temp(t_pipeline *pipeline);
-void free_pipeline_temp(t_pipeline *pipeline);
+
+/* mock data creators and printer */
+t_token	*create_token(const char *content, t_token_types type);
+void	link_tokens(t_token *tokens[], int count);
 void print_shell_info(t_shell *shell);
-char **create_args_temp(int count, char **args);
+const char *get_token_type_name(t_token_types type);
+void print_commands_only(t_shell *shell);
 
 // farklı komut kombinasyonları
-void fill_shell_commands_and_pipeline_temp(t_shell *shell);
-void fill_shell_cat_input_temp(t_shell *shell);
-void fill_shell_echo_output_temp(t_shell *shell);
-void fill_shell_echo_append_temp(t_shell *shell);
-void fill_shell_cat_heredocs_temp(t_shell *shell);
-void fill_shell_heredoc_append_temp(t_shell *shell);
-void fill_shell_pwd_temp(t_shell *shell);
-void fill_shell_echo_temp(t_shell *shell);
-void fill_shell_echo_n_temp(t_shell *shell);
-void fill_shell_env_temp(t_shell *shell);
-void fill_shell_cd_home_temp(t_shell *shell);
-void fill_shell_cd_tmp_temp(t_shell *shell);
-void fill_shell_cd_parent_temp(t_shell *shell);
-void fill_shell_unset_single_temp(t_shell *shell);
-void fill_shell_unset_multiple_temp(t_shell *shell);
-void fill_shell_export_list_temp(t_shell *shell);
-void fill_shell_export_empty_temp(t_shell *shell);
-void fill_shell_export_invalid_temp(t_shell *shell);
-void fill_shell_export_mark_temp(t_shell *shell);
-void fill_shell_export_multiple_temp(t_shell *shell);
-void fill_shell_export_set_temp(t_shell *shell);
-void fill_shell_heredoc_normal_temp(t_shell *shell);
-void fill_shell_heredoc_redirect_temp(t_shell *shell);
-
+t_pipeline	*mock_cd();
+t_pipeline	*mock_cd_dotdot();
+t_pipeline	*mock_cd_temp();
+t_pipeline	*mock_echo_n_hello();
+t_pipeline	*mock_echo_hello_world();
+t_pipeline	*mock_env();
+t_pipeline	*mock_export_empty();
+t_pipeline	*mock_export_invalid();
+t_pipeline	*mock_export_path();
+t_pipeline	*mock_export_multiple();
+t_pipeline	*mock_export_myvar();
+t_pipeline	*mock_export_list();
+t_pipeline	*mock_pwd();
+t_pipeline	*mock_unset_user();
+t_pipeline	*mock_cat_heredoc();
+t_pipeline	*mock_echo_append_heredoc();
+t_pipeline	*mock_cat_heredoc_redirect();
+t_pipeline	*mock_cat_double_heredoc();
+t_pipeline	*mock_echo_append();
+t_pipeline	*mock_cat_input();
+t_pipeline	*mock_echo_redirect();
 
 #endif

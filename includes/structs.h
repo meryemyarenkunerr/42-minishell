@@ -34,7 +34,7 @@ typedef struct s_command
 	char				**arguments;
 	char				*input_file;
 	char				*output_file;
-	char				**heredoc_delimeter;	// birden fazla delimeter olabilir
+	char				**heredoc_delimiter;	// birden fazla delimiter olabilir
 	int					heredoc_count;			// pipeline içerisindeydi ama burada olması daha doğru
 	int					append_mode;
 	int					fd_in;
@@ -63,11 +63,8 @@ typedef struct s_shell
 {
 	t_env			*environment;
 	int				exit_status;
-	char			*prompt;
-	int				cmd_has_been_executed;
+	int				exit;
 	t_command		*commands;
-	char			*home_dir;
-	char			*current_dir;
 	t_pipeline		*pipeline;
 }	t_shell;
 
