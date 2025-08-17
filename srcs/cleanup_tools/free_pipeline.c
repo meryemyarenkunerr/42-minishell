@@ -1,0 +1,41 @@
+#include "../../includes/minishell.h"
+
+void	free_token_array(t_token *tokens)
+{
+	t_token	*curr;
+	t_token	*next;
+
+	if (!tokens)
+		return ;
+	curr = tokens;
+	while (curr->prev)
+		curr = curr->prev;
+	while (curr)
+	{
+		next = curr->next;
+		if (curr->content)
+			free(curr->content);
+		free(curr);
+		curr = next;
+	}
+}
+
+void	free_pipeline(t_pipeline *pipeline)
+{
+	int	i;
+
+	if (!pipeline)
+		return;
+	if (pipeline->token_lists)
+	{
+		i = 0;
+		while (i < pipeline->count)
+		{
+			if (pipeline->token_lists[i])
+				free_token_array(pipeline->token_lists[i]);
+			i++;
+		}
+		free(pipeline->token_lists);
+	}
+	free(pipeline);
+}
