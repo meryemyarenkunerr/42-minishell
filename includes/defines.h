@@ -34,7 +34,7 @@
 # define REDIRECTION_HEREDOC "<<"
 
 /* Builtins */
-# define ECHO "echo"
+# define ECHO_ "echo"
 # define CD "cd"
 # define PWD "pwd"
 # define EXPORT "export"

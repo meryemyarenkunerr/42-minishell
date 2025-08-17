@@ -86,41 +86,56 @@ void		free_string_array(char **array);
 void		close_command_fds(t_command *cmd);
 void		close_all_command_fds(t_shell *shell);
 
+/* free_builtins.c */
+void	cleanup_cd_memory(char *old_pwd, char *target_dir);
+
 /* executer */
+/*	builtins */
 /* builtins_basics.c */
 void		execute_builtin_pwd(t_shell *shell, t_command *cmd);
-void		execute_builtin_echo(t_shell *shell, t_command *cmd);
 void		execute_builtin_env(t_shell *shell, t_command *cmd);
+
+/* builtins_echo.c */
+void		execute_builtin_echo(t_shell *shell, t_command *cmd);
+int			is_valid_echo_flag(const char *arg);
+
+/* builtins_exit.c */
+void		execute_builtin_exit(t_shell *shell, t_command *cmd);
+int			is_valid_number(const char *str);
 
 /* builtins_cd.c */
 void		execute_builtin_cd(t_shell *shell, t_command *cmd);
-char		*get_cd_path(t_shell *shell, t_command *cmd);
-int			update_current_dir(t_shell *shell);
+char		*get_target_directory(t_shell *shell, const char *target_path);
+char		*get_home_directory(t_shell *shell);
+char		*expand_home_path(t_shell *shell, const char *target_path);
+int			change_directory_safely(t_shell *shell, char *target_dir, char *old_pwd);
 
 /* builtins_export.c */
 void		execute_builtin_export(t_shell *shell, t_command *cmd);
-int			validate_export_arg(const char *arg);
-void		process_export_arg(t_shell *shell, const char *arg);
-void		mark_variable_exported(t_shell *shell, const char *key);
-void		print_export_format(t_shell *shell);
-
-/* builtins_export_util.c */
-void		set_env_variable(t_shell *shell, const char *var_value);
-t_env		*find_env_variable(t_env *env_list, const char *key);
-void		add_env_variable(t_shell *shell, const char *key, const char *value);
-void		append_env_node(t_shell *shell, t_env *new_env);
+void		print_export_variables(t_env *env);
 
 /* builtins_unset.c */
 void		execute_builtin_unset(t_shell *shell, t_command *cmd);
-void		remove_env_variable(t_shell *shell, const char *key);
+int			is_valid_identifier(const char *str);
+int			process_export_arguments(t_shell *shell, const char *arg);
+int			process_assignment(t_shell *shell, const char *arg, char *equal_pos);
+int			process_mark_for_export(t_shell *shell, const char *key);
 
-/* cmd_filler.c */
-int			builds_commands_from_pipeline(t_shell *shell);
-t_command	*create_command_from_tokens(t_token *token_list);
+/* builtin_utils.c */
+int			is_builtin_command(const char *cmd);
+void		execute_builtin(t_shell *shell, t_command *cmd);
+void		restore_builtin_redirections(int saved_fds[2]);
+void		call_builtin_function(t_shell *shell, t_command *cmd);
+void		setup_builtin_redirections(t_command *cmd, int saved_fds[2]);
 
-/* executer.c */
-void		executer(t_shell *shell);
+/* builtins_utils2.c */
+char		*get_env_value(t_env *env, const char *key);
+void		set_env_variable(t_env **env, const char *key, const char *val);
+void		update_pwd_env(t_shell *shell, char *old_pwd);
+void		remove_env_variable(t_env **env, const char *key);
+int			cmd_counter_except_first(t_command *cmd);
 
+/* command */
 /* cmd_builder.c */
 int			builds_commands_from_pipeline(t_shell *shell);
 int			extract_command_and_args(t_command *cmd, t_token *token_list);
@@ -135,17 +150,7 @@ void		add_heredoc_delimiter(t_command *cmd, const char *delimiter);
 int			argument_counter(t_token *token_list);
 int			cleanup_and_return_error(t_shell *shell);
 
-/* utils.c */
-int			ft_strcmp(const char *s1, const char *s2);
-int			is_builtin_command(const char *cmd);
-void		execute_builtin(t_shell *shell, t_command *cmd);
-
-/* redirections.c */
-int			setup_file_descriptors(t_shell *shell);
-int			setup_command_fds(t_command *cmd);
-int			setup_output_redirection(t_command *cmd);
-int			setup_input_redirection(t_command *cmd);
-
+/* heredoc */
 /* heredoc_handler.c */
 int			setup_heredoc_fds(t_command *cmd);
 
@@ -156,6 +161,18 @@ void		execute_heredoc_parent(t_command *cmd, int fds[2], pid_t pid);
 void		execute_heredoc_child(t_command *cmd, int fds[2]);
 void		handle_heredoc_input(t_command *cmd, int write_fd);
 void		process_single_heredoc(char *delimiter, int write_fd);
+
+/* executer.c */
+void		executer(t_shell *shell);
+
+/* utils.c */
+int			ft_strcmp(const char *s1, const char *s2);
+
+/* redirections.c */
+int			setup_file_descriptors(t_shell *shell);
+int			setup_command_fds(t_command *cmd);
+int			setup_output_redirection(t_command *cmd);
+int			setup_input_redirection(t_command *cmd);
 
 /* single_command.c */
 void		execute_single_command(t_shell *shell, t_command *cmd);
@@ -177,21 +194,98 @@ void print_shell_info(t_shell *shell);
 const char *get_token_type_name(t_token_types type);
 void print_commands_only(t_shell *shell);
 
-// farklı komut kombinasyonları
-t_pipeline	*mock_cd();
-t_pipeline	*mock_cd_dotdot();
-t_pipeline	*mock_cd_temp();
-t_pipeline	*mock_echo_n_hello();
-t_pipeline	*mock_echo_hello_world();
-t_pipeline	*mock_env();
-t_pipeline	*mock_export_empty();
-t_pipeline	*mock_export_invalid();
-t_pipeline	*mock_export_path();
-t_pipeline	*mock_export_multiple();
-t_pipeline	*mock_export_myvar();
-t_pipeline	*mock_export_list();
-t_pipeline	*mock_pwd();
-t_pipeline	*mock_unset_user();
+/* mock data combinations */
+/* echo */
+t_pipeline *test_echo_no_args();
+t_pipeline *test_echo_hello();
+t_pipeline *test_echo_hello_world();
+t_pipeline *test_echo_n_hello();
+t_pipeline *test_echo_nn_hello();
+t_pipeline *test_echo_multiple_n_flags();
+t_pipeline *test_echo_invalid_flag();
+t_pipeline *test_echo_flag_middle();
+t_pipeline *test_echo_consecutive_n_flags();
+t_pipeline *test_echo_valid_then_invalid_flag();
+t_pipeline *test_echo_redirect_output();
+t_pipeline *test_echo_n_append();
+
+/* pwd */
+t_pipeline *test_pwd_basic();
+t_pipeline *test_pwd_with_arg();
+t_pipeline *test_pwd_redirect_output();
+t_pipeline *test_pwd_append();
+
+/* env */
+t_pipeline *test_env_basic();
+t_pipeline *test_env_with_arg();
+t_pipeline *test_env_redirect_output();
+t_pipeline *test_env_append();
+t_pipeline *test_env_pipe();	// henüz yapılmadı
+
+/* exit */
+t_pipeline *test_exit_no_arg();
+t_pipeline *test_exit_zero();
+t_pipeline *test_exit_forty_two();
+t_pipeline *test_exit_modulo();
+t_pipeline *test_exit_negative();
+t_pipeline *test_exit_invalid();
+t_pipeline *test_exit_too_many_args();
+t_pipeline *test_exit_positive_sign();
+t_pipeline *test_exit_partial_invalid();
+
+/* cd */
+t_pipeline *test_cd_home();
+t_pipeline *test_cd_tilde();
+t_pipeline *test_cd_parent();
+t_pipeline *test_cd_current();
+t_pipeline *test_cd_absolute();
+t_pipeline *test_cd_home_path();
+t_pipeline *test_cd_nonexistent();
+t_pipeline *test_cd_too_many_args();
+t_pipeline *test_cd_relative();
+
+/* unset */
+t_pipeline *test_unset_no_args();
+t_pipeline *test_unset_single_var();
+t_pipeline *test_unset_multiple_vars();
+t_pipeline *test_unset_path();
+t_pipeline *test_unset_home();
+t_pipeline *test_unset_pwd();
+t_pipeline *test_unset_nonexistent_var();
+t_pipeline *test_unset_invalid_name_number();
+t_pipeline *test_unset_invalid_name_hyphen();
+t_pipeline *test_unset_invalid_name_special();
+t_pipeline *test_unset_valid_underscore();
+t_pipeline *test_unset_valid_with_numbers();
+t_pipeline *test_unset_shell();
+t_pipeline *test_unset_mixed_validity();
+t_pipeline *test_unset_empty_string();
+void setup_test_environment(t_shell *shell);
+
+/* export */
+t_pipeline *test_export_no_args();
+t_pipeline *test_export_new_var();
+t_pipeline *test_export_modify_existing();
+t_pipeline *test_export_existing_var();
+t_pipeline *test_export_nonexistent_var();
+t_pipeline *test_export_empty_value();
+t_pipeline *test_export_quoted_value();
+t_pipeline *test_export_multiple_vars();
+t_pipeline *test_export_invalid_name_number();
+t_pipeline *test_export_invalid_name_hyphen();
+t_pipeline *test_export_invalid_name_special();
+t_pipeline *test_export_valid_underscore();
+t_pipeline *test_export_valid_with_numbers();
+t_pipeline *test_export_value_with_equals();
+t_pipeline *test_export_just_equals();
+t_pipeline *test_export_no_name();
+t_pipeline *test_export_empty_string();
+t_pipeline *test_export_mixed_validity();
+t_pipeline *test_export_override_home();
+t_pipeline *test_export_override_pwd();
+void setup_export_test_environment(t_shell *shell);
+
+
 t_pipeline	*mock_cat_heredoc();
 t_pipeline	*mock_echo_append_heredoc();
 t_pipeline	*mock_cat_heredoc_redirect();
