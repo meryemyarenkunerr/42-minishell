@@ -1,87 +1,52 @@
 #include "../../includes/minishell.h"
 
-char	*ft_strndup(const char *s, size_t n)
+void	init_simple_signal(int signo)
 {
-	char	*copy;
-	size_t	i;
-
-	copy = (char *)malloc(sizeof(char) * (n + 1));
-	if (!copy)
-		return (NULL);
-	i = 0;
-	while (i < n && s[i])
+	if (signo == SIGINT)
 	{
-		copy[i] = s[i];
-		i++;
+		g_sigint_received = 0;	// farklı farklı kodları olacak, ctrl+c ye nereden basılmış?
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
-	copy[i] = '\0';
-	return (copy);
 }
 
-t_env	*create_new_env_node(char *env_entry)
+void	init_signal()
 {
-	t_env	*node;
-	size_t	key_len;
-	char	*value;
-
-	node = malloc(sizeof(t_env));
-	if (!node)
-		return (NULL);
-	value = ft_strchr(env_entry, '=');
-	if (!value)
-	{
-		free(node);
-		return (NULL);
-	}
-	key_len = value - env_entry;
-	node->key = ft_strndup(env_entry, key_len);
-	node->value = ft_strdup(value + 1);
-	node->next = NULL;
-	return (node);
+	signal(SIGINT, init_simple_signal);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 t_env	*init_env(char **env)
 {
 	t_env	*head;
-	t_env	*tail;
-	t_env	*new;
+	int		i;
 
 	head = NULL;
-	tail = NULL;
-	while (*env)
+	if (!env)
+		return (NULL);
+	i = 0;
+	while (env[i])
 	{
-		new = create_new_env_node(*env);
-		if (!new)
+		if (!add_key_value_pair(&head, env[i]))
 		{
 			free_env_list(head);
 			return (NULL);
 		}
-		if (!head)
-			head = new;
-		else
-			tail->next = new;
-		tail = new;
-		env++;
+		i++;
 	}
 	return (head);
 }
 
 void	init_shell(t_shell *shell, char **env)
 {
-	char	*home;
-
-	shell->cmd_has_been_executed = TRUE;			// sorun çıkmasın başlangıçta diye
-	shell->commands = NULL;
-	shell->current_dir = getcwd(NULL, 0);			// malloc ile alan açar, freele
-	if (!shell->current_dir)
-		shell->current_dir = ft_strdup("");
+	if (!shell)
+		return ;
 	shell->environment = init_env(env);
 	shell->exit_status = 0;
-	home = getenv("HOME");
-	if (home)
-		shell->home_dir = ft_strdup(home);			// freelenmeli
-	else
-		shell->home_dir = NULL;
+	shell->exit = FALSE;	// eğer komut çıkma komutuysa TRUE olacak
+	shell->commands = NULL;
 	shell->pipeline = NULL;
-	shell->prompt = NULL;
+	init_signal();
 }

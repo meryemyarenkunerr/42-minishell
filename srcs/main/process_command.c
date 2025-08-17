@@ -1,41 +1,24 @@
 #include "../../includes/minishell.h"
 
-static void	initialize_command_fields(t_shell *shell)
+void	process_command(t_shell *shell, char *command)
 {
-	t_command	*curr;
+	if (!shell || !command)
+		return ;
 
-	curr = shell->commands;
-	while (curr)
-	{
-		curr->fd_in = STDIN_FILENO;
-		curr->fd_out = STDOUT_FILENO;
-		curr->pid = -1;
-		curr = curr->next;
-	}
-}
+	cleanup_previous_state(shell);
 
-int	process_command(t_shell *shell, char *command)
-{
-	(void)command;
-	// tokenize et
-	// pipeline'a ayır
-	// komut yapısını oluştur
-	// shell struct içindeki komut listesini ayarla
-	// t_command ve t_pipeline doldurulmuş olacak
+	// parser&lexer ile t_pipeline gelecek
 
-	// buradan itibaren benim bölümüm başlıyor
-	if (shell->commands)
-	{
-		free_command_temp(shell->commands);
-		shell->commands = NULL;
-	}
-	if (shell->pipeline)
-	{
-		free_pipeline_temp(shell->pipeline);
-		shell->pipeline = NULL;
-	}
-	fill_shell_cat_heredocs_temp(shell);
-	initialize_command_fields(shell);
+	// t_command içini doldurma (input/output file, heredoc, append mode)
+	shell->pipeline = mock_cat_double_heredoc();
+	if (!builds_commands_from_pipeline(shell))
+		return ;
+	// redirection ve heredoc
+	if (!setup_file_descriptors(shell))
+		return ;
+	printf("\n================= BEFORE =================\n");
+	print_shell_info(shell);
+	printf("\n================= AFTER ==================\n");
 	executer(shell);
-	return TRUE;
+	print_shell_info(shell);
 }
