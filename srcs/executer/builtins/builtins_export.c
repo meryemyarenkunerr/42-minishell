@@ -1,0 +1,90 @@
+#include "../../../includes/minishell.h"
+
+int	process_mark_for_export(t_shell *shell, const char *key)
+{
+	char	*existing_val;
+
+	if (!is_valid_identifier(key))
+	{
+		printf("minishell: export: `%s': not a valid identifier\n", key);
+		return (FALSE);
+	}
+	existing_val = get_env_value(shell->environment, key);
+	if (existing_val)
+		set_env_variable(&shell->environment, key, existing_val);
+	else
+		set_env_variable(&shell->environment, key, "");
+	return (TRUE);
+}
+
+int	process_assignment(t_shell *shell, const char *arg, char *equal_pos)
+{
+	char	*key;
+	int		key_len;
+
+	key_len = equal_pos - arg;
+	key = ft_substr(arg, 0, key_len);
+	if (!is_valid_identifier(key))
+	{
+		printf("minishell: export: `%s': not a valid identifier\n", arg);
+		free(key);
+		return (FALSE);
+	}
+	set_env_variable(&shell->environment, key, (equal_pos + 1));
+	free(key);
+	return (TRUE);
+}
+
+int	process_export_arguments(t_shell *shell, const char *arg)
+{
+	char	*equal_pos;
+
+	equal_pos = ft_strchr(arg, '=');
+	if (equal_pos)
+		return (process_assignment(shell, arg, equal_pos));
+	else
+		return (process_mark_for_export(shell, arg));
+}
+
+void	print_export_variables(t_env *env)
+{
+	t_env	*curr;
+
+	curr = env;
+	while (curr)
+	{
+		if (curr->key)
+		{
+			if (curr->value)
+				printf("declare -x %s=\"%s\"\n", curr->key, curr->value);
+			else
+				printf("declare -x %s\n", curr->key);
+		}
+		curr = curr->next;
+	}
+}
+
+void	execute_builtin_export(t_shell *shell, t_command *cmd)
+{
+	int	i;
+	int	error_flag;
+
+	if (!cmd->arguments[1])
+	{
+		print_export_variables(shell->environment);
+		shell->exit_status = 0;
+		return ;
+	}
+	error_flag = 0;
+	i = 1;
+	while (cmd->arguments[i])
+	{
+		if (!process_export_arguments(shell, cmd->arguments[i]))
+			error_flag = 1;
+		i++;
+	}
+	if (error_flag == 1)
+		shell->exit_status = 1;
+	else
+		shell->exit_status = 0;
+}

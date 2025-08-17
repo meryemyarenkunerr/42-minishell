@@ -1,0 +1,43 @@
+#include "../../../includes/minishell.h"
+
+int	is_valid_echo_flag(const char *arg)
+{
+	int	i;
+
+	if (!arg ||arg[0] != '-')
+		return (FALSE);
+	if (arg[1] == '\0')
+		return (FALSE);
+	i = 1;
+	while (arg[i])
+	{
+		if (arg[i] != 'n')
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
+}
+
+void	execute_builtin_echo(t_shell *shell, t_command *cmd)
+{
+	int	i;
+	int	nl_flag;
+
+	i = 1;			// 0 -> echo
+	nl_flag = 1;	// \n eklenecek mi kontrolü
+	while (cmd->arguments[i] && is_valid_echo_flag(cmd->arguments[i]))
+	{
+		nl_flag = 0;
+		i++;
+	}
+	while (cmd->arguments[i])
+	{
+		printf("%s", cmd->arguments[i]);
+		if (cmd->arguments[i + 1])
+			printf(" ");
+		i++;
+	}
+	if (nl_flag)
+		printf("\n");
+	shell->exit_status = 0;
+}
