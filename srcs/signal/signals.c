@@ -1,5 +1,12 @@
 #include "../../includes/minishell.h"
 
+// Hata kontrolü: sistem çağrısı başarısızsa uyarı ver
+void	check_and_warn(int ret, const char *msg)
+{
+	if (ret == -1)
+		perror(msg);
+}
+
 void	sigint_received(t_shell *shell)
 {
 	shell->exit_status = 130; // POSIX standardı (Ctrl+C için)
@@ -17,13 +24,6 @@ void	handle_sigint(int signo)
 		rl_on_new_line();				// yeni satıra geç
 		rl_redisplay();					// promptu yeniden göster
 	}
-}
-
-// Hata kontrolü: sistem çağrısı başarısızsa uyarı ver
-static void	check_and_warn(int ret, const char *msg)
-{
-	if (ret == -1)
-		perror(msg);
 }
 
 // Terminal ve sinyal ayarlarını yapılandır
@@ -67,11 +67,11 @@ int	handle_signal_and_exit(t_shell *shell, char **command)
 		*command = NULL;
 		return 1;										// döngü devam etsin
 	}
-	if (is_exit_command_received(shell, *command))		// exit komutu
-	{
-		free(*command);
-		*command = NULL;
-		return 0;										// shell'den çık
-	}
+	//if (is_exit_command_received(shell, *command))		// exit komutu
+	//{
+	//	free(*command);
+	//	*command = NULL;
+	//	return 0;										// shell'den çık
+	//}
 	return 2;											// normal devam et
 }
