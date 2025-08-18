@@ -47,13 +47,20 @@ CMD_SRCS		= cmd_builder.c \
 # Built-ins module
 BUILTIN_DIR		= $(SRCDIR)/executer/builtins
 BUILTIN_SRCS	= builtins_basics.c \
-				   builtins_cd.c \
-				   builtins_echo.c \
-				   builtins_exit.c \
-				   builtins_export.c \
-				   builtins_unset.c \
-				   builtins_utils.c \
-				   builtins_utils2.c
+				  builtins_cd.c \
+				  builtins_echo.c \
+				  builtins_exit.c \
+				  builtins_export.c \
+				  builtins_unset.c \
+				  builtins_utils.c \
+				  builtins_utils2.c
+
+# External module
+EXTERNAL_DIR	= $(SRCDIR)/executer/external
+EXTERNAL_SRCS	= external.c \
+				  child_utils.c \
+				  external_child.c \
+				  path.c
 
 # Signal handling
 SIGNAL_DIR		= $(SRCDIR)/signal
@@ -88,6 +95,7 @@ TEST_SRCS		= temp_creator.c \
 				  temp_creator_builtins_cd.c \
 				  temp_creator_builtins_unset.c \
 				  temp_creator_builtins_export.c \
+				  temp_creator_external.c \
 				  temp_creator_heredoc_normal.c \
 				  temp_creator_heredoc_redirection.c \
 				  print_shell_info.c
@@ -100,6 +108,7 @@ EXEC_FILES		= $(addprefix $(EXEC_DIR)/, $(EXEC_SRCS))
 HD_FILES		= $(addprefix $(HD_DIR)/, $(HD_SRCS))
 CMD_FILES		= $(addprefix $(CMD_DIR)/, $(CMD_SRCS))
 BUILTIN_FILES	= $(addprefix $(BUILTIN_DIR)/, $(BUILTIN_SRCS))
+EXTERNAL_FILES	= $(addprefix $(EXTERNAL_DIR)/, $(EXTERNAL_SRCS))
 SIGNAL_FILES	= $(addprefix $(SIGNAL_DIR)/, $(SIGNAL_SRCS))
 CLEANUP_FILES	= $(addprefix $(CLEANUP_DIR)/, $(CLEANUP_SRCS))
 ERROR_FILES		= $(addprefix $(ERROR_DIR)/, $(ERROR_SRCS))
@@ -107,7 +116,7 @@ TEST_FILES		= $(addprefix $(TEST_DIR)/, $(TEST_SRCS))
 
 # Combine all source files
 ALL_SRCS		= $(MAIN_FILES) $(EXEC_FILES) $(HD_FILES) $(CMD_FILES) $(BUILTIN_FILES) \
-				  $(SIGNAL_FILES) $(CLEANUP_FILES) $(ERROR_FILES) $(TEST_FILES)
+				  $(EXTERNAL_FILES) $(SIGNAL_FILES) $(CLEANUP_FILES) $(ERROR_FILES) $(TEST_FILES)
 
 # Generate object files
 OBJS			= $(ALL_SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
