@@ -63,6 +63,8 @@ int			is_exit(t_shell *shell);
 /* errors.c */
 int			handle_fork_error(int fds[2]);
 void		handle_export_error(t_shell *shell, const char *arg);
+void		command_not_found_error(t_shell *shell, char *cmd);
+void		handle_execve_error(char *cmd);
 
 /* cleanup_tools */
 /* free.c */
@@ -74,8 +76,8 @@ void		free_env_list(t_env *env);
 void		free_env_node(t_env *node);
 
 /* free_pipeline.c */
-void	free_pipeline(t_pipeline *pipeline);
-void	free_token_array(t_token *tokens);
+void		free_pipeline(t_pipeline *pipeline);
+void		free_token_array(t_token *tokens);
 
 /* free_command.c */
 void		free_command_list(t_command *commands);
@@ -90,7 +92,22 @@ void		close_all_command_fds(t_shell *shell);
 void	cleanup_cd_memory(char *old_pwd, char *target_dir);
 
 /* executer */
-/*	builtins */
+/* executer.c */
+void		executer(t_shell *shell);
+
+/* utils.c */
+int			ft_strcmp(const char *s1, const char *s2);
+
+/* redirections.c */
+int			setup_file_descriptors(t_shell *shell);
+int			setup_command_fds(t_command *cmd);
+int			setup_output_redirection(t_command *cmd);
+int			setup_input_redirection(t_command *cmd);
+
+/* single_command.c */
+void		execute_single_command(t_shell *shell, t_command *cmd);
+
+/*	executer/builtins */
 /* builtins_basics.c */
 void		execute_builtin_pwd(t_shell *shell, t_command *cmd);
 void		execute_builtin_env(t_shell *shell, t_command *cmd);
@@ -135,7 +152,7 @@ void		update_pwd_env(t_shell *shell, char *old_pwd);
 void		remove_env_variable(t_env **env, const char *key);
 int			cmd_counter_except_first(t_command *cmd);
 
-/* command */
+/* executer/command */
 /* cmd_builder.c */
 int			builds_commands_from_pipeline(t_shell *shell);
 int			extract_command_and_args(t_command *cmd, t_token *token_list);
@@ -150,7 +167,7 @@ void		add_heredoc_delimiter(t_command *cmd, const char *delimiter);
 int			argument_counter(t_token *token_list);
 int			cleanup_and_return_error(t_shell *shell);
 
-/* heredoc */
+/* executer/heredoc */
 /* heredoc_handler.c */
 int			setup_heredoc_fds(t_command *cmd);
 
@@ -162,20 +179,32 @@ void		execute_heredoc_child(t_command *cmd, int fds[2]);
 void		handle_heredoc_input(t_command *cmd, int write_fd);
 void		process_single_heredoc(char *delimiter, int write_fd);
 
-/* executer.c */
-void		executer(t_shell *shell);
+/* executer/external */
+/* external.c */
+void		execute_external(t_shell *shell, t_command *cmd);
+pid_t		fork_and_execute(t_shell *shell, t_command *cmd, char *exec_path);
+void		wait_for_child(t_shell *shell, pid_t pid);
 
-/* utils.c */
-int			ft_strcmp(const char *s1, const char *s2);
+/* path.c */
+char		*find_executable_path(t_shell *shell, char *cmd);
+char		*check_direct_path(char *cmd);
+char		*search_in_path(t_shell *shell, char *cmd);
+char		*check_path_directories(char **path_dirs, char *cmd);
+char		*build_full_path(char *dir, char *cmd);
 
-/* redirections.c */
-int			setup_file_descriptors(t_shell *shell);
-int			setup_command_fds(t_command *cmd);
-int			setup_output_redirection(t_command *cmd);
-int			setup_input_redirection(t_command *cmd);
+/* external_child.c */
+void		execute_child_process(t_shell *shell, t_command *cmd, char *exec_path);
+char		**convert_env_to_array(t_env *env);
+int			count_env_entries(t_env *env);
+char		*create_env_string(char *key, char *val);
 
-/* single_command.c */
-void		execute_single_command(t_shell *shell, t_command *cmd);
+/* child_utils.c */
+int			count_env_entries(t_env *env);
+void		free_string_array_partial(char **array, int count);
+
+
+
+
 
 
 
@@ -188,8 +217,8 @@ void		execute_single_command(t_shell *shell, t_command *cmd);
 
 
 /* mock data creators and printer */
-t_token	*create_token(const char *content, t_token_types type);
-void	link_tokens(t_token *tokens[], int count);
+t_token *create_token(const char *content, t_token_types type);
+void link_tokens(t_token *tokens[], int count);
 void print_shell_info(t_shell *shell);
 const char *get_token_type_name(t_token_types type);
 void print_commands_only(t_shell *shell);
@@ -284,6 +313,29 @@ t_pipeline *test_export_mixed_validity();
 t_pipeline *test_export_override_home();
 t_pipeline *test_export_override_pwd();
 void setup_export_test_environment(t_shell *shell);
+
+/* external test cases */
+t_pipeline *test_ls_basic();
+t_pipeline *test_ls_with_flags();
+t_pipeline *test_ls_with_directory();
+t_pipeline *test_absolute_path_command();
+t_pipeline *test_relative_path_command();
+t_pipeline *test_pwd_command();
+t_pipeline *test_cat_with_file();
+t_pipeline *test_grep_with_pattern();
+t_pipeline *test_whoami_command();
+t_pipeline *test_date_command();
+t_pipeline *test_wc_line_count();
+t_pipeline *test_command_not_found();
+t_pipeline *test_absolute_path_not_found();
+t_pipeline *test_relative_path_not_found();
+t_pipeline *test_ls_permission_directory();
+t_pipeline *test_sleep_command();
+t_pipeline *test_env_command();
+t_pipeline *test_absolute_echo_with_args();
+
+
+
 
 
 t_pipeline	*mock_cat_heredoc();
