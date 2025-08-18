@@ -1,12 +1,9 @@
 #include "../../includes/minishell.h"
 
-void	execute_single_command(t_shell *shell)
+void	execute_single_command(t_shell *shell, t_command *cmd)
 {
-	t_command	*cmd;
-
-	if (!shell->commands)
+	if (!shell || !cmd || !cmd->cmd)
 		return ;
-	cmd = shell->commands;
 	if (is_builtin_command(cmd->cmd))
 		execute_builtin(shell, cmd);
 	else
