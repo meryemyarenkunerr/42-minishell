@@ -7,11 +7,14 @@ void	extract_redirections_and_heredocs(t_command *cmd, t_token *token_list)
 	curr = token_list;
 	while (curr)
 	{
-		if (curr->type == TOKEN_REDIRECT_IN && curr->next && curr->next->type == TOKEN_FILE)
+		if (curr->type == TOKEN_REDIRECT_IN && curr->next
+			&& curr->next->type == TOKEN_FILE)
 			cmd->input_file = ft_strdup(curr->next->content);
-		else if (curr->type == TOKEN_REDIRECT_OUT && curr->next && curr->next->type == TOKEN_FILE)
+		else if (curr->type == TOKEN_REDIRECT_OUT && curr->next
+			&& curr->next->type == TOKEN_FILE)
 			cmd->output_file = ft_strdup(curr->next->content);
-		else if (curr->type == TOKEN_APPEND && curr->next && curr->next->type == TOKEN_FILE)
+		else if (curr->type == TOKEN_APPEND && curr->next
+			&& curr->next->type == TOKEN_FILE)
 		{
 			cmd->output_file = ft_strdup(curr->next->content);
 			cmd->append_mode = 1;
@@ -49,7 +52,7 @@ int	builds_commands_from_pipeline(t_shell *shell)
 			return (cleanup_and_return_error(shell));
 		if (prev)
 			prev->next = curr;
-		else // head
+		else
 			shell->commands = curr;
 		prev = curr;
 		i++;

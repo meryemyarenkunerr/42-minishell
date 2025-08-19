@@ -13,7 +13,9 @@ int	is_exit(t_shell *shell)
 		printf("bye bye <3\n");
 		return (TRUE);
 	}
-	if (*cmd)
+	if (ft_strlen(cmd) == 0)
+		return (FALSE);
+	if (*cmd && ft_strlen(cmd) > 0)
 		add_history(cmd);
 	process_command(shell, cmd);
 	free(cmd);

@@ -27,9 +27,9 @@ void	free_single_command(t_command *command)
 		free(command->input_file);
 	if (command->output_file)
 		free(command->output_file);
-	if (command->fd_in > STDERR_FILENO) // açık dosyaları kapat
+	if (command->fd_in > STDERR_FILENO)
 		close(command->fd_in);
-	if (command->fd_out > STDERR_FILENO) // açık dosyaları kapat
+	if (command->fd_out > STDERR_FILENO)
 		close(command->fd_out);
 	free(command);
 }

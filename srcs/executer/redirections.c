@@ -54,7 +54,7 @@ int	setup_file_descriptors(t_shell *shell)
 	curr = shell->commands;
 	while (curr)
 	{
-		if(!setup_command_fds(curr))
+		if (!setup_command_fds(curr))
 		{
 			shell->exit_status = 1;
 			close_all_command_fds(shell);

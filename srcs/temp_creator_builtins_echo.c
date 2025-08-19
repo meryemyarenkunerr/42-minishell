@@ -192,9 +192,9 @@ t_pipeline *test_echo_redirect_output()
 
     t_token *tokens[4];
     tokens[0] = create_token("echo", TOKEN_COMMAND);
-    tokens[1] = create_token("hello", TOKEN_ARGUMENT);
+    tokens[1] = create_token("serhat", TOKEN_ARGUMENT);
     tokens[2] = create_token(">", TOKEN_REDIRECT_OUT);
-    tokens[3] = create_token("output.txt", TOKEN_FILE);
+    tokens[3] = create_token("yaren", TOKEN_FILE);
 
     link_tokens(tokens, 4);
     pipeline->token_lists[0] = tokens[0];

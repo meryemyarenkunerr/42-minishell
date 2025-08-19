@@ -3,14 +3,15 @@
 void	process_single_heredoc_ignore(char *delimiter, int write_fd)
 {
 	char	*line;
-	(void)write_fd;
 
+	(void)write_fd;
 	while (1)
 	{
-		line = readline(PROMPT_HEREDOC);
+		line = readline(BLUE PROMPT_HEREDOC RESET);
 		if (!line)
 		{
-			printf("\nminishell: warning: here-document delimited by end-of-file (wanted `%s')\n", delimiter);
+			printf("\nminishell: warning: here-document delimited by ");
+			printf("end-of-file (wanted `%s')\n", delimiter);
 			break ;
 		}
 		if (ft_strcmp(line, delimiter) == 0)
@@ -25,14 +26,15 @@ void	process_single_heredoc_ignore(char *delimiter, int write_fd)
 void	process_single_heredoc(char *delimiter, int write_fd)
 {
 	char	*line;
-	(void)write_fd;
 
+	(void)write_fd;
 	while (1)
 	{
-		line = readline(PROMPT_HEREDOC);
+		line = readline(BLUE PROMPT_HEREDOC RESET);
 		if (!line)
 		{
-			printf("\nminishell: warning: here-document delimited by end-of-file (wanted `%s')\n", delimiter);
+			printf("\nminishell: warning: here-document delimited by ");
+			printf("end-of-file (wanted `%s')\n", delimiter);
 			break ;
 		}
 		if (ft_strcmp(line, delimiter) == 0)
@@ -61,12 +63,12 @@ void	handle_heredoc_input(t_command *cmd, int write_fd)
 	}
 	close(write_fd);
 	rl_clear_history();
-	exit(0);	// bu kısım düzenlenecek
+	exit(0);
 }
 
 void	execute_heredoc_child(t_command *cmd, int fds[2])
 {
-	close(fds[0]); // read end'i kapat
-	handle_heredoc_input(cmd, fds[1]); // input al
-	exit(0); // chil process'i sonlandır
+	close(fds[0]);
+	handle_heredoc_input(cmd, fds[1]);
+	exit(0);
 }

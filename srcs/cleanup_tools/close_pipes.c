@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-void close_all_pipes_in_child(int **pipes, int cmd_count)
+void	close_all_pipes_in_child(int **pipes, int cmd_count)
 {
 	int	i;
 	int	pipe_count;

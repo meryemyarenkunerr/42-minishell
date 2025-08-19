@@ -1,6 +1,18 @@
 #include "../../includes/minishell.h"
 
-void	cleanup_pipeline(t_shell *shell, int **pipes, pid_t *pids, int cmd_count)
+void	update_exit_status(int idx, int *exit_stat, int cmd_count, int status)
+{
+	if (idx == cmd_count - 1)
+	{
+		if (WIFEXITED(status))
+			*exit_stat = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			*exit_stat = 128 + WTERMSIG(status);
+	}
+}
+
+void	cleanup_pipeline(t_shell *shell, int **pipes, pid_t *pids,
+	int cmd_count)
 {
 	int	i;
 	int	status;
@@ -14,15 +26,7 @@ void	cleanup_pipeline(t_shell *shell, int **pipes, pid_t *pids, int cmd_count)
 		if (waitpid(pids[i], &status, 0) == -1)
 			perror("waitpid");
 		else
-		{
-			if (i == cmd_count - 1)
-			{
-				if (WIFEXITED(status))
-					last_exit_status = WEXITSTATUS(status);
-				else if (WIFSIGNALED(status))
-					last_exit_status = 128 + WTERMSIG(status);
-			}
-		}
+			update_exit_status(i, &last_exit_status, cmd_count, status);
 		i++;
 	}
 	shell->exit_status = last_exit_status;
@@ -37,7 +41,6 @@ void	cleanup_pipes(int **pipes, int cmd_count)
 
 	if (!pipes)
 		return ;
-
 	pipe_count = cmd_count - 1;
 	i = 0;
 	while (i < pipe_count)
@@ -55,7 +58,6 @@ void	cleanup_partial_pipes(int **pipes, int created_count)
 
 	if (!pipes)
 		return ;
-
 	i = 0;
 	while (i < created_count)
 	{

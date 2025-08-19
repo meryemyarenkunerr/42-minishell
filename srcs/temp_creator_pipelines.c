@@ -212,15 +212,16 @@ t_pipeline *test_pipeline_external_to_builtin()
 
     // First command: ls (external)
     t_token *tokens1[2];
-    tokens1[0] = create_token("ls", TOKEN_COMMAND);
+    tokens1[0] = create_token("cat", TOKEN_COMMAND);
     tokens1[1] = create_token("|", TOKEN_PIPE);
     link_tokens(tokens1, 2);
     pipeline->token_lists[0] = tokens1[0];
 
     // Second command: env (builtin)
-    t_token *tokens2[1];
-    tokens2[0] = create_token("env", TOKEN_COMMAND);
-    link_tokens(tokens2, 1);
+    t_token *tokens2[2];
+    tokens2[0] = create_token("<<", TOKEN_HEREDOC);
+    tokens2[1] = create_token("yaren", TOKEN_ARGUMENT);
+    link_tokens(tokens2, 2);
     pipeline->token_lists[1] = tokens2[0];
 
     return pipeline;

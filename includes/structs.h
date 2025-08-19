@@ -30,12 +30,12 @@ typedef struct s_token
 /* Command Structure */
 typedef struct s_command
 {
-	char				*cmd;					// yeni eklendi, execve() için gerekli
+	char				*cmd;
 	char				**arguments;
 	char				*input_file;
 	char				*output_file;
-	char				**heredoc_delimiter;	// birden fazla delimiter olabilir
-	int					heredoc_count;			// pipeline içerisindeydi ama burada olması daha doğru
+	char				**heredoc_delimiter;
+	int					heredoc_count;
 	int					append_mode;
 	int					fd_in;
 	int					fd_out;

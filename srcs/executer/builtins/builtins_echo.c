@@ -4,7 +4,7 @@ int	is_valid_echo_flag(const char *arg)
 {
 	int	i;
 
-	if (!arg ||arg[0] != '-')
+	if (!arg || arg[0] != '-')
 		return (FALSE);
 	if (arg[1] == '\0')
 		return (FALSE);
@@ -23,8 +23,8 @@ void	execute_builtin_echo(t_shell *shell, t_command *cmd)
 	int	i;
 	int	nl_flag;
 
-	i = 1;			// 0 -> echo
-	nl_flag = 1;	// \n eklenecek mi kontrolü
+	i = 1;
+	nl_flag = 1;
 	while (cmd->arguments[i] && is_valid_echo_flag(cmd->arguments[i]))
 	{
 		nl_flag = 0;

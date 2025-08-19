@@ -31,10 +31,7 @@ void	execute_builtin_unset(t_shell *shell, t_command *cmd)
 		if (is_valid_identifier(cmd->arguments[i]))
 			remove_env_variable(&shell->environment, cmd->arguments[i]);
 		else
-		{
-			printf("minishell: unset: `%s': not a valid identifier\n", cmd->arguments[i]);
-			shell->exit_status = 1;
-		}
+			unset_not_valid_identifier_error(shell, cmd, i);
 		i++;
 	}
 	if (shell->exit_status != 1)

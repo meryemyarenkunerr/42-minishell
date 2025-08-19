@@ -33,4 +33,3 @@ int	argument_counter(t_token *token_list)
 	}
 	return (arg_count);
 }
-

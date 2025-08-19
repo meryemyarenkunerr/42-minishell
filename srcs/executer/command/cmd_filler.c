@@ -11,7 +11,7 @@ void	add_heredoc_delimiter(t_command *cmd, const char *delimiter)
 	if (!delimiter_list)
 		return ;
 	i = 0;
-	while (i < cmd->heredoc_count) // eğer daha önce içeride varsa aktarma yapılıyor
+	while (i < cmd->heredoc_count)
 	{
 		delimiter_list[i] = ft_strdup(cmd->heredoc_delimiter[i]);
 		i++;

@@ -3,29 +3,28 @@
 int	is_builtin_command(const char *cmd)
 {
 	if (!cmd)
-		return FALSE;
+		return (FALSE);
 	if (ft_strcmp(cmd, CD) == 0)
-		return TRUE;
+		return (TRUE);
 	if (ft_strcmp(cmd, ECHO_) == 0)
-		return TRUE;
+		return (TRUE);
 	if (ft_strcmp(cmd, ENV) == 0)
-		return TRUE;
+		return (TRUE);
 	if (ft_strcmp(cmd, EXPORT) == 0)
-		return TRUE;
+		return (TRUE);
 	if (ft_strcmp(cmd, PWD) == 0)
-		return TRUE;
+		return (TRUE);
 	if (ft_strcmp(cmd, UNSET) == 0)
-		return TRUE;
+		return (TRUE);
 	if (ft_strcmp(cmd, EXIT) == 0)
-		return TRUE;
-	return FALSE;
+		return (TRUE);
+	return (FALSE);
 }
 
 void	setup_builtin_redirections(t_command *cmd, int saved_fds[2])
 {
 	saved_fds[0] = -1;
 	saved_fds[1] = -1;
-
 	if (cmd->fd_in != STDIN_FILENO)
 	{
 		saved_fds[0] = dup(STDIN_FILENO);

@@ -86,7 +86,8 @@ CLEANUP_SRCS	= free_command.c \
 
 # Error handling
 ERROR_DIR		= $(SRCDIR)/error
-ERROR_SRCS		= errors.c
+ERROR_SRCS		= errors.c \
+				  builtins_error.c
 
 # Test creators (Mock data)
 TEST_DIR		= $(SRCDIR)

@@ -11,7 +11,7 @@ int	handle_fork_error(int fds[2])
 	perror("fork");
 	close(fds[0]);
 	close(fds[1]);
-	return FALSE;
+	return (FALSE);
 }
 
 void	command_not_found_error(t_shell *shell, char *cmd)

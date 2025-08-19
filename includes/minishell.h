@@ -12,8 +12,8 @@
 # include <sys/types.h>
 # include <errno.h>
 # include <fcntl.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 /* Own Headers */
 # include <../libft/libft.h>
@@ -40,20 +40,20 @@ void		heredoc_signal_handler(int signo);
 int			add_key_value_pair(t_env **env, char *env_pair);
 int			extract_key_value(char *env_pair, char **key, char **val);
 t_env		*create_env_node(char *key, char *val);
-t_env		*create_env_node_empty();
+t_env		*create_env_node_empty(void);
 void		add_new_env_node(t_env **env, t_env *tail);
 
 /* init.c */
 void		init_shell(t_shell *shell, char **env);
 t_env		*init_env(char **env);
-void		init_signal();
+void		init_signal(void);
 void		init_simple_signal(int signo);
 
 /* process_command.c */
 void		process_command(t_shell *shell, char *command);
 
 /* prompt.c */
-char		*build_prompt();
+char		*build_prompt(void);
 
 /* shell_loop.c */
 void		shell_loop(t_shell *shell);
@@ -66,10 +66,24 @@ void		handle_export_error(t_shell *shell, const char *arg);
 void		command_not_found_error(t_shell *shell, char *cmd);
 void		handle_execve_error(char *cmd);
 
+/* builtins_error.c */
+void		numeric_argument_error(t_shell *shell, t_command *cmd);
+void		too_many_argument_error(t_shell *shell);
+void		unset_not_valid_identifier_error(t_shell *shell, t_command *cmd,
+				int idx);
+
 /* CLEANUP_TOOLS */
 /* free.c */
 void		cleanup_previous_state(t_shell *shell);
 void		free_at_exit(t_shell *shell);
+
+/* free_pipes.c */
+void		update_exit_status(int idx, int *exit_stat, int cmd_count, int status);
+void		cleanup_pipeline(t_shell *shell, int **pipes, pid_t *pids,
+				int cmd_count);
+void		cleanup_pipes(int **pipes, int cmd_count);
+void		cleanup_partial_pipes(int **pipes, int created_count);
+void		cleanup_partial_processes(pid_t *pids, int created_count);
 
 /* free_env.c */
 void		free_env_list(t_env *env);
@@ -89,7 +103,7 @@ void		close_command_fds(t_command *cmd);
 void		close_all_command_fds(t_shell *shell);
 
 /* free_builtins.c */
-void	cleanup_cd_memory(char *old_pwd, char *target_dir);
+void		cleanup_cd_memory(char *old_pwd, char *target_dir);
 
 /* EXECUTER */
 /* executer.c */
@@ -128,7 +142,8 @@ void		execute_builtin_cd(t_shell *shell, t_command *cmd);
 char		*get_target_directory(t_shell *shell, const char *target_path);
 char		*get_home_directory(t_shell *shell);
 char		*expand_home_path(t_shell *shell, const char *target_path);
-int			change_directory_safely(t_shell *shell, char *target_dir, char *old_pwd);
+int			change_directory_safely(t_shell *shell, char *target_dir,
+				char *old_pwd);
 
 /* builtins_export.c */
 void		execute_builtin_export(t_shell *shell, t_command *cmd);
@@ -138,7 +153,8 @@ void		print_export_variables(t_env *env);
 void		execute_builtin_unset(t_shell *shell, t_command *cmd);
 int			is_valid_identifier(const char *str);
 int			process_export_arguments(t_shell *shell, const char *arg);
-int			process_assignment(t_shell *shell, const char *arg, char *equal_pos);
+int			process_assignment(t_shell *shell, const char *arg,
+				char *equal_pos);
 int			process_mark_for_export(t_shell *shell, const char *key);
 
 /* builtin_utils.c */
@@ -159,11 +175,13 @@ int			cmd_counter_except_first(t_command *cmd);
 /* cmd_builder.c */
 int			builds_commands_from_pipeline(t_shell *shell);
 int			extract_command_and_args(t_command *cmd, t_token *token_list);
-void		extract_redirections_and_heredocs(t_command *cmd, t_token *token_list);
+void		extract_redirections_and_heredocs(t_command *cmd,
+				t_token *token_list);
 
 /* cmd_filler.c */
 t_command	*create_command_from_tokens(t_token *token_list);
-int			fill_command_arguments(t_command *cmd, t_token *token_list, int arg_count);
+int			fill_command_arguments(t_command *cmd, t_token *token_list,
+				int arg_count);
 void		add_heredoc_delimiter(t_command *cmd, const char *delimiter);
 
 /* cmd_utils.c */
@@ -198,7 +216,8 @@ char		*check_path_directories(char **path_dirs, char *cmd);
 char		*build_full_path(char *dir, char *cmd);
 
 /* external_child.c */
-void		execute_child_process(t_shell *shell, t_command *cmd, char *exec_path);
+void		execute_child_process(t_shell *shell, t_command *cmd,
+				char *exec_path);
 char		**convert_env_to_array(t_env *env);
 int			count_env_entries(t_env *env);
 char		*create_env_string(char *key, char *val);
@@ -209,248 +228,238 @@ void		free_string_array_partial(char **array, int count);
 
 /* EXECUTER/MULTIPLE */
 /* pipeline.c */
-int **create_pipeline_pipes(int cmd_count);
-pid_t *execute_pipeline_processes(t_shell *shell, int **pipes, int cmd_count);
-void setup_pipeline_child(t_command *cmd, int **pipes, int cmd_count, int cmd_index);
-void execute_pipeline_child(t_shell *shell, t_command *cmd);
-void execute_external_in_pipeline(t_shell *shell, t_command *cmd);
-void close_all_pipes_in_child(int **pipes, int cmd_count);
-void close_all_pipes_in_parent(int **pipes, int cmd_count);
-void cleanup_pipeline(t_shell *shell, int **pipes, pid_t *pids, int cmd_count);
-void cleanup_pipes(int **pipes, int cmd_count);
-void cleanup_partial_pipes(int **pipes, int created_count);
-void cleanup_partial_processes(pid_t *pids, int created_count);
-
-
-
-
-
-
-
-
-
-
-
-
-
+int			**create_pipeline_pipes(int cmd_count);
+pid_t		*execute_pipeline_processes(t_shell *shell, int **pipes,
+				int cmd_count);
+void		setup_pipeline_child(t_command *cmd, int **pipes, int cmd_count,
+				int cmd_index);
+void		execute_pipeline_child(t_shell *shell, t_command *cmd);
+void		execute_external_in_pipeline(t_shell *shell, t_command *cmd);
+void		close_all_pipes_in_child(int **pipes, int cmd_count);
+void		close_all_pipes_in_parent(int **pipes, int cmd_count);
+void		cleanup_pipeline(t_shell *shell, int **pipes, pid_t *pids,
+				int cmd_count);
+void		cleanup_pipes(int **pipes, int cmd_count);
+void		cleanup_partial_pipes(int **pipes, int created_count);
+void		cleanup_partial_processes(pid_t *pids, int created_count);
 
 /* mock data creators and printer */
-t_token *create_token(const char *content, t_token_types type);
-void link_tokens(t_token *tokens[], int count);
-void print_shell_info(t_shell *shell);
-const char *get_token_type_name(t_token_types type);
-void print_commands_only(t_shell *shell);
+t_token		*create_token(const char *content, t_token_types type);
+void		link_tokens(t_token *tokens[], int count);
+void		print_shell_info(t_shell *shell);
+const char	*get_token_type_name(t_token_types type);
+void		print_commands_only(t_shell *shell);
 
 /* mock data combinations */
 /* echo */
-t_pipeline *test_echo_no_args();
-t_pipeline *test_echo_hello();
-t_pipeline *test_echo_hello_world();
-t_pipeline *test_echo_n_hello();
-t_pipeline *test_echo_nn_hello();
-t_pipeline *test_echo_multiple_n_flags();
-t_pipeline *test_echo_invalid_flag();
-t_pipeline *test_echo_flag_middle();
-t_pipeline *test_echo_consecutive_n_flags();
-t_pipeline *test_echo_valid_then_invalid_flag();
-t_pipeline *test_echo_redirect_output();
-t_pipeline *test_echo_n_append();
+t_pipeline	*test_echo_no_args(void);
+t_pipeline	*test_echo_hello(void);
+t_pipeline	*test_echo_hello_world(void);
+t_pipeline	*test_echo_n_hello(void);
+t_pipeline	*test_echo_nn_hello(void);
+t_pipeline	*test_echo_multiple_n_flags(void);
+t_pipeline	*test_echo_invalid_flag(void);
+t_pipeline	*test_echo_flag_middle(void);
+t_pipeline	*test_echo_consecutive_n_flags(void);
+t_pipeline	*test_echo_valid_then_invalid_flag(void);
+t_pipeline	*test_echo_redirect_output(void);
+t_pipeline	*test_echo_n_append(void);
 
 /* pwd */
-t_pipeline *test_pwd_basic();
-t_pipeline *test_pwd_with_arg();
-t_pipeline *test_pwd_redirect_output();
-t_pipeline *test_pwd_append();
+t_pipeline	*test_pwd_basic(void);
+t_pipeline	*test_pwd_with_arg(void);
+t_pipeline	*test_pwd_redirect_output(void);
+t_pipeline	*test_pwd_append(void);
 
 /* env */
-t_pipeline *test_env_basic();
-t_pipeline *test_env_with_arg();
-t_pipeline *test_env_redirect_output();
-t_pipeline *test_env_append();
-t_pipeline *test_env_pipe();	// henüz yapılmadı
+t_pipeline	*test_env_basic(void);
+t_pipeline	*test_env_with_arg(void);
+t_pipeline	*test_env_redirect_output(void);
+t_pipeline	*test_env_append(void);
+t_pipeline	*test_env_pipe(void);	// henüz yapılmadı
 
 /* exit */
-t_pipeline *test_exit_no_arg();
-t_pipeline *test_exit_zero();
-t_pipeline *test_exit_forty_two();
-t_pipeline *test_exit_modulo();
-t_pipeline *test_exit_negative();
-t_pipeline *test_exit_invalid();
-t_pipeline *test_exit_too_many_args();
-t_pipeline *test_exit_positive_sign();
-t_pipeline *test_exit_partial_invalid();
+t_pipeline	*test_exit_no_arg(void);
+t_pipeline	*test_exit_zero(void);
+t_pipeline	*test_exit_forty_two(void);
+t_pipeline	*test_exit_modulo(void);
+t_pipeline	*test_exit_negative(void);
+t_pipeline	*test_exit_invalid(void);
+t_pipeline	*test_exit_too_many_args(void);
+t_pipeline	*test_exit_positive_sign(void);
+t_pipeline	*test_exit_partial_invalid(void);
 
 /* cd */
-t_pipeline *test_cd_home();
-t_pipeline *test_cd_tilde();
-t_pipeline *test_cd_parent();
-t_pipeline *test_cd_current();
-t_pipeline *test_cd_absolute();
-t_pipeline *test_cd_home_path();
-t_pipeline *test_cd_nonexistent();
-t_pipeline *test_cd_too_many_args();
-t_pipeline *test_cd_relative();
+t_pipeline	*test_cd_home(void);
+t_pipeline	*test_cd_tilde(void);
+t_pipeline	*test_cd_parent(void);
+t_pipeline	*test_cd_current(void);
+t_pipeline	*test_cd_absolute(void);
+t_pipeline	*test_cd_home_path(void);
+t_pipeline	*test_cd_nonexistent(void);
+t_pipeline	*test_cd_too_many_args(void);
+t_pipeline	*test_cd_relative(void);
 
 /* unset */
-t_pipeline *test_unset_no_args();
-t_pipeline *test_unset_single_var();
-t_pipeline *test_unset_multiple_vars();
-t_pipeline *test_unset_path();
-t_pipeline *test_unset_home();
-t_pipeline *test_unset_pwd();
-t_pipeline *test_unset_nonexistent_var();
-t_pipeline *test_unset_invalid_name_number();
-t_pipeline *test_unset_invalid_name_hyphen();
-t_pipeline *test_unset_invalid_name_special();
-t_pipeline *test_unset_valid_underscore();
-t_pipeline *test_unset_valid_with_numbers();
-t_pipeline *test_unset_shell();
-t_pipeline *test_unset_mixed_validity();
-t_pipeline *test_unset_empty_string();
-void setup_test_environment(t_shell *shell);
+t_pipeline	*test_unset_no_args(void);
+t_pipeline	*test_unset_single_var(void);
+t_pipeline	*test_unset_multiple_vars(void);
+t_pipeline	*test_unset_path(void);
+t_pipeline	*test_unset_home(void);
+t_pipeline	*test_unset_pwd(void);
+t_pipeline	*test_unset_nonexistent_var(void);
+t_pipeline	*test_unset_invalid_name_number(void);
+t_pipeline	*test_unset_invalid_name_hyphen(void);
+t_pipeline	*test_unset_invalid_name_special(void);
+t_pipeline	*test_unset_valid_underscore(void);
+t_pipeline	*test_unset_valid_with_numbers(void);
+t_pipeline	*test_unset_shell(void);
+t_pipeline	*test_unset_mixed_validity(void);
+t_pipeline	*test_unset_empty_string(void);
+void		setup_test_environment(t_shell *shell);
 
 /* export */
-t_pipeline *test_export_no_args();
-t_pipeline *test_export_new_var();
-t_pipeline *test_export_modify_existing();
-t_pipeline *test_export_existing_var();
-t_pipeline *test_export_nonexistent_var();
-t_pipeline *test_export_empty_value();
-t_pipeline *test_export_quoted_value();
-t_pipeline *test_export_multiple_vars();
-t_pipeline *test_export_invalid_name_number();
-t_pipeline *test_export_invalid_name_hyphen();
-t_pipeline *test_export_invalid_name_special();
-t_pipeline *test_export_valid_underscore();
-t_pipeline *test_export_valid_with_numbers();
-t_pipeline *test_export_value_with_equals();
-t_pipeline *test_export_just_equals();
-t_pipeline *test_export_no_name();
-t_pipeline *test_export_empty_string();
-t_pipeline *test_export_mixed_validity();
-t_pipeline *test_export_override_home();
-t_pipeline *test_export_override_pwd();
-void setup_export_test_environment(t_shell *shell);
+t_pipeline	*test_export_no_args(void);
+t_pipeline	*test_export_new_var(void);
+t_pipeline	*test_export_modify_existing(void);
+t_pipeline	*test_export_existing_var(void);
+t_pipeline	*test_export_nonexistent_var(void);
+t_pipeline	*test_export_empty_value(void);
+t_pipeline	*test_export_quoted_value(void);
+t_pipeline	*test_export_multiple_vars(void);
+t_pipeline	*test_export_invalid_name_number(void);
+t_pipeline	*test_export_invalid_name_hyphen(void);
+t_pipeline	*test_export_invalid_name_special(void);
+t_pipeline	*test_export_valid_underscore(void);
+t_pipeline	*test_export_valid_with_numbers(void);
+t_pipeline	*test_export_value_with_equals(void);
+t_pipeline	*test_export_just_equals(void);
+t_pipeline	*test_export_no_name(void);
+t_pipeline	*test_export_empty_string(void);
+t_pipeline	*test_export_mixed_validity(void);
+t_pipeline	*test_export_override_home(void);
+t_pipeline	*test_export_override_pwd(void);
+void		setup_export_test_environment(t_shell *shell);
 
 /* external test cases */
-t_pipeline *test_ls_basic();
-t_pipeline *test_ls_with_flags();
-t_pipeline *test_ls_with_directory();
-t_pipeline *test_absolute_path_command();
-t_pipeline *test_relative_path_command();
-t_pipeline *test_pwd_command();
-t_pipeline *test_cat_with_file();
-t_pipeline *test_grep_with_pattern();
-t_pipeline *test_whoami_command();
-t_pipeline *test_date_command();
-t_pipeline *test_wc_line_count();
-t_pipeline *test_command_not_found();
-t_pipeline *test_absolute_path_not_found();
-t_pipeline *test_relative_path_not_found();
-t_pipeline *test_ls_permission_directory();
-t_pipeline *test_sleep_command();
-t_pipeline *test_env_command();
-t_pipeline *test_absolute_echo_with_args();
+t_pipeline	*test_ls_basic(void);
+t_pipeline	*test_ls_with_flags(void);
+t_pipeline	*test_ls_with_directory(void);
+t_pipeline	*test_absolute_path_command(void);
+t_pipeline	*test_relative_path_command(void);
+t_pipeline	*test_pwd_command(void);
+t_pipeline	*test_cat_with_file(void);
+t_pipeline	*test_grep_with_pattern(void);
+t_pipeline	*test_whoami_command(void);
+t_pipeline	*test_date_command(void);
+t_pipeline	*test_wc_line_count(void);
+t_pipeline	*test_command_not_found(void);
+t_pipeline	*test_absolute_path_not_found(void);
+t_pipeline	*test_relative_path_not_found(void);
+t_pipeline	*test_ls_permission_directory(void);
+t_pipeline	*test_sleep_command(void);
+t_pipeline	*test_env_command(void);
+t_pipeline	*test_absolute_echo_with_args(void);
 
 /* heredoc */
-t_pipeline *test_heredoc_basic();
-t_pipeline *test_heredoc_custom_delimiter();
-t_pipeline *test_heredoc_delimiter_with_numbers();
-t_pipeline *test_heredoc_delimiter_underscore();
-t_pipeline *test_heredoc_with_grep();
-t_pipeline *test_heredoc_with_wc();
-t_pipeline *test_heredoc_with_file();
-t_pipeline *test_heredoc_quoted_delimiter();
-t_pipeline *test_heredoc_single_quoted_delimiter();
-t_pipeline *test_heredoc_single_char_delimiter();
-t_pipeline *test_heredoc_long_delimiter();
-t_pipeline *test_heredoc_with_command_flags();
-t_pipeline *test_heredoc_with_sort();
-t_pipeline *test_heredoc_with_head();
-t_pipeline *test_heredoc_with_tr();
-t_pipeline *test_multiple_heredocs_cat();
-t_pipeline *test_multiple_heredocs_grep();
-t_pipeline *test_triple_heredocs();
-t_pipeline *test_multiple_heredocs_sort();
-t_pipeline *test_heredocs_with_file_mixed();
-t_pipeline *test_multiple_heredocs_head();
-t_pipeline *test_multiple_heredocs_tr();
-t_pipeline *test_same_delimiter_multiple();
-t_pipeline *test_multiple_heredocs_uniq();
-t_pipeline *test_quadruple_heredocs();
+t_pipeline	*test_heredoc_basic(void);
+t_pipeline	*test_heredoc_custom_delimiter(void);
+t_pipeline	*test_heredoc_delimiter_with_numbers(void);
+t_pipeline	*test_heredoc_delimiter_underscore(void);
+t_pipeline	*test_heredoc_with_grep(void);
+t_pipeline	*test_heredoc_with_wc(void);
+t_pipeline	*test_heredoc_with_file(void);
+t_pipeline	*test_heredoc_quoted_delimiter(void);
+t_pipeline	*test_heredoc_single_quoted_delimiter(void);
+t_pipeline	*test_heredoc_single_char_delimiter(void);
+t_pipeline	*test_heredoc_long_delimiter(void);
+t_pipeline	*test_heredoc_with_command_flags(void);
+t_pipeline	*test_heredoc_with_sort(void);
+t_pipeline	*test_heredoc_with_head(void);
+t_pipeline	*test_heredoc_with_tr(void);
+t_pipeline	*test_multiple_heredocs_cat(void);
+t_pipeline	*test_multiple_heredocs_grep(void);
+t_pipeline	*test_triple_heredocs(void);
+t_pipeline	*test_multiple_heredocs_sort(void);
+t_pipeline	*test_heredocs_with_file_mixed(void);
+t_pipeline	*test_multiple_heredocs_head(void);
+t_pipeline	*test_multiple_heredocs_tr(void);
+t_pipeline	*test_same_delimiter_multiple(void);
+t_pipeline	*test_multiple_heredocs_uniq(void);
+t_pipeline	*test_quadruple_heredocs(void);
 
 /* redirections */
 /* output redirection '>' */
-t_pipeline *test_output_redirection_basic();
-t_pipeline *test_output_redirection_ls();
-t_pipeline *test_output_redirection_absolute_path();
-t_pipeline *test_output_redirection_overwrite();
+t_pipeline	*test_output_redirection_basic(void);
+t_pipeline	*test_output_redirection_ls(void);
+t_pipeline	*test_output_redirection_absolute_path(void);
+t_pipeline	*test_output_redirection_overwrite(void);
 
 /* append redirection '>>' */
-t_pipeline *test_append_redirection_basic();
-t_pipeline *test_append_redirection_ls();
-t_pipeline *test_append_redirection_absolute();
+t_pipeline	*test_append_redirection_basic(void);
+t_pipeline	*test_append_redirection_ls(void);
+t_pipeline	*test_append_redirection_absolute(void);
 
 /* input redirection '<' */
-t_pipeline *test_input_redirection_basic();
-t_pipeline *test_input_redirection_wc();
-t_pipeline *test_input_redirection_absolute();
-t_pipeline *test_input_redirection_grep();
+t_pipeline	*test_input_redirection_basic(void);
+t_pipeline	*test_input_redirection_wc(void);
+t_pipeline	*test_input_redirection_absolute(void);
+t_pipeline	*test_input_redirection_grep(void);
 
 /* combined */
-t_pipeline *test_combined_input_output();
-t_pipeline *test_combined_input_append();
-t_pipeline *test_combined_grep_redirections();
+t_pipeline	*test_combined_input_output(void);
+t_pipeline	*test_combined_input_append(void);
+t_pipeline	*test_combined_grep_redirections(void);
 
 /* multiple output/append/input redirections */
-t_pipeline *test_multiple_output_redirections();
-t_pipeline *test_multiple_append_redirections();
-t_pipeline *test_multiple_input_redirections();
+t_pipeline	*test_multiple_output_redirections(void);
+t_pipeline	*test_multiple_append_redirections(void);
+t_pipeline	*test_multiple_input_redirections(void);
 
 /* with heredoc */
-t_pipeline *test_heredoc_with_output();
-t_pipeline *test_heredoc_with_append();
+t_pipeline	*test_heredoc_with_output(void);
+t_pipeline	*test_heredoc_with_append(void);
 
 /* error cases */
-t_pipeline *test_output_permission_denied();
-t_pipeline *test_input_file_not_found();
-t_pipeline *test_output_to_dev_null();
+t_pipeline	*test_output_permission_denied(void);
+t_pipeline	*test_input_file_not_found(void);
+t_pipeline	*test_output_to_dev_null(void);
 
 /* more complex */
-t_pipeline *test_complex_multiple_redirections();
-t_pipeline *test_flags_with_redirections();
-t_pipeline *test_complex_command_redirections();
+t_pipeline	*test_complex_multiple_redirections(void);
+t_pipeline	*test_flags_with_redirections(void);
+t_pipeline	*test_complex_command_redirections(void);
 
 /* pipelines */
 /* basics */
-t_pipeline *test_pipeline_basic();
-t_pipeline *test_pipeline_filter();
-t_pipeline *test_pipeline_count_lines();
+t_pipeline	*test_pipeline_basic(void);
+t_pipeline	*test_pipeline_filter(void);
+t_pipeline	*test_pipeline_count_lines(void);
 
 /* three-command pipes */
-t_pipeline *test_pipeline_three_commands();
-t_pipeline *test_pipeline_sort_limit();
+t_pipeline	*test_pipeline_three_commands(void);
+t_pipeline	*test_pipeline_sort_limit(void);
 
 /* long pipes */
-t_pipeline *test_pipeline_long_chain();
+t_pipeline	*test_pipeline_long_chain(void);
 
 /* with builtins */
-t_pipeline *test_pipeline_builtin_to_external();
-t_pipeline *test_pipeline_external_to_builtin();
+t_pipeline	*test_pipeline_builtin_to_external(void);
+t_pipeline	*test_pipeline_external_to_builtin(void);
 
 /* with redirections */
-t_pipeline *test_pipeline_with_output_redirect();
-t_pipeline *test_pipeline_with_input_redirect();
+t_pipeline	*test_pipeline_with_output_redirect(void);
+t_pipeline	*test_pipeline_with_input_redirect(void);
 
 /* with heredoc */
-t_pipeline *test_pipeline_with_heredoc();
+t_pipeline	*test_pipeline_with_heredoc(void);
 
 /* complex */
-t_pipeline *test_pipeline_complex_combination();
+t_pipeline	*test_pipeline_complex_combination(void);
 
 /* error cases */
-t_pipeline *test_pipeline_error_first_command();
-t_pipeline *test_pipeline_error_second_command();
-t_pipeline *test_pipeline_error_last_command();
+t_pipeline	*test_pipeline_error_first_command(void);
+t_pipeline	*test_pipeline_error_second_command(void);
+t_pipeline	*test_pipeline_error_last_command(void);
 
 #endif

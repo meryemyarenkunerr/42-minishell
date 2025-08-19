@@ -25,7 +25,7 @@ void	free_pipeline(t_pipeline *pipeline)
 	int	i;
 
 	if (!pipeline)
-		return;
+		return ;
 	if (pipeline->token_lists)
 	{
 		i = 0;

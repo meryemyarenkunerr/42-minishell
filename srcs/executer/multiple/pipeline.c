@@ -1,6 +1,7 @@
 #include "../../../includes/minishell.h"
 
-void setup_pipeline_child(t_command *cmd, int **pipes, int cmd_count, int cmd_index)
+void	setup_pipeline_child(t_command *cmd, int **pipes,
+	int cmd_count, int cmd_index)
 {
 	if (cmd_index > 0)
 	{
@@ -34,7 +35,6 @@ pid_t	*execute_pipeline_processes(t_shell *shell, int **pipes, int cmd_count)
 	pids = malloc(cmd_count * sizeof(pid_t));
 	if (!pids)
 		return (NULL);
-
 	current_cmd = shell->commands;
 	i = 0;
 	while (i < cmd_count && current_cmd)
@@ -65,7 +65,7 @@ int	**create_pipeline_pipes(int cmd_count)
 	int	pipe_count;
 
 	pipe_count = cmd_count - 1;
-	pipes = malloc(pipe_count * sizeof(int*));
+	pipes = malloc(pipe_count * sizeof(int *));
 	if (!pipes)
 		return (NULL);
 	i = 0;
@@ -77,7 +77,6 @@ int	**create_pipeline_pipes(int cmd_count)
 			cleanup_partial_pipes(pipes, i);
 			return (NULL);
 		}
-
 		if (pipe(pipes[i]) == -1)
 		{
 			perror("pipe");

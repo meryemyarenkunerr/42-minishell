@@ -7,7 +7,6 @@ void	execute_pipeline_commands(t_shell *shell, int cmd_count)
 
 	if (!shell || !shell->commands || cmd_count < 2)
 		return ;
-
 	pipes = create_pipeline_pipes(cmd_count);
 	if (!pipes)
 	{
@@ -19,7 +18,7 @@ void	execute_pipeline_commands(t_shell *shell, int cmd_count)
 	{
 		cleanup_pipes(pipes, cmd_count);
 		shell->exit_status = 1;
-		return;
+		return ;
 	}
 	cleanup_pipeline(shell, pipes, pids, cmd_count);
 }

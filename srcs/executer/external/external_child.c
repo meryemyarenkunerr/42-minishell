@@ -67,11 +67,13 @@ void	execute_child_process(t_shell *shell, t_command *cmd, char *exec_path)
 {
 	char	**env_array;
 
-	if (cmd->fd_in != STDIN_FILENO) {
+	if (cmd->fd_in != STDIN_FILENO)
+	{
 		dup2(cmd->fd_in, STDIN_FILENO);
 		close(cmd->fd_in);
 	}
-	if (cmd->fd_out != STDOUT_FILENO) {
+	if (cmd->fd_out != STDOUT_FILENO)
+	{
 		dup2(cmd->fd_out, STDOUT_FILENO);
 		close(cmd->fd_out);
 	}

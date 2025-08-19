@@ -29,16 +29,12 @@ void	execute_builtin_exit(t_shell *shell, t_command *cmd)
 	}
 	if (cmd->arguments[2])
 	{
-		printf("minishell: exit: too many arguments\n");
-		shell->exit_status = 1;
+		too_many_argument_error(shell);
 		return ;
 	}
 	printf("bye bye <3\n");
 	if (!is_valid_number(cmd->arguments[1]))
-	{
-		printf("minishell: exit: %s: numeric argument required\n", cmd->arguments[1]);
-		shell->exit_status = 2; // error + exit status
-	}
+		numeric_argument_error(shell, cmd);
 	else
 	{
 		exit_code = ft_atoi(cmd->arguments[1]);

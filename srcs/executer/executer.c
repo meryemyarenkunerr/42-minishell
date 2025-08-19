@@ -9,4 +9,3 @@ void	executer(t_shell *shell)
 	else
 		execute_pipeline_commands(shell, shell->pipeline->count);
 }
-
