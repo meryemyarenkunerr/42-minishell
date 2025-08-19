@@ -1,5 +1,15 @@
 #include "../../../includes/minishell.h"
 
+int	is_heredoc_delimeter(t_token *token)
+{
+	t_token	*prev;
+
+	prev = token->prev;
+	if (prev && prev->type == TOKEN_HEREDOC)
+		return (TRUE);
+	return (FALSE);
+}
+
 int	cleanup_and_return_error(t_shell *shell)
 {
 	if (shell->commands)

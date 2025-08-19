@@ -41,7 +41,7 @@ int	fill_command_arguments(t_command *cmd, t_token *token_list, int arg_count)
 			cmd->cmd = ft_strdup(curr->content);
 			cmd->arguments[i++] = ft_strdup(curr->content);
 		}
-		else if (curr->type == TOKEN_ARGUMENT)
+		else if (curr->type == TOKEN_ARGUMENT && !is_heredoc_delimeter(curr))
 			cmd->arguments[i++] = ft_strdup(curr->content);
 		curr = curr->next;
 	}
