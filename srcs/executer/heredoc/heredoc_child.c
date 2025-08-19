@@ -1,8 +1,31 @@
 #include "../../../includes/minishell.h"
 
+void	process_single_heredoc_ignore(char *delimiter, int write_fd)
+{
+	char	*line;
+	(void)write_fd;
+
+	while (1)
+	{
+		line = readline(PROMPT_HEREDOC);
+		if (!line)
+		{
+			printf("\nminishell: warning: here-document delimited by end-of-file (wanted `%s')\n", delimiter);
+			break ;
+		}
+		if (ft_strcmp(line, delimiter) == 0)
+		{
+			free(line);
+			break ;
+		}
+		free(line);
+	}
+}
+
 void	process_single_heredoc(char *delimiter, int write_fd)
 {
 	char	*line;
+	(void)write_fd;
 
 	while (1)
 	{
@@ -30,7 +53,10 @@ void	handle_heredoc_input(t_command *cmd, int write_fd)
 	i = 0;
 	while (i < cmd->heredoc_count)
 	{
-		process_single_heredoc(cmd->heredoc_delimiter[i], write_fd);
+		if (i == cmd->heredoc_count - 1)
+			process_single_heredoc(cmd->heredoc_delimiter[i], write_fd);
+		else
+			process_single_heredoc_ignore(cmd->heredoc_delimiter[i], write_fd);
 		i++;
 	}
 	close(write_fd);
