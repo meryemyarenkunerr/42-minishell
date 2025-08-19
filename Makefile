@@ -62,6 +62,12 @@ EXTERNAL_SRCS	= external.c \
 				  external_child.c \
 				  path.c
 
+# Multiple module
+MULTIPLE_DIR	= $(SRCDIR)/executer/multiple
+MULTIPLE_SRCS	= pipeline.c \
+				  pipeline_child.c \
+				  pipeline_external.c
+
 # Signal handling
 SIGNAL_DIR		= $(SRCDIR)/signal
 SIGNAL_SRCS		= signals.c \
@@ -74,7 +80,9 @@ CLEANUP_SRCS	= free_command.c \
 				  free_pipeline.c \
 				  free.c \
 				  close_fds.c \
-				  free_builtins.c
+				  free_builtins.c \
+				  close_pipes.c \
+				  free_pipes.c
 
 # Error handling
 ERROR_DIR		= $(SRCDIR)/error
@@ -83,11 +91,6 @@ ERROR_SRCS		= errors.c
 # Test creators (Mock data)
 TEST_DIR		= $(SRCDIR)
 TEST_SRCS		= temp_creator.c \
-				  temp_creator_redir_in.c \
-				  temp_creator_redir_out.c \
-				  temp_creator_redir_append.c \
-				  temp_creator_multiple_heredoc.c \
-				  temp_creator_heredoc_plus_append.c \
 				  temp_creator_builtins_pwd.c \
 				  temp_creator_builtins_echo.c \
 				  temp_creator_builtins_env.c \
@@ -96,8 +99,9 @@ TEST_SRCS		= temp_creator.c \
 				  temp_creator_builtins_unset.c \
 				  temp_creator_builtins_export.c \
 				  temp_creator_external.c \
-				  temp_creator_heredoc_normal.c \
-				  temp_creator_heredoc_redirection.c \
+				  temp_creator_heredoc.c \
+				  temp_creator_redirections.c \
+				  temp_creator_pipelines.c \
 				  print_shell_info.c
 
 # ============================== FILE PATHS =============================== #
@@ -109,6 +113,7 @@ HD_FILES		= $(addprefix $(HD_DIR)/, $(HD_SRCS))
 CMD_FILES		= $(addprefix $(CMD_DIR)/, $(CMD_SRCS))
 BUILTIN_FILES	= $(addprefix $(BUILTIN_DIR)/, $(BUILTIN_SRCS))
 EXTERNAL_FILES	= $(addprefix $(EXTERNAL_DIR)/, $(EXTERNAL_SRCS))
+MULTIPLE_FILES	= $(addprefix $(MULTIPLE_DIR)/, $(MULTIPLE_SRCS))
 SIGNAL_FILES	= $(addprefix $(SIGNAL_DIR)/, $(SIGNAL_SRCS))
 CLEANUP_FILES	= $(addprefix $(CLEANUP_DIR)/, $(CLEANUP_SRCS))
 ERROR_FILES		= $(addprefix $(ERROR_DIR)/, $(ERROR_SRCS))
@@ -116,7 +121,8 @@ TEST_FILES		= $(addprefix $(TEST_DIR)/, $(TEST_SRCS))
 
 # Combine all source files
 ALL_SRCS		= $(MAIN_FILES) $(EXEC_FILES) $(HD_FILES) $(CMD_FILES) $(BUILTIN_FILES) \
-				  $(EXTERNAL_FILES) $(SIGNAL_FILES) $(CLEANUP_FILES) $(ERROR_FILES) $(TEST_FILES)
+				  $(EXTERNAL_FILES) $(SIGNAL_FILES) $(CLEANUP_FILES) $(ERROR_FILES) \
+				  $(TEST_FILES) $(MULTIPLE_FILES)
 
 # Generate object files
 OBJS			= $(ALL_SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
