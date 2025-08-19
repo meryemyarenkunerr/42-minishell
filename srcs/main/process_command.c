@@ -49,15 +49,7 @@ void	process_command(t_shell *shell, char *command)
 		return ;
 
 	cleanup_previous_state(shell);
-<<<<<<< HEAD
-
-	// parser&lexer ile t_pipeline gelecek
-
-	// t_command içini doldurma (input/output file, heredoc, append mode)
-	shell->pipeline = test_pipeline_external_to_builtin();
-=======
 	shell->pipeline = process_input(command, shell->environment);
->>>>>>> 020e987e23b9d821de51829a34638d6c50d177c8
 	if (!builds_commands_from_pipeline(shell))
 		return ;
 	if (!setup_file_descriptors(shell))
