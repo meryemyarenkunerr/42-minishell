@@ -16,7 +16,7 @@
 #include <readline/history.h>
 
 /* Own Headers */
-# include <../libft/libft.h>
+# include "../libft/libft.h"
 # include "defines.h"
 # include "structs.h"
 
@@ -221,21 +221,84 @@ void cleanup_pipes(int **pipes, int cmd_count);
 void cleanup_partial_pipes(int **pipes, int created_count);
 void cleanup_partial_processes(pid_t *pids, int created_count);
 
+/* ADVANCED LEXER */
+/* advanced_lexer.c */
+t_token	*advanced_lexer(char *input);
+/* advanced_lexer_utils.c */
+int		is_whitespace(char c);
+int		is_quote(char c);
+int		is_redirect_operator(char c);
+int		is_pipe(char c);
+int		skip_whitespace(char *input, int *i);
+/* advanced lexer utils two*/
+int				find_quote_end(char *input, int start, char quote_char);
+t_token_types	get_advanced_token_type(char *str);
+char			*extract_quoted_string(char *input, int *i);
+char			*extract_word_until_delimiter(char *input, int *i);
+char			*extract_operator(char *input, int *i);
 
+/* REDIRECTS CHECK */
+/* redirects Check */
+int		check_redirects(t_token *tokens);
 
+/* EOF CHECK*/
+/* eof_check */
+void	mark_eof_tokens(t_token *tokens);
 
+/* IMPROVED EXPANDER */
+/* improved_expander.c */
+void	improved_expand_tokens(t_token *tokens, t_env *env);
+/* improved_expander_utils.c */
+int	is_valid_var_char(char c);
+char	*extract_var_name(char *str, int start, int *end);
+char	*get_var_value(char *var_name, t_env *env);
 
+/* LEXER */
+/* lexer.c */
+t_token	*lexer(char *input);
+void	free_token_array(t_token *tokens);
+void	add_token_to_list(t_token **head, t_token *new_token);
+/* lexer_utils.c */
+t_token	*create_token(char *content, t_token_types type);
 
+/* PARSER */
+/* parser.c */
+t_command	*parser(t_token *tokens);
+/* parser_utils.c */
+void		free_commands(t_command *cmd_list);
 
+/* PIPELINE TOKENIZER */
+/* pipeline_tokenizer.c */
+t_pipeline	*split_by_pipes(t_token *tokens);
+void		free_pipeline(t_pipeline *pipeline);
+/* pipeline_tokenizer_utils.c*/
+void	fill_pipeline_segments(t_pipeline *pipeline, t_token *tokens);
 
+/* POST EXPANDER */
+/* post_expander.c */
+void	post_expansion_tokenize(t_token **head);
+/* post_expander_utils.c*/
+char	**split_by_whitespace_respect_quotes(char *str);
+/* post_expander_utils_two.c */
+int	skip_ws(char *s, int i);
 
+/* QUOTE REMOVER */
+/* quote_remover.c */
+void	remove_quotes_from_tokens(t_token *tokens);
 
+/* SYNTAX CHECK */
+/* Syntax Check */
+int		syntax_check(char *input);
 
+/* TOKEN CLASSIFIER */
+/* token_classifier.c */
+void		classify_pipeline_tokens(t_pipeline *pipeline);
 
-
+/* UTILS */
+/* utils.c */
+void		free_array(char **array);
 
 /* mock data creators and printer */
-t_token *create_token(const char *content, t_token_types type);
 void link_tokens(t_token *tokens[], int count);
 void print_shell_info(t_shell *shell);
 const char *get_token_type_name(t_token_types type);
