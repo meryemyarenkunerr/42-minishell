@@ -6,7 +6,7 @@ void	executer(t_shell *shell)
 		return ;
 	if (shell->pipeline->count == 1)
 		execute_single_command(shell, shell->commands);
-	//else
-	//	execute_pipeline_commands(shell, shell->pipeline->count);
+	else
+		execute_pipeline_commands(shell, shell->pipeline->count);
 }
 
