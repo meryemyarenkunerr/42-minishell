@@ -15,7 +15,9 @@ typedef enum e_token_types
 	TOKEN_REDIRECT_IN,
 	TOKEN_REDIRECT_OUT,
 	TOKEN_APPEND,
-	TOKEN_HEREDOC
+	TOKEN_HEREDOC,
+	TOKEN_EOF,
+	TOKEN_EOF_QUOTE,
 }	t_token_types;
 
 /* Token Structure */
