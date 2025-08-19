@@ -25,7 +25,7 @@ extern int	g_sigint_received;
 
 /* Functions */
 
-/* signal */
+/* SIGNAL */
 /* signals.c */
 int			handle_signal_and_exit(t_shell *shell, char **command);
 void		check_and_warn(int ret, const char *msg);
@@ -35,7 +35,7 @@ void		sigint_received(t_shell *shell);
 /* signals_2.c */
 void		heredoc_signal_handler(int signo);
 
-/* main */
+/* MAIN */
 /* init_env.c */
 int			add_key_value_pair(t_env **env, char *env_pair);
 int			extract_key_value(char *env_pair, char **key, char **val);
@@ -59,14 +59,14 @@ char		*build_prompt();
 void		shell_loop(t_shell *shell);
 int			is_exit(t_shell *shell);
 
-/* error */
+/* ERROR */
 /* errors.c */
 int			handle_fork_error(int fds[2]);
 void		handle_export_error(t_shell *shell, const char *arg);
 void		command_not_found_error(t_shell *shell, char *cmd);
 void		handle_execve_error(char *cmd);
 
-/* cleanup_tools */
+/* CLEANUP_TOOLS */
 /* free.c */
 void		cleanup_previous_state(t_shell *shell);
 void		free_at_exit(t_shell *shell);
@@ -91,7 +91,7 @@ void		close_all_command_fds(t_shell *shell);
 /* free_builtins.c */
 void	cleanup_cd_memory(char *old_pwd, char *target_dir);
 
-/* executer */
+/* EXECUTER */
 /* executer.c */
 void		executer(t_shell *shell);
 
@@ -107,7 +107,10 @@ int			setup_input_redirection(t_command *cmd);
 /* single_command.c */
 void		execute_single_command(t_shell *shell, t_command *cmd);
 
-/*	executer/builtins */
+/* multiple_command.c */
+void		execute_pipeline_commands(t_shell *shell, int cmd_count);
+
+/*	EXECUTER/BUILTINS */
 /* builtins_basics.c */
 void		execute_builtin_pwd(t_shell *shell, t_command *cmd);
 void		execute_builtin_env(t_shell *shell, t_command *cmd);
@@ -152,7 +155,7 @@ void		update_pwd_env(t_shell *shell, char *old_pwd);
 void		remove_env_variable(t_env **env, const char *key);
 int			cmd_counter_except_first(t_command *cmd);
 
-/* executer/command */
+/* EXECUTER/COMMAND */
 /* cmd_builder.c */
 int			builds_commands_from_pipeline(t_shell *shell);
 int			extract_command_and_args(t_command *cmd, t_token *token_list);
@@ -166,8 +169,9 @@ void		add_heredoc_delimiter(t_command *cmd, const char *delimiter);
 /* cmd_utils.c */
 int			argument_counter(t_token *token_list);
 int			cleanup_and_return_error(t_shell *shell);
+int			is_heredoc_delimeter(t_token *token);
 
-/* executer/heredoc */
+/* EXECUTER/HEREDOC */
 /* heredoc_handler.c */
 int			setup_heredoc_fds(t_command *cmd);
 
@@ -178,8 +182,9 @@ void		execute_heredoc_parent(t_command *cmd, int fds[2], pid_t pid);
 void		execute_heredoc_child(t_command *cmd, int fds[2]);
 void		handle_heredoc_input(t_command *cmd, int write_fd);
 void		process_single_heredoc(char *delimiter, int write_fd);
+void		process_single_heredoc_ignore(char *delimiter, int write_fd);
 
-/* executer/external */
+/* EXECUTER/EXTERNAL */
 /* external.c */
 void		execute_external(t_shell *shell, t_command *cmd);
 pid_t		fork_and_execute(t_shell *shell, t_command *cmd, char *exec_path);
@@ -202,6 +207,19 @@ char		*create_env_string(char *key, char *val);
 int			count_env_entries(t_env *env);
 void		free_string_array_partial(char **array, int count);
 
+/* EXECUTER/MULTIPLE */
+/* pipeline.c */
+int **create_pipeline_pipes(int cmd_count);
+pid_t *execute_pipeline_processes(t_shell *shell, int **pipes, int cmd_count);
+void setup_pipeline_child(t_command *cmd, int **pipes, int cmd_count, int cmd_index);
+void execute_pipeline_child(t_shell *shell, t_command *cmd);
+void execute_external_in_pipeline(t_shell *shell, t_command *cmd);
+void close_all_pipes_in_child(int **pipes, int cmd_count);
+void close_all_pipes_in_parent(int **pipes, int cmd_count);
+void cleanup_pipeline(t_shell *shell, int **pipes, pid_t *pids, int cmd_count);
+void cleanup_pipes(int **pipes, int cmd_count);
+void cleanup_partial_pipes(int **pipes, int created_count);
+void cleanup_partial_processes(pid_t *pids, int created_count);
 
 
 
@@ -334,16 +352,105 @@ t_pipeline *test_sleep_command();
 t_pipeline *test_env_command();
 t_pipeline *test_absolute_echo_with_args();
 
+/* heredoc */
+t_pipeline *test_heredoc_basic();
+t_pipeline *test_heredoc_custom_delimiter();
+t_pipeline *test_heredoc_delimiter_with_numbers();
+t_pipeline *test_heredoc_delimiter_underscore();
+t_pipeline *test_heredoc_with_grep();
+t_pipeline *test_heredoc_with_wc();
+t_pipeline *test_heredoc_with_file();
+t_pipeline *test_heredoc_quoted_delimiter();
+t_pipeline *test_heredoc_single_quoted_delimiter();
+t_pipeline *test_heredoc_single_char_delimiter();
+t_pipeline *test_heredoc_long_delimiter();
+t_pipeline *test_heredoc_with_command_flags();
+t_pipeline *test_heredoc_with_sort();
+t_pipeline *test_heredoc_with_head();
+t_pipeline *test_heredoc_with_tr();
+t_pipeline *test_multiple_heredocs_cat();
+t_pipeline *test_multiple_heredocs_grep();
+t_pipeline *test_triple_heredocs();
+t_pipeline *test_multiple_heredocs_sort();
+t_pipeline *test_heredocs_with_file_mixed();
+t_pipeline *test_multiple_heredocs_head();
+t_pipeline *test_multiple_heredocs_tr();
+t_pipeline *test_same_delimiter_multiple();
+t_pipeline *test_multiple_heredocs_uniq();
+t_pipeline *test_quadruple_heredocs();
 
+/* redirections */
+/* output redirection '>' */
+t_pipeline *test_output_redirection_basic();
+t_pipeline *test_output_redirection_ls();
+t_pipeline *test_output_redirection_absolute_path();
+t_pipeline *test_output_redirection_overwrite();
 
+/* append redirection '>>' */
+t_pipeline *test_append_redirection_basic();
+t_pipeline *test_append_redirection_ls();
+t_pipeline *test_append_redirection_absolute();
 
+/* input redirection '<' */
+t_pipeline *test_input_redirection_basic();
+t_pipeline *test_input_redirection_wc();
+t_pipeline *test_input_redirection_absolute();
+t_pipeline *test_input_redirection_grep();
 
-t_pipeline	*mock_cat_heredoc();
-t_pipeline	*mock_echo_append_heredoc();
-t_pipeline	*mock_cat_heredoc_redirect();
-t_pipeline	*mock_cat_double_heredoc();
-t_pipeline	*mock_echo_append();
-t_pipeline	*mock_cat_input();
-t_pipeline	*mock_echo_redirect();
+/* combined */
+t_pipeline *test_combined_input_output();
+t_pipeline *test_combined_input_append();
+t_pipeline *test_combined_grep_redirections();
+
+/* multiple output/append/input redirections */
+t_pipeline *test_multiple_output_redirections();
+t_pipeline *test_multiple_append_redirections();
+t_pipeline *test_multiple_input_redirections();
+
+/* with heredoc */
+t_pipeline *test_heredoc_with_output();
+t_pipeline *test_heredoc_with_append();
+
+/* error cases */
+t_pipeline *test_output_permission_denied();
+t_pipeline *test_input_file_not_found();
+t_pipeline *test_output_to_dev_null();
+
+/* more complex */
+t_pipeline *test_complex_multiple_redirections();
+t_pipeline *test_flags_with_redirections();
+t_pipeline *test_complex_command_redirections();
+
+/* pipelines */
+/* basics */
+t_pipeline *test_pipeline_basic();
+t_pipeline *test_pipeline_filter();
+t_pipeline *test_pipeline_count_lines();
+
+/* three-command pipes */
+t_pipeline *test_pipeline_three_commands();
+t_pipeline *test_pipeline_sort_limit();
+
+/* long pipes */
+t_pipeline *test_pipeline_long_chain();
+
+/* with builtins */
+t_pipeline *test_pipeline_builtin_to_external();
+t_pipeline *test_pipeline_external_to_builtin();
+
+/* with redirections */
+t_pipeline *test_pipeline_with_output_redirect();
+t_pipeline *test_pipeline_with_input_redirect();
+
+/* with heredoc */
+t_pipeline *test_pipeline_with_heredoc();
+
+/* complex */
+t_pipeline *test_pipeline_complex_combination();
+
+/* error cases */
+t_pipeline *test_pipeline_error_first_command();
+t_pipeline *test_pipeline_error_second_command();
+t_pipeline *test_pipeline_error_last_command();
 
 #endif
