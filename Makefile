@@ -99,59 +99,59 @@ CLEANUP_SRCS	= free_command.c \
 # PHARSER
 
 # Advanced lexer
-A_LEXER_DIR		= $(SRCDIR)/pharser/advanced_lexer
+A_LEXER_DIR		= $(SRCDIR)/parser/advanced_lexer
 A_LEXER_SRCS	= advanced_lexer.c \
 				  advanced_lexer_utils.c \
 				  advanced_lexer_utils_two.c
 
 # Check redirects
-C_REDIRECT_DIR	= $(SRCDIR)/pharser/check_redirects
+C_REDIRECT_DIR	= $(SRCDIR)/parser/check_redirects
 C_REDIRECT_SRCS	= check_redirects.c
 
 # EOF check
-EOF_CHECK_DIR	= $(SRCDIR)/pharser/eof_check
+EOF_CHECK_DIR	= $(SRCDIR)/parser/eof_check
 EOF_CHECK_SRCS	= eof_check.c
 
 # Improved expander
-I_EXPANDER_DIR	= $(SRCDIR)/pharser/improved_expander
+I_EXPANDER_DIR	= $(SRCDIR)/parser/improved_expander
 I_EXPANDER_SRCS	= improved_expander.c \
 				  improved_expander_utils.c
 
 # Lexer
-LEXER_DIR		= $(SRCDIR)/pharser/lexer
+LEXER_DIR		= $(SRCDIR)/parser/lexer
 LEXER_SRCS		= lexer.c \
 				  lexer_utils.c
 
 # Parser
-PARSER_DIR		= $(SRCDIR)/pharser/parser
+PARSER_DIR		= $(SRCDIR)/parser/parser
 PARSER_SRCS		= parser.c \
 				  parser_utils.c
 
 # Pipeline tokenizer
-P_TOKEN_DIR		= $(SRCDIR)/pharser/pipline_tokenizer
+P_TOKEN_DIR		= $(SRCDIR)/parser/pipline_tokenizer
 P_TOKEN_SRCS	= pipeline_tokenizer.c \
 				  pipeline_tokenizer_utils.c
 
 # Post expander
-POST_EXPANDER_DIR	= $(SRCDIR)/pharser/post_expander
+POST_EXPANDER_DIR	= $(SRCDIR)/parser/post_expander
 POST_EXPANDER_SRCS	= post_expander.c \
 					  post_expander_utils.c \
 					  post_expander_utils_two.c
 
 # Quote remover
-Q_REMOVE_DIR	= $(SRCDIR)/pharser/quote_remover
+Q_REMOVE_DIR	= $(SRCDIR)/parser/quote_remover
 Q_REMOVE_SRCS	= quote_remover.c
 
 # Syntax check
-S_CHECK_DIR		= $(SRCDIR)/pharser/syntax_check
+S_CHECK_DIR		= $(SRCDIR)/parser/syntax_check
 S_CHECK_SRCS	= syntax_check.c
 
 # Token classifier
-T_CLASS_DIR		= $(SRCDIR)/pharser/token_classifier
+T_CLASS_DIR		= $(SRCDIR)/parser/token_classifier
 T_CLASS_SRCS	= token_classifier.c
 
 # Utils
-UTILS_DIR		= $(SRCDIR)/pharser/utils
+UTILS_DIR		= $(SRCDIR)/parser/utils
 UTILS_SRCS		= utils.c
 
 # Error handling

@@ -244,23 +244,6 @@ void		cleanup_pipes(int **pipes, int cmd_count);
 void		cleanup_partial_pipes(int **pipes, int created_count);
 void		cleanup_partial_processes(pid_t *pids, int created_count);
 
-/* mock data creators and printer */
-void		link_tokens(t_token *tokens[], int count);
-void		print_shell_info(t_shell *shell);
-const char	*get_token_type_name(t_token_types type);
-void		print_commands_only(t_shell *shell);
-int **create_pipeline_pipes(int cmd_count);
-pid_t *execute_pipeline_processes(t_shell *shell, int **pipes, int cmd_count);
-void setup_pipeline_child(t_command *cmd, int **pipes, int cmd_count, int cmd_index);
-void execute_pipeline_child(t_shell *shell, t_command *cmd);
-void execute_external_in_pipeline(t_shell *shell, t_command *cmd);
-void close_all_pipes_in_child(int **pipes, int cmd_count);
-void close_all_pipes_in_parent(int **pipes, int cmd_count);
-void cleanup_pipeline(t_shell *shell, int **pipes, pid_t *pids, int cmd_count);
-void cleanup_pipes(int **pipes, int cmd_count);
-void cleanup_partial_pipes(int **pipes, int created_count);
-void cleanup_partial_processes(pid_t *pids, int created_count);
-
 /* ADVANCED LEXER */
 /* advanced_lexer.c */
 t_token	*advanced_lexer(char *input);
@@ -339,11 +322,12 @@ void		classify_pipeline_tokens(t_pipeline *pipeline);
 /* utils.c */
 void		free_array(char **array);
 
+
 /* mock data creators and printer */
-void link_tokens(t_token *tokens[], int count);
-void print_shell_info(t_shell *shell);
-const char *get_token_type_name(t_token_types type);
-void print_commands_only(t_shell *shell);
+void		link_tokens(t_token *tokens[], int count);
+void		print_shell_info(t_shell *shell);
+const char	*get_token_type_name(t_token_types type);
+void		print_commands_only(t_shell *shell);
 
 /* mock data combinations */
 /* echo */
