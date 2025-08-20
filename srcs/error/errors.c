@@ -1,4 +1,5 @@
 #include "../../includes/minishell.h"
+#include <stdio.h>
 
 void	handle_export_error(t_shell *shell, const char *arg)
 {
@@ -29,3 +30,4 @@ void	handle_execve_error(char *cmd)
 	else
 		perror("minishell: execve");
 }
+
