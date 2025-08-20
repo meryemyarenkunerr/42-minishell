@@ -159,6 +159,8 @@ const char *get_token_type_name(t_token_types type)
         case TOKEN_REDIRECT_OUT:return "REDIRECT_OUT";
         case TOKEN_APPEND:      return "APPEND";
         case TOKEN_HEREDOC:     return "HEREDOC";
+        case TOKEN_EOF:         return "EOF";
+        case TOKEN_EOF_QUOTE:   return "EOF_QUOTE";
         default:                return "UNKNOWN";
     }
 }

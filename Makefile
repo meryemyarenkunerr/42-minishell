@@ -62,6 +62,7 @@ BUILTIN_SRCS	= builtins_basics.c \
 				  builtins_echo.c \
 				  builtins_exit.c \
 				  builtins_export.c \
+				  builtins_export_util.c \
 				  builtins_unset.c \
 				  builtins_utils.c \
 				  builtins_utils2.c

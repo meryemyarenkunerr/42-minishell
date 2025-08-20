@@ -1,16 +1,22 @@
 #include "../../../includes/minishell.h"
 
-int	is_valid_identifier(const char *str)
+int	is_valid_flag_unset(t_shell *shell, char *cmd)
 {
 	int	i;
+	int	count;
 
-	if (!ft_isalpha(str[0]) && str[0] != '_')
-		return (FALSE);
-	i = 1;
-	while (str[i])
+	i = 0;
+	count = 0;
+	while (cmd[i])
 	{
-		if (!ft_isalnum(str[i]) && str[i] != '_')
+		if (cmd[i] == '-')
+			count++;
+		if (count > 2)
+		{
+			printf("minishell: unset: --: invalid option\n");
+			shell->exit_status = 2;
 			return (FALSE);
+		}
 		i++;
 	}
 	return (TRUE);
@@ -26,12 +32,11 @@ void	execute_builtin_unset(t_shell *shell, t_command *cmd)
 		return ;
 	}
 	i = 1;
+	if (!is_valid_flag_unset(shell, cmd->arguments[i]))
+		return ;
 	while (cmd->arguments[i])
 	{
-		if (is_valid_identifier(cmd->arguments[i]))
-			remove_env_variable(&shell->environment, cmd->arguments[i]);
-		else
-			unset_not_valid_identifier_error(shell, cmd, i);
+		remove_env_variable(&shell->environment, cmd->arguments[i]);
 		i++;
 	}
 	if (shell->exit_status != 1)

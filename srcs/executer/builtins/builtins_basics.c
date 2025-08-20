@@ -27,10 +27,16 @@ void	execute_builtin_env(t_shell *shell, t_command *cmd)
 		shell->exit_status = 0;
 		return ;
 	}
+	if (cmd->arguments[1])
+	{
+		printf("minishell: %s: No such file or directory\n", cmd->cmd);
+		shell->exit_status = 127;
+		return ;
+	}
 	curr = shell->environment;
 	while (curr)
 	{
-		if (curr->key && curr->value)
+		if (curr->key && ft_strlen(curr->value) > 0)
 			printf("%s=%s\n", curr->key, curr->value);
 		curr = curr->next;
 	}

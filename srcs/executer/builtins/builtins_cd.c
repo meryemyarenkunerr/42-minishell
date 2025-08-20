@@ -4,7 +4,7 @@ int	change_directory_safely(t_shell *shell, char *target_dir, char *old_pwd)
 {
 	if (chdir(target_dir) == -1)
 	{
-		perror("minishell: cd");
+		printf("minishell: cd: %s: Nu such file or directory\n", target_dir);
 		shell->exit_status = 1;
 		cleanup_cd_memory(old_pwd, target_dir);
 		return (FALSE);

@@ -69,8 +69,6 @@ void		handle_execve_error(char *cmd);
 /* builtins_error.c */
 void		numeric_argument_error(t_shell *shell, t_command *cmd);
 void		too_many_argument_error(t_shell *shell);
-void		unset_not_valid_identifier_error(t_shell *shell, t_command *cmd,
-				int idx);
 
 /* CLEANUP_TOOLS */
 /* free.c */
@@ -149,14 +147,16 @@ int			change_directory_safely(t_shell *shell, char *target_dir,
 /* builtins_export.c */
 void		execute_builtin_export(t_shell *shell, t_command *cmd);
 void		print_export_variables(t_env *env);
-
-/* builtins_unset.c */
-void		execute_builtin_unset(t_shell *shell, t_command *cmd);
-int			is_valid_identifier(const char *str);
 int			process_export_arguments(t_shell *shell, const char *arg);
 int			process_assignment(t_shell *shell, const char *arg,
 				char *equal_pos);
 int			process_mark_for_export(t_shell *shell, const char *key);
+
+/* builtins_export_utils.c */
+int			is_valid_identifier_export(const char *str);
+
+/* builtins_unset.c */
+void		execute_builtin_unset(t_shell *shell, t_command *cmd);
 
 /* builtin_utils.c */
 int			is_builtin_command(const char *cmd);

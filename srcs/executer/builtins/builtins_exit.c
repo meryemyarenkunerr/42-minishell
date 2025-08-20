@@ -21,18 +21,21 @@ int	is_valid_number(const char *str)
 void	execute_builtin_exit(t_shell *shell, t_command *cmd)
 {
 	int	exit_code;
+	int	i;
 
 	if (!cmd->arguments[1])
 	{
+		printf("bye bye <3\n");
 		shell->exit = 1;
 		return ;
 	}
+	i = 1;
+
 	if (cmd->arguments[2])
 	{
 		too_many_argument_error(shell);
 		return ;
 	}
-	printf("bye bye <3\n");
 	if (!is_valid_number(cmd->arguments[1]))
 		numeric_argument_error(shell, cmd);
 	else
