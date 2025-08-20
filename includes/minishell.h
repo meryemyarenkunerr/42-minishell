@@ -228,7 +228,6 @@ void		free_string_array_partial(char **array, int count);
 
 /* EXECUTER/MULTIPLE */
 /* pipeline.c */
-<<<<<<< HEAD
 int			**create_pipeline_pipes(int cmd_count);
 pid_t		*execute_pipeline_processes(t_shell *shell, int **pipes,
 				int cmd_count);
@@ -245,12 +244,11 @@ void		cleanup_partial_pipes(int **pipes, int created_count);
 void		cleanup_partial_processes(pid_t *pids, int created_count);
 
 /* mock data creators and printer */
-t_token		*create_token(const char *content, t_token_types type);
 void		link_tokens(t_token *tokens[], int count);
 void		print_shell_info(t_shell *shell);
 const char	*get_token_type_name(t_token_types type);
 void		print_commands_only(t_shell *shell);
-=======
+
 int **create_pipeline_pipes(int cmd_count);
 pid_t *execute_pipeline_processes(t_shell *shell, int **pipes, int cmd_count);
 void setup_pipeline_child(t_command *cmd, int **pipes, int cmd_count, int cmd_index);
@@ -300,6 +298,7 @@ char	*get_var_value(char *var_name, t_env *env);
 t_token	*lexer(char *input);
 void	free_token_array(t_token *tokens);
 void	add_token_to_list(t_token **head, t_token *new_token);
+
 /* lexer_utils.c */
 t_token	*create_token(char *content, t_token_types type);
 
@@ -345,7 +344,6 @@ void link_tokens(t_token *tokens[], int count);
 void print_shell_info(t_shell *shell);
 const char *get_token_type_name(t_token_types type);
 void print_commands_only(t_shell *shell);
->>>>>>> 020e987e23b9d821de51829a34638d6c50d177c8
 
 /* mock data combinations */
 /* echo */
