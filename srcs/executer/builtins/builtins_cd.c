@@ -4,7 +4,9 @@ int	change_directory_safely(t_shell *shell, char *target_dir, char *old_pwd)
 {
 	if (chdir(target_dir) == -1)
 	{
-		printf("minishell: cd: %s: Nu such file or directory\n", target_dir);
+		write(STDERR_FILENO, "minishell: ", 11);
+		write(STDERR_FILENO, target_dir, ft_strlen(target_dir));
+		write(STDERR_FILENO, ": No such file or directory\n", 28);
 		shell->exit_status = 1;
 		cleanup_cd_memory(old_pwd, target_dir);
 		return (FALSE);
@@ -20,7 +22,7 @@ char	*expand_home_path(t_shell *shell, const char *target_path)
 	home_dir = get_env_value(shell->environment, "HOME");
 	if (!home_dir)
 	{
-		printf("minishell: cd: HOME not set\n");
+		write(STDERR_FILENO, "minishell: cd: HOME not set\n", 28);
 		return (NULL);
 	}
 	if (target_path[1] == '\0')
@@ -40,7 +42,7 @@ char	*get_home_directory(t_shell *shell)
 	home_dir = get_env_value(shell->environment, "HOME");
 	if (!home_dir)
 	{
-		printf("minishell: cd: HOME not set\n");
+		write(STDERR_FILENO, "minishell: cd: HOME not set\n", 28);
 		return (NULL);
 	}
 	return (ft_strdup(home_dir));
@@ -64,7 +66,7 @@ void	execute_builtin_cd(t_shell *shell, t_command *cmd)
 	cmd_count = cmd_counter_except_first(cmd);
 	if (cmd_count > 1)
 	{
-		printf("minishell: cd: too many arguments\n");
+		write(STDERR_FILENO, "minishell: cd: too many arguments\n", 34);
 		shell->exit_status = 1;
 		return ;
 	}

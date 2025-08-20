@@ -10,8 +10,10 @@ void	process_single_heredoc_ignore(char *delimiter, int write_fd)
 		line = readline(BLUE PROMPT_HEREDOC RESET);
 		if (!line)
 		{
-			printf("\nminishell: warning: here-document delimited by ");
-			printf("end-of-file (wanted `%s')\n", delimiter);
+			write(STDERR_FILENO, "\nminishell: warning: here-document delimited by ", 48);
+			write(STDERR_FILENO, "end-of-file (wanted `", 21);
+			write(STDERR_FILENO, delimiter, ft_strlen(delimiter));
+			write(STDERR_FILENO, "')\n", 3);
 			break ;
 		}
 		if (ft_strcmp(line, delimiter) == 0)
@@ -33,8 +35,10 @@ void	process_single_heredoc(char *delimiter, int write_fd)
 		line = readline(BLUE PROMPT_HEREDOC RESET);
 		if (!line)
 		{
-			printf("\nminishell: warning: here-document delimited by ");
-			printf("end-of-file (wanted `%s')\n", delimiter);
+			write(STDERR_FILENO, "\nminishell: warning: here-document delimited by ", 48);
+			write(STDERR_FILENO, "end-of-file (wanted `", 21);
+			write(STDERR_FILENO, delimiter, ft_strlen(delimiter));
+			write(STDERR_FILENO, "')\n", 3);
 			break ;
 		}
 		if (ft_strcmp(line, delimiter) == 0)

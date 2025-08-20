@@ -268,9 +268,3 @@ void setup_test_environment(t_shell *shell)
     set_env_variable(&shell->environment, "_VALID_NAME", "valid_value");
     set_env_variable(&shell->environment, "VALID123", "valid123_value");
 }
-
-void print_env_status(t_shell *shell, const char *var_name)
-{
-    char *value = get_env_value(shell->environment, var_name);
-    printf("%s: %s\n", var_name, value ? value : "(not set)");
-}

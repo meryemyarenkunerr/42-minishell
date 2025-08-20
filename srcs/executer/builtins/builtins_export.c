@@ -6,7 +6,9 @@ int	process_mark_for_export(t_shell *shell, const char *key)
 
 	if (!is_valid_identifier_export(key))
 	{
-		printf("minishell: export: `%s': not a valid identifier\n", key);
+		write(STDERR_FILENO, "minishell: export: `", 20);
+		write(STDERR_FILENO, key, ft_strlen(key));
+		write(STDERR_FILENO, "': not a valid identifier\n", 26);
 		return (FALSE);
 	}
 	existing_val = get_env_value(shell->environment, key);
@@ -26,7 +28,9 @@ int	process_assignment(t_shell *shell, const char *arg, char *equal_pos)
 	key = ft_substr(arg, 0, key_len);
 	if (!is_valid_identifier_export(key))
 	{
-		printf("minishell: export: `%s': not a valid identifier\n", arg);
+		write(STDERR_FILENO, "minishell: export: `", 20);
+		write(STDERR_FILENO, arg, ft_strlen(arg));
+		write(STDERR_FILENO, "': not a valid identifier\n", 26);
 		free(key);
 		return (FALSE);
 	}

@@ -13,7 +13,7 @@ int	is_valid_flag_unset(t_shell *shell, char *cmd)
 			count++;
 		if (count > 2)
 		{
-			printf("minishell: unset: --: invalid option\n");
+			write(STDERR_FILENO, "minishell: unset: --: invalid option\n", 37);
 			shell->exit_status = 2;
 			return (FALSE);
 		}

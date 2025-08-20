@@ -67,8 +67,10 @@ void		command_not_found_error(t_shell *shell, char *cmd);
 void		handle_execve_error(char *cmd);
 
 /* builtins_error.c */
-void		numeric_argument_error(t_shell *shell, t_command *cmd);
-void		too_many_argument_error(t_shell *shell);
+void	ft_exit(t_shell *shell, t_command *cmd);
+void	numeric_argument_error_exit(t_shell *shell, t_command *cmd);
+void	too_many_argument_error_exit(t_shell *shell, t_command *cmd);
+
 
 /* CLEANUP_TOOLS */
 /* free.c */

@@ -152,13 +152,3 @@ t_pipeline *test_cd_relative()
 
     return pipeline;
 }
-
-// Environment checker helper
-void print_pwd_env(t_shell *shell)
-{
-    char *pwd = get_env_value(shell->environment, "PWD");
-    char *oldpwd = get_env_value(shell->environment, "OLDPWD");
-
-    printf("PWD env: %s\n", pwd ? pwd : "(not set)");
-    printf("OLDPWD env: %s\n", oldpwd ? oldpwd : "(not set)");
-}

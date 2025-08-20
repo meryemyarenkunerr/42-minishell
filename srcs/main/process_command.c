@@ -108,8 +108,6 @@ void	process_command(t_shell *shell, char *command)
 		return ;
 
 	cleanup_previous_state(shell);
-	shell->pipeline = process_input(command, shell->environment);
-	// print_shell_info(shell);
 	shell->pipeline = process_input(command, shell);
 	if (!shell->pipeline)
 		return ;

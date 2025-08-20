@@ -8,7 +8,8 @@ void	execute_external_in_pipeline(t_shell *shell, t_command *cmd)
 	executable_path = find_executable_path(shell, cmd->cmd);
 	if (!executable_path)
 	{
-		printf("minishell: %s: command not found\n", cmd->cmd);
+		write(STDERR_FILENO, cmd->cmd, ft_strlen(cmd->cmd));
+		write(STDERR_FILENO, ": command not found\n", 20);
 		exit(127);
 	}
 	env_array = convert_env_to_array(shell->environment);

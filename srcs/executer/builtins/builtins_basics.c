@@ -29,7 +29,9 @@ void	execute_builtin_env(t_shell *shell, t_command *cmd)
 	}
 	if (cmd->arguments[1])
 	{
-		printf("minishell: %s: No such file or directory\n", cmd->cmd);
+		write(STDERR_FILENO, "minishell: ", 11);
+		write(STDERR_FILENO, cmd, ft_strlen(cmd->cmd));
+		write(STDERR_FILENO, ": No such file or directory\n", 28);
 		shell->exit_status = 127;
 		return ;
 	}

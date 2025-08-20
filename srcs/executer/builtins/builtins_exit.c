@@ -20,28 +20,28 @@ int	is_valid_number(const char *str)
 
 void	execute_builtin_exit(t_shell *shell, t_command *cmd)
 {
-	int	exit_code;
-	int	i;
+	int	cmd_count;
 
-	if (!cmd->arguments[1])
+	cmd_count = cmd_counter_except_first(cmd);
+	if (cmd_count == 0)
 	{
-		printf("bye bye <3\n");
+		write(STDOUT_FILENO, "bye bye <3\n", 11);
 		shell->exit = 1;
 		return ;
 	}
-	i = 1;
-
-	if (cmd->arguments[2])
-	{
-		too_many_argument_error(shell);
-		return ;
-	}
-	if (!is_valid_number(cmd->arguments[1]))
-		numeric_argument_error(shell, cmd);
 	else
 	{
-		exit_code = ft_atoi(cmd->arguments[1]);
-		shell->exit_status = exit_code & 255;
+		if (is_valid_number(cmd->arguments[1]) && cmd_count == 1)
+		{
+			ft_exit(shell, cmd);
+			return ;
+		}
+		else if (is_valid_number(cmd->arguments[1]) && cmd_count > 1)
+			too_many_argument_error_exit(shell, cmd);
+		else
+		{
+			numeric_argument_error_exit(shell, cmd);
+			return ;
+		}
 	}
-	shell->exit = 1;
 }
