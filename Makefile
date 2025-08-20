@@ -3,8 +3,19 @@
 NAME			= minishell
 CC				= cc
 CFLAGS			= -Wall -Wextra -Werror
-INCLUDES		= -I./includes -I./libft 
-LIBS			= -lreadline -L./libft -lft 
+INCLUDES		= -I./includes -I./libft
+LIBS			= -L./libft -lft
+
+UNAME_S := $(shell uname -s)
+
+ifeq ($(UNAME_S),Darwin)
+	# macOS için (brew readline kullanıyorsan path ekleniyor)
+	INCLUDES	+= -I$(shell brew --prefix readline)/include
+	LIBS		+= -L$(shell brew --prefix readline)/lib -lreadline -lhistory -lncurses
+else
+	# Linux için
+	LIBS		+= -lreadline
+endif
 
 # =============================== DIRECTORIES =============================== #
 

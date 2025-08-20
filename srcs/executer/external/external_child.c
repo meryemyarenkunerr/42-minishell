@@ -16,8 +16,8 @@ char	*create_env_string(char *key, char *val)
 	if (!env_str)
 		return (NULL);
 	ft_strlcpy(env_str, key, total_len);
-	ft_strlcpy(env_str, "=", total_len);
-	ft_strlcpy(env_str, val, total_len);
+	ft_strlcat(env_str, "=", total_len);
+	ft_strlcat(env_str, val, total_len);
 	return (env_str);
 }
 

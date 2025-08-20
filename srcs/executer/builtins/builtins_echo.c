@@ -1,5 +1,15 @@
 #include "../../../includes/minishell.h"
 
+int	is_dollar_question_mark(t_shell *shell, const char *arg)
+{
+	if (!ft_strcmp(arg, "$?"))
+	{
+		printf("%d", shell->exit_status);
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
 int	is_valid_echo_flag(const char *arg)
 {
 	int	i;
@@ -32,7 +42,8 @@ void	execute_builtin_echo(t_shell *shell, t_command *cmd)
 	}
 	while (cmd->arguments[i])
 	{
-		printf("%s", cmd->arguments[i]);
+		if (!is_dollar_question_mark(shell, cmd->arguments[i]))
+			printf("%s", cmd->arguments[i]);
 		if (cmd->arguments[i + 1])
 			printf(" ");
 		i++;

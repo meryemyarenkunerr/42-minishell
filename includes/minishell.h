@@ -132,6 +132,7 @@ void		execute_builtin_env(t_shell *shell, t_command *cmd);
 /* builtins_echo.c */
 void		execute_builtin_echo(t_shell *shell, t_command *cmd);
 int			is_valid_echo_flag(const char *arg);
+int			is_dollar_question_mark(t_shell *shell, const char *arg);
 
 /* builtins_exit.c */
 void		execute_builtin_exit(t_shell *shell, t_command *cmd);
@@ -248,7 +249,6 @@ void		link_tokens(t_token *tokens[], int count);
 void		print_shell_info(t_shell *shell);
 const char	*get_token_type_name(t_token_types type);
 void		print_commands_only(t_shell *shell);
-
 int **create_pipeline_pipes(int cmd_count);
 pid_t *execute_pipeline_processes(t_shell *shell, int **pipes, int cmd_count);
 void setup_pipeline_child(t_command *cmd, int **pipes, int cmd_count, int cmd_index);
