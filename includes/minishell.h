@@ -132,6 +132,7 @@ void		execute_builtin_env(t_shell *shell, t_command *cmd);
 /* builtins_echo.c */
 void		execute_builtin_echo(t_shell *shell, t_command *cmd);
 int			is_valid_echo_flag(const char *arg);
+int			is_dollar_question_mark(t_shell *shell, const char *arg);
 
 /* builtins_exit.c */
 void		execute_builtin_exit(t_shell *shell, t_command *cmd);
@@ -228,29 +229,6 @@ void		free_string_array_partial(char **array, int count);
 
 /* EXECUTER/MULTIPLE */
 /* pipeline.c */
-<<<<<<< HEAD
-int			**create_pipeline_pipes(int cmd_count);
-pid_t		*execute_pipeline_processes(t_shell *shell, int **pipes,
-				int cmd_count);
-void		setup_pipeline_child(t_command *cmd, int **pipes, int cmd_count,
-				int cmd_index);
-void		execute_pipeline_child(t_shell *shell, t_command *cmd);
-void		execute_external_in_pipeline(t_shell *shell, t_command *cmd);
-void		close_all_pipes_in_child(int **pipes, int cmd_count);
-void		close_all_pipes_in_parent(int **pipes, int cmd_count);
-void		cleanup_pipeline(t_shell *shell, int **pipes, pid_t *pids,
-				int cmd_count);
-void		cleanup_pipes(int **pipes, int cmd_count);
-void		cleanup_partial_pipes(int **pipes, int created_count);
-void		cleanup_partial_processes(pid_t *pids, int created_count);
-
-/* mock data creators and printer */
-t_token		*create_token(const char *content, t_token_types type);
-void		link_tokens(t_token *tokens[], int count);
-void		print_shell_info(t_shell *shell);
-const char	*get_token_type_name(t_token_types type);
-void		print_commands_only(t_shell *shell);
-=======
 int **create_pipeline_pipes(int cmd_count);
 pid_t *execute_pipeline_processes(t_shell *shell, int **pipes, int cmd_count);
 void setup_pipeline_child(t_command *cmd, int **pipes, int cmd_count, int cmd_index);
@@ -345,7 +323,6 @@ void link_tokens(t_token *tokens[], int count);
 void print_shell_info(t_shell *shell);
 const char *get_token_type_name(t_token_types type);
 void print_commands_only(t_shell *shell);
->>>>>>> 020e987e23b9d821de51829a34638d6c50d177c8
 
 /* mock data combinations */
 /* echo */
