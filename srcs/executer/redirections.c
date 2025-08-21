@@ -32,7 +32,7 @@ int	setup_output_redirection(t_command *cmd)
 	return (TRUE);
 }
 
-int	setup_command_fds(t_command *cmd)
+int	setup_command_fds(t_shell *shell, t_command *cmd)
 {
 	if (!cmd)
 		return (FALSE);
@@ -40,7 +40,7 @@ int	setup_command_fds(t_command *cmd)
 		return (FALSE);
 	if (!setup_output_redirection(cmd))
 		return (FALSE);
-	if (!setup_heredoc_fds(cmd))
+	if (!setup_heredoc_fds(shell, cmd))
 		return (FALSE);
 	return (TRUE);
 }
@@ -54,7 +54,7 @@ int	setup_file_descriptors(t_shell *shell)
 	curr = shell->commands;
 	while (curr)
 	{
-		if (!setup_command_fds(curr))
+		if (!setup_command_fds(shell, curr))
 		{
 			shell->exit_status = 1;
 			close_all_command_fds(shell);

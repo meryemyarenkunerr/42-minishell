@@ -67,10 +67,12 @@ void		command_not_found_error(t_shell *shell, char *cmd);
 void		handle_execve_error(char *cmd);
 
 /* builtins_error.c */
-void	ft_exit(t_shell *shell, t_command *cmd);
-void	numeric_argument_error_exit(t_shell *shell, t_command *cmd);
-void	too_many_argument_error_exit(t_shell *shell, t_command *cmd);
+void		ft_exit(t_shell *shell, t_command *cmd);
+void		numeric_argument_error_exit(t_shell *shell, t_command *cmd);
+void		too_many_argument_error_exit(t_shell *shell, t_command *cmd);
 
+/* heredoc_error.c */
+void 		print_eof_warning(char *delimiter);
 
 /* CLEANUP_TOOLS */
 /* free.c */
@@ -97,6 +99,7 @@ void		free_token_array(t_token *tokens);
 void		free_command_list(t_command *commands);
 void		free_single_command(t_command *command);
 void		free_string_array(char **array);
+int			cleanup_and_return_error(t_shell *shell);
 
 /* close_fds.c */
 void		close_command_fds(t_command *cmd);
@@ -114,7 +117,7 @@ int			ft_strcmp(const char *s1, const char *s2);
 
 /* redirections.c */
 int			setup_file_descriptors(t_shell *shell);
-int			setup_command_fds(t_command *cmd);
+int			setup_command_fds(t_shell *shell, t_command *cmd);
 int			setup_output_redirection(t_command *cmd);
 int			setup_input_redirection(t_command *cmd);
 
@@ -156,6 +159,9 @@ int			process_mark_for_export(t_shell *shell, const char *key);
 
 /* builtins_export_utils.c */
 int			is_valid_identifier_export(const char *str);
+int			count_env_keys(t_env *env);
+void		copy_env_to_array(t_env *env, t_env **array);
+void		sort_env_array(t_env **array, int size);
 
 /* builtins_unset.c */
 void		execute_builtin_unset(t_shell *shell, t_command *cmd);
@@ -175,34 +181,39 @@ void		remove_env_variable(t_env **env, const char *key);
 int			cmd_counter_except_first(t_command *cmd);
 
 /* EXECUTER/COMMAND */
-/* cmd_builder.c */
+/* command_builder.c */
 int			builds_commands_from_pipeline(t_shell *shell);
-int			extract_command_and_args(t_command *cmd, t_token *token_list);
-void		extract_redirections_and_heredocs(t_command *cmd,
-				t_token *token_list);
 
-/* cmd_filler.c */
-t_command	*create_command_from_tokens(t_token *token_list);
-int			fill_command_arguments(t_command *cmd, t_token *token_list,
-				int arg_count);
-void		add_heredoc_delimiter(t_command *cmd, const char *delimiter);
+/* heredoc_management.c */
+void		add_heredoc_delimiter_with_quote(t_command *cmd, const char *delimiter,
+				int is_quoted);
 
-/* cmd_utils.c */
-int			argument_counter(t_token *token_list);
-int			cleanup_and_return_error(t_shell *shell);
+/* token_analysis.c */
+int			is_redirection_file(t_token *token);
 int			is_heredoc_delimeter(t_token *token);
+char		*find_command_name(t_token *token_list);
+int			argument_counter(t_token *token_list);
+
+/* command_creation.c */
+t_command	*create_command_from_tokens(t_token *token_list);
+
+/* redirection_merge.c */
+int			merge_redirection_to_previous(t_command *prev_cmd, t_token *redirect_tokens);
+
+/* expander.c */
+char		*expand_variable(char *line, t_shell *shell);
 
 /* EXECUTER/HEREDOC */
 /* heredoc_handler.c */
-int			setup_heredoc_fds(t_command *cmd);
+int			setup_heredoc_fds(t_shell *shell, t_command *cmd);
 
 /* heredoc_parent.c */
 void		execute_heredoc_parent(t_command *cmd, int fds[2], pid_t pid);
 
 /* heredoc_child.c */
-void		execute_heredoc_child(t_command *cmd, int fds[2]);
-void		handle_heredoc_input(t_command *cmd, int write_fd);
-void		process_single_heredoc(char *delimiter, int write_fd);
+void		execute_heredoc_child(t_shell *shell, t_command *cmd, int fds[2]);
+void		handle_heredoc_input(t_shell *shell, t_command *cmd, int write_fd);
+void		process_single_heredoc(t_shell *shell, char *delimiter, int write_fd);
 void		process_single_heredoc_ignore(char *delimiter, int write_fd);
 
 /* EXECUTER/EXTERNAL */

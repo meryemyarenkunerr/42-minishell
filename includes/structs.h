@@ -38,6 +38,7 @@ typedef struct s_command
 	char				*output_file;
 	char				**heredoc_delimiter;
 	int					heredoc_count;
+	int					quote_flag;
 	int					append_mode;
 	int					fd_in;
 	int					fd_out;

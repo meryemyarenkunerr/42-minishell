@@ -38,7 +38,7 @@ void	print_shell_info(t_shell *shell)
         printf("  Environment is NULL\n");
     printf("\n");
 
-    // Print Commands
+    // Print Commands with SAFETY CHECKS
     printf("🔧 Commands:\n");
     if (!shell->commands)
     {
@@ -51,22 +51,46 @@ void	print_shell_info(t_shell *shell)
 
         while (cmd)
         {
-            printf("  ┌─ Command %d:\n", cmd_index);
-            printf("  │ cmd: %s\n", cmd->cmd ? cmd->cmd : "(null)");
+            // SAFETY: Check if cmd pointer is valid
+            if (!cmd)
+            {
+                printf("ERROR: Command %d pointer is NULL!\n", cmd_index);
+                break;
+            }
 
-            // Arguments
+            printf("  ┌─ Command %d:\n", cmd_index);
+
+            // SAFETY: Check cmd->cmd
+            if (!cmd->cmd)
+            {
+                printf("  │ cmd: (null) - WARNING: This might cause issues!\n");
+            }
+            else
+            {
+                printf("  │ cmd: %s\n", cmd->cmd);
+            }
+
+            // SAFETY: Check arguments array
             printf("  │ arguments:");
-            if (cmd->arguments)
+            if (!cmd->arguments)
+            {
+                printf(" (null)");
+            }
+            else
             {
                 int i = 0;
                 while (cmd->arguments[i])
                 {
                     printf(" '%s'", cmd->arguments[i]);
                     i++;
+                    // Safety break to prevent infinite loop
+                    if (i > 100)
+                    {
+                        printf(" ... (truncated - too many args)");
+                        break;
+                    }
                 }
             }
-            else
-                printf(" (null)");
             printf("\n");
 
             // Redirections
@@ -74,28 +98,70 @@ void	print_shell_info(t_shell *shell)
             printf("  │ output_file: %s\n", cmd->output_file ? cmd->output_file : "(null)");
             printf("  │ append_mode: %d\n", cmd->append_mode);
 
-            // Heredocs
-            if (cmd->heredoc_delimiter && cmd->heredoc_count > 0)
+            // SAFETY: Check heredocs with bounds
+            if (cmd->heredoc_count > 0)
             {
-                printf("  │ heredoc_delimiters (%d):", cmd->heredoc_count);
-                int i = 0;
-                while (i < cmd->heredoc_count)
+                if (!cmd->heredoc_delimiter)
                 {
-                    printf(" '%s'", cmd->heredoc_delimiter[i]);
-                    i++;
+                    printf("  │ ERROR: heredoc_count > 0 but heredoc_delimiter is NULL!\n");
                 }
-                printf("\n");
+                else if (!cmd->quote_flag)
+                {
+                    printf("  │ ERROR: heredoc_count > 0 but quote_flag is NULL!\n");
+                }
+                else
+                {
+                    printf("  │ heredoc_delimiters (%d):", cmd->heredoc_count);
+                    int i = 0;
+                    while (i < cmd->heredoc_count)
+                    {
+                        if (cmd->heredoc_delimiter[i])
+                            printf(" '%s'", cmd->heredoc_delimiter[i]);
+                        else
+                            printf(" (null)");
+                        i++;
+                        // Safety break
+                        if (i > 10)
+                        {
+                            printf(" ... (truncated)");
+                            break;
+                        }
+                    }
+                    printf("\n");
+
+                    // Quote flags
+                    printf("  │ quote_flag:");
+                    printf(" %d", cmd->quote_flag);
+                    printf("\n");
+                }
             }
             else
-                printf("  │ heredoc_delimiters: (null)\n");
+            {
+                printf("  │ heredoc_delimiters: (none)\n");
+            }
 
             // File descriptors
             printf("  │ fd_in: %d, fd_out: %d\n", cmd->fd_in, cmd->fd_out);
             printf("  │ pid: %d\n", cmd->pid);
+
+            // SAFETY: Check next pointer before moving
+            if (cmd->next == cmd)
+            {
+                printf("ERROR: Command %d points to itself! Breaking to prevent infinite loop\n", cmd_index);
+                break;
+            }
+
             printf("  └─────────────────────────\n");
 
             cmd = cmd->next;
             cmd_index++;
+
+            // Safety break to prevent infinite loop
+            if (cmd_index > 20)
+            {
+                printf("ERROR: Too many commands (>20), breaking to prevent infinite loop\n");
+                break;
+            }
         }
     }
     printf("\n");
@@ -134,6 +200,13 @@ void	print_shell_info(t_shell *shell)
                            token_index, token->content, type_name);
                     token = token->next;
                     token_index++;
+
+                    // Safety break
+                    if (token_index > 50)
+                    {
+                        printf("  │ ... (truncated - too many tokens)\n");
+                        break;
+                    }
                 }
             }
             printf("  └─────────────────────────\n");
@@ -163,47 +236,4 @@ const char *get_token_type_name(t_token_types type)
         case TOKEN_EOF_QUOTE:   return "EOF_QUOTE";
         default:                return "UNKNOWN";
     }
-}
-
-// Simplified version for quick debugging
-void print_commands_only(t_shell *shell)
-{
-    if (!shell || !shell->commands)
-    {
-        printf("No commands to display\n");
-        return;
-    }
-
-    printf("\n🔧 Quick Commands View:\n");
-    t_command *cmd = shell->commands;
-    int i = 1;
-
-    while (cmd)
-    {
-        printf("%d. %s", i, cmd->cmd ? cmd->cmd : "(null)");
-
-        if (cmd->arguments && cmd->arguments[1])
-        {
-            printf(" (args:");
-            int j = 1;
-            while (cmd->arguments[j])
-            {
-                printf(" %s", cmd->arguments[j]);
-                j++;
-            }
-            printf(")");
-        }
-
-        if (cmd->input_file)
-            printf(" < %s", cmd->input_file);
-        if (cmd->output_file)
-            printf(" %s %s", cmd->append_mode ? ">>" : ">", cmd->output_file);
-        if (cmd->heredoc_count > 0)
-            printf(" << heredoc(%d)", cmd->heredoc_count);
-
-        printf("\n");
-        cmd = cmd->next;
-        i++;
-    }
-    printf("\n");
 }

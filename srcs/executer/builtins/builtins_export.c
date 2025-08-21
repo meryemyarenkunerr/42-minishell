@@ -52,20 +52,28 @@ int	process_export_arguments(t_shell *shell, const char *arg)
 
 void	print_export_variables(t_env *env)
 {
-	t_env	*curr;
+	t_env	**env_array;
+	int		count;
+	int		i;
 
-	curr = env;
-	while (curr)
+	count = count_env_keys(env);
+	if (count == 0)
+		return ;
+	env_array = malloc(sizeof(t_env *) * count + 1);
+	if (!env_array)
+		return ;
+	copy_env_to_array(env, env_array);
+	sort_env_array(env_array, count);
+	i = 0;
+	while (i < count)
 	{
-		if (curr->key)
-		{
-			if (ft_strlen(curr->value) > 0)
-				printf("declare -x %s=\"%s\"\n", curr->key, curr->value);
-			else
-				printf("declare -x %s\n", curr->key);
-		}
-		curr = curr->next;
+		if (ft_strlen(env_array[i]->value) > 0)
+			printf("declare -x %s=\"%s\"\n", env_array[i]->key, env_array[i]->value);
+		else
+			printf("declare -x %s\n", env_array[i]->key);
+		i++;
 	}
+	free(env_array);
 }
 
 void	execute_builtin_export(t_shell *shell, t_command *cmd)

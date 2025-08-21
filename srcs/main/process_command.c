@@ -1,5 +1,4 @@
 #include "../../includes/minishell.h"
-#include <stdatomic.h>
 
 static int	is_special_operatoro(t_token_types type)
 {
@@ -20,8 +19,8 @@ char	*check_redirects_strings(t_token *tokens)
 	current = tokens;
 	if (current->type == TOKEN_PIPE)
 		return ("|");
-	if (is_special_operatoro(current->type))
-		return ("newline");
+	/*if (is_special_operatoro(current->type))
+		return ("newline");*/
 	while (current->next)
 		current = current->next;
 	if (current->type == TOKEN_PIPE)
@@ -33,7 +32,8 @@ char	*check_redirects_strings(t_token *tokens)
 	{
 		if (is_special_operatoro(current->type))
 		{
-			if (current->next && is_special_operatoro(current->next->type))
+			if ((current->next) && (is_special_operatoro(current->next->type) || current->next->type == TOKEN_PIPE))
+
 				return (current->next->content);
 		}
 		current = current->next;
@@ -115,5 +115,6 @@ void	process_command(t_shell *shell, char *command)
 		return ;
 	if (!setup_file_descriptors(shell))
 		return ;
+	print_shell_info(shell);
 	executer(shell);
 }

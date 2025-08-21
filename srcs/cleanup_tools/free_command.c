@@ -47,3 +47,13 @@ void	free_command_list(t_command *commands)
 		curr = next;
 	}
 }
+
+int	cleanup_and_return_error(t_shell *shell)
+{
+	if (shell && shell->commands)
+	{
+		free_command_list(shell->commands);
+		shell->commands = NULL;
+	}
+	return (FALSE);
+}

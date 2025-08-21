@@ -6,7 +6,8 @@ void	wait_for_child(t_shell *shell, pid_t pid)
 
 	if (waitpid(pid, &status, 0) == -1)
 	{
-		perror("minishell: waitpid");
+		if (errno != ECHILD)
+			perror("minishell: waitpid");
 		shell->exit_status = 1;
 		return ;
 	}

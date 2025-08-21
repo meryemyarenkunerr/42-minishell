@@ -51,9 +51,12 @@ HD_SRCS			= heredoc_handler.c \
 
 # Command module
 CMD_DIR			= $(SRCDIR)/executer/command
-CMD_SRCS		= cmd_builder.c \
-				  cmd_filler.c \
-				  cmd_utils.c
+CMD_SRCS		= command_builder.c \
+				  command_creation.c \
+				  heredoc_management.c \
+				  redirection_merge.c \
+				  token_analysis.c \
+				  expander.c
 
 # Built-ins module
 BUILTIN_DIR		= $(SRCDIR)/executer/builtins
@@ -157,23 +160,12 @@ UTILS_SRCS		= utils.c
 # Error handling
 ERROR_DIR		= $(SRCDIR)/error
 ERROR_SRCS		= errors.c \
-				  builtins_error.c
+				  builtins_error.c \
+				  heredoc_error.c
 
 # Test creators (Mock data)
 TEST_DIR		= $(SRCDIR)
-TEST_SRCS		= temp_creator.c \
-				  temp_creator_builtins_pwd.c \
-				  temp_creator_builtins_echo.c \
-				  temp_creator_builtins_env.c \
-				  temp_creator_builtins_exit.c \
-				  temp_creator_builtins_cd.c \
-				  temp_creator_builtins_unset.c \
-				  temp_creator_builtins_export.c \
-				  temp_creator_external.c \
-				  temp_creator_heredoc.c \
-				  temp_creator_redirections.c \
-				  temp_creator_pipelines.c \
-				  print_shell_info.c
+TEST_SRCS		= print_shell_info.c
 
 # ============================== FILE PATHS =============================== #
 

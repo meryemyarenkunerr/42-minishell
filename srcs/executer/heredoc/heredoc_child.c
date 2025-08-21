@@ -10,10 +10,7 @@ void	process_single_heredoc_ignore(char *delimiter, int write_fd)
 		line = readline(BLUE PROMPT_HEREDOC RESET);
 		if (!line)
 		{
-			write(STDERR_FILENO, "\nminishell: warning: here-document delimited by ", 48);
-			write(STDERR_FILENO, "end-of-file (wanted `", 21);
-			write(STDERR_FILENO, delimiter, ft_strlen(delimiter));
-			write(STDERR_FILENO, "')\n", 3);
+			print_eof_warning(delimiter);
 			break ;
 		}
 		if (ft_strcmp(line, delimiter) == 0)
@@ -25,20 +22,18 @@ void	process_single_heredoc_ignore(char *delimiter, int write_fd)
 	}
 }
 
-void	process_single_heredoc(char *delimiter, int write_fd)
+void	process_single_heredoc(t_shell *shell, char *delimiter, int write_fd)
 {
 	char	*line;
+	char	*processed_line;
 
-	(void)write_fd;
+	processed_line = NULL;
 	while (1)
 	{
 		line = readline(BLUE PROMPT_HEREDOC RESET);
 		if (!line)
 		{
-			write(STDERR_FILENO, "\nminishell: warning: here-document delimited by ", 48);
-			write(STDERR_FILENO, "end-of-file (wanted `", 21);
-			write(STDERR_FILENO, delimiter, ft_strlen(delimiter));
-			write(STDERR_FILENO, "')\n", 3);
+			print_eof_warning(delimiter);
 			break ;
 		}
 		if (ft_strcmp(line, delimiter) == 0)
@@ -46,13 +41,19 @@ void	process_single_heredoc(char *delimiter, int write_fd)
 			free(line);
 			break ;
 		}
-		write(write_fd, line, ft_strlen(line));
+		if (shell->commands->quote_flag == 1)
+			processed_line = line;
+		else
+			processed_line = expand_variable(line, shell);
+		write(write_fd, processed_line, ft_strlen(processed_line));
 		write(write_fd, "\n", 1);
+		if (shell->commands->quote_flag != 1)
+			free(processed_line);
 		free(line);
 	}
 }
 
-void	handle_heredoc_input(t_command *cmd, int write_fd)
+void	handle_heredoc_input(t_shell *shell, t_command *cmd, int write_fd)
 {
 	int	i;
 
@@ -60,7 +61,7 @@ void	handle_heredoc_input(t_command *cmd, int write_fd)
 	while (i < cmd->heredoc_count)
 	{
 		if (i == cmd->heredoc_count - 1)
-			process_single_heredoc(cmd->heredoc_delimiter[i], write_fd);
+			process_single_heredoc(shell, cmd->heredoc_delimiter[i], write_fd);
 		else
 			process_single_heredoc_ignore(cmd->heredoc_delimiter[i], write_fd);
 		i++;
@@ -70,9 +71,9 @@ void	handle_heredoc_input(t_command *cmd, int write_fd)
 	exit(0);
 }
 
-void	execute_heredoc_child(t_command *cmd, int fds[2])
+void	execute_heredoc_child(t_shell *shell, t_command *cmd, int fds[2])
 {
 	close(fds[0]);
-	handle_heredoc_input(cmd, fds[1]);
+	handle_heredoc_input(shell, cmd, fds[1]);
 	exit(0);
 }
