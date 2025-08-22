@@ -2,7 +2,7 @@
 
 void	ft_exit(t_shell *shell, t_command *cmd)
 {
-	write(STDERR_FILENO, "bye bye <3\n", 11);
+	//write(STDERR_FILENO, "bye bye <3\n", 11);
 	shell->exit_status = ft_atoi(cmd->arguments[1]);
 	shell->exit = 1;
 }

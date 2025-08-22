@@ -10,7 +10,7 @@ int	is_exit(t_shell *shell)
 	free(prompt);
 	if (!cmd)
 	{
-		printf("bye bye <3\n");
+		//printf("bye bye <3\n");
 		return (TRUE);
 	}
 	if (ft_strlen(cmd) == 0)
