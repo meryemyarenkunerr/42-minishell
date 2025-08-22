@@ -37,9 +37,8 @@ static int	process_pipeline_segment(t_shell *shell, int segment_index,
 	curr = create_command_from_tokens(token_list);
 	if (!curr)
 	{
-		if (*prev)
-			return (merge_redirection_to_previous(*prev, token_list));
-		else
+		curr = create_empty_command_with_redirections(token_list);
+		if (!curr)
 			return (FALSE);
 	}
 	link_command_to_chain(shell, curr, prev);

@@ -88,14 +88,15 @@ t_command	*create_command_from_tokens(t_token *token_list)
 	if (!cmd)
 		return (NULL);
 	ft_memset(cmd, 0, sizeof(t_command));
-	cmd->fd_in = STDIN_FILENO;
 	cmd->fd_out = STDOUT_FILENO;
-	cmd->quote_flag = 0;
 	curr = token_list;
 	while (curr && curr->prev)
 		curr = curr->prev;
 	if (!extract_command_and_args(cmd, curr))
-		return (free(cmd), NULL);
+	{
+		free(cmd);
+		return (NULL);
+	}
 	extract_redirections_and_heredocs(cmd, curr);
 	return (cmd);
 }

@@ -54,7 +54,7 @@ CMD_DIR			= $(SRCDIR)/executer/command
 CMD_SRCS		= command_builder.c \
 				  command_creation.c \
 				  heredoc_management.c \
-				  redirection_merge.c \
+				  utils.c \
 				  token_analysis.c \
 				  expander.c
 

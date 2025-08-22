@@ -39,6 +39,13 @@ pid_t	*execute_pipeline_processes(t_shell *shell, int **pipes, int cmd_count)
 	i = 0;
 	while (i < cmd_count && current_cmd)
 	{
+		if (!current_cmd->cmd)
+		{
+			pids[i] = 0;
+			current_cmd = current_cmd->next;
+			i++;
+			continue ;
+		}
 		pids[i] = fork();
 		if (pids[i] == -1)
 		{

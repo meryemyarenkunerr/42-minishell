@@ -197,8 +197,8 @@ int			argument_counter(t_token *token_list);
 /* command_creation.c */
 t_command	*create_command_from_tokens(t_token *token_list);
 
-/* redirection_merge.c */
-int			merge_redirection_to_previous(t_command *prev_cmd, t_token *redirect_tokens);
+/* util.c */
+t_command	*create_empty_command_with_redirections(t_token *token_list);
 
 /* expander.c */
 char		*expand_variable(char *line, t_shell *shell);

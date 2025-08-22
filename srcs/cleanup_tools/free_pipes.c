@@ -23,10 +23,13 @@ void	cleanup_pipeline(t_shell *shell, int **pipes, pid_t *pids,
 	i = 0;
 	while (i < cmd_count)
 	{
-		if (waitpid(pids[i], &status, 0) == -1)
-			perror("waitpid");
-		else
-			update_exit_status(i, &last_exit_status, cmd_count, status);
+		if (pids[i] > 0)
+		{
+			if (waitpid(pids[i], &status, 0) == -1)
+				perror("waitpid");
+			else
+				update_exit_status(i, &last_exit_status, cmd_count, status);
+		}
 		i++;
 	}
 	shell->exit_status = last_exit_status;
