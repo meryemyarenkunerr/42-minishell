@@ -75,5 +75,6 @@ void	execute_heredoc_child(t_shell *shell, t_command *cmd, int fds[2])
 {
 	close(fds[0]);
 	handle_heredoc_input(shell, cmd, fds[1]);
+	free_at_exit(shell);
 	exit(0);
 }

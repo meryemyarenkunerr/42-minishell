@@ -18,7 +18,7 @@ int	is_exit(t_shell *shell)
 	if (*cmd && ft_strlen(cmd) > 0)
 		add_history(cmd);
 	process_command(shell, cmd);
-	free(cmd);
+	// free(cmd);
 	return (FALSE);
 }
 

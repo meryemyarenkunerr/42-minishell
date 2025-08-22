@@ -32,7 +32,7 @@ char	*find_command_name(t_token *token_list)
 			!is_redirection_file(curr) &&
 			!is_heredoc_delimeter(curr))
 		{
-			return (ft_strdup(ft_strtrim(curr->content, " \t")));
+			return (ft_strdup(curr->content));
 		}
 		curr = curr->next;
 	}

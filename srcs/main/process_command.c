@@ -109,6 +109,7 @@ void	process_command(t_shell *shell, char *command)
 
 	cleanup_previous_state(shell);
 	shell->pipeline = process_input(command, shell);
+	free(command);
 	if (!shell->pipeline)
 		return ;
 	if (!builds_commands_from_pipeline(shell))
