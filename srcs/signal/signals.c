@@ -1,4 +1,5 @@
 #include "../../includes/minishell.h"
+#include <unistd.h>
 
 // Hata kontrolü: sistem çağrısı başarısızsa uyarı ver
 void	check_and_warn(int ret, const char *msg)
@@ -57,7 +58,7 @@ int	handle_signal_and_exit(t_shell *shell, char **command)
 {
 	if (!*command)										// Ctrl-D veya EOF
 	{
-		printf("bye bye <3\n");
+		//write(STDOUT_FILENO, "bye bye <3\n", 11);
 		return 0;										// shell'den çık
 	}
 	if (g_sigint_received)								// Ctrl+C ile komut iptal edildiyse

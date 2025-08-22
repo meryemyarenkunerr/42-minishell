@@ -36,9 +36,9 @@ int	setup_command_fds(t_shell *shell, t_command *cmd)
 {
 	if (!cmd)
 		return (FALSE);
-	if (!setup_input_redirection(cmd))
-		return (FALSE);
 	if (!setup_output_redirection(cmd))
+		return (FALSE);
+	if (!setup_input_redirection(cmd))
 		return (FALSE);
 	if (!setup_heredoc_fds(shell, cmd))
 		return (FALSE);

@@ -99,7 +99,9 @@ CLEANUP_SRCS	= free_command.c \
 				  close_pipes.c \
 				  free_pipes.c
 
-# PHARSER
+# PARSER
+M_PARSER_DIR		= $(SRCDIR)/parser
+M_PARSER_SRCS		= router_parser.c
 
 # Advanced lexer
 A_LEXER_DIR		= $(SRCDIR)/parser/advanced_lexer
@@ -122,8 +124,7 @@ I_EXPANDER_SRCS	= improved_expander.c \
 
 # Lexer
 LEXER_DIR		= $(SRCDIR)/parser/lexer
-LEXER_SRCS		= lexer.c \
-				  lexer_utils.c
+LEXER_SRCS		= lexer.c
 
 # Parser
 PARSER_DIR		= $(SRCDIR)/parser/parser
@@ -161,7 +162,8 @@ UTILS_SRCS		= utils.c
 ERROR_DIR		= $(SRCDIR)/error
 ERROR_SRCS		= errors.c \
 				  builtins_error.c \
-				  heredoc_error.c
+				  heredoc_error.c \
+				  syntax_error.c
 
 # Test creators (Mock data)
 TEST_DIR		= $(SRCDIR)
@@ -193,15 +195,15 @@ Q_REMOVE_FILES		= $(addprefix $(Q_REMOVE_DIR)/, $(Q_REMOVE_SRCS))
 S_CHECK_FILES		= $(addprefix $(S_CHECK_DIR)/, $(S_CHECK_SRCS))
 T_CLASS_FILES		= $(addprefix $(T_CLASS_DIR)/, $(T_CLASS_SRCS))
 UTILS_FILES			= $(addprefix $(UTILS_DIR)/, $(UTILS_SRCS))
-
+M_PARSER_FILES		= $(addprefix $(M_PARSER_DIR)/, $(M_PARSER_SRCS))
 
 # Combine all source files
 ALL_SRCS		= $(MAIN_FILES) $(EXEC_FILES) $(HD_FILES) $(CMD_FILES) $(BUILTIN_FILES) \
 				  $(EXTERNAL_FILES) $(SIGNAL_FILES) $(CLEANUP_FILES) $(ERROR_FILES) \
 				  $(TEST_FILES) $(MULTIPLE_FILES) $(A_LEXER_FILES) $(C_REDIRECT_FILES) \
-				  $(EOF_CHECK_FILES) $(I_EXPANDER_FILES) $(LEXER_FILES) $(PARSER_FILES) \
+				  $(EOF_CHECK_FILES) $(I_EXPANDER_FILES) $(LEXER_FILES) \
 				  $(P_TOKEN_FILES) $(POST_EXPANDER_FILES) $(Q_REMOVE_FILES) $(S_CHECK_FILES) \
-				  $(T_CLASS_FILES) $(UTILS_FILES)
+				  $(T_CLASS_FILES) $(UTILS_FILES) $(M_PARSER_FILES)
 
 # Generate object files
 OBJS			= $(ALL_SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
@@ -259,6 +261,29 @@ fclean: clean
 	@echo "$(GREEN)✅ Full clean completed!$(RESET)"
 
 re: fclean all
+
+# ============================= NORMINETTE RULES ============================ #
+
+NORM_FILES	= $(ALL_SRCS) $(wildcard $(INCDIR)/*.h)
+
+norma:
+	@echo "$(PURPLE)📏 Checking norminette...$(RESET)"
+	@for file in $(NORM_FILES); do \
+		echo ""; \
+		echo "$(CYAN)──────────────────────────────────────────────$(RESET)"; \
+		echo "$(YELLOW)📁 Checking: $(GREEN)$$file$(RESET)"; \
+		output=$$(norminette $$file 2>&1); \
+		if echo "$$output" | grep -q "Error\|Warning"; then \
+			echo "$$output" | grep -v "^$$file" \
+				| sed 's/Error:/$(RED)Error:$(RESET)/g' \
+				| sed 's/Warning:/$(YELLOW)Warning:$(RESET)/g'; \
+		else \
+			echo "$(GREEN)✓ OK$(RESET)"; \
+		fi; \
+		echo "$(CYAN)──────────────────────────────────────────────$(RESET)"; \
+	done
+	@echo ""; \
+	echo "$(PURPLE)✨ Norminette check completed! ✨$(RESET)"
 
 # ============================== UTILITY RULES ============================== #
 

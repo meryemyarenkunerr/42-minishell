@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 00:00:00 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/19 14:27:14 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/22 20:48:38 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,31 +49,30 @@ static char	*process_variable_expansion(char *content, char *result,
 	return (temp);
 }
 
-static char	*process_character(char *content, char *result, t_env *env, int *i)
+static char	*process_character(char *content, char *result, t_env *env, int *quotesi)
 {
-	int	quotes[2];
-
-	quotes[0] = 0;
-	quotes[1] = 0;
-	if (content[*i] == '"' && !quotes[0])
+	if (content[quotesi[0]] == '"' && !quotesi[1])
 	{
-		quotes[1] = !quotes[1];
-		result = append_char_to_result(result, content[*i]);
-		(*i)++;
+		
+		quotesi[2] = !quotesi[2];
+		result = append_char_to_result(result, content[quotesi[0]]);
+		(quotesi[0])++;
 	}
-	else if (content[*i] == '\'' && !quotes[1])
+	else if (content[quotesi[0]] == '\'' && !quotesi[2])
 	{
-		quotes[0] = !quotes[0];
-		result = append_char_to_result(result, content[*i]);
-		(*i)++;
+		quotesi[1] = !quotesi[1];
+		result = append_char_to_result(result, content[quotesi[0]]);
+		(quotesi[0])++;
 	}
-	else if (content[*i] == '$' && !quotes[0]
-		&& content[*i + 1] && is_valid_var_char(content[*i + 1]))
-		result = process_variable_expansion(content, result, env, i);
+	else if (content[quotesi[0]] == '$' && !quotesi[1]
+		&& content[quotesi[0] + 1] && is_valid_var_char(content[quotesi[0] + 1]))
+	{
+		result = process_variable_expansion(content, result, env, &quotesi[0]);
+	}
 	else
 	{
-		result = append_char_to_result(result, content[*i]);
-		(*i)++;
+		result = append_char_to_result(result, content[quotesi[0]]);
+		(quotesi[0])++;
 	}
 	return (result);
 }
@@ -81,15 +80,17 @@ static char	*process_character(char *content, char *result, t_env *env, int *i)
 static char	*expand_variables_only(char *content, t_env *env)
 {
 	char	*result;
-	int		i;
+	int		quotesi[3];
 
 	result = ft_strdup("");
 	if (!result)
 		return (NULL);
-	i = 0;
-	while (content[i])
+	quotesi[0] = 0;
+	quotesi[1] = 0;
+	quotesi[2] = 0;
+	while (content[quotesi[0]])
 	{
-		result = process_character(content, result, env, &i);
+		result = process_character(content, result, env, quotesi);
 		if (!result)
 			return (NULL);
 	}

@@ -25,7 +25,7 @@ void	execute_builtin_exit(t_shell *shell, t_command *cmd)
 	cmd_count = cmd_counter_except_first(cmd);
 	if (cmd_count == 0)
 	{
-		write(STDOUT_FILENO, "bye bye <3\n", 11);
+		//write(STDOUT_FILENO, "bye bye <3\n", 11);
 		shell->exit = 1;
 		return ;
 	}
