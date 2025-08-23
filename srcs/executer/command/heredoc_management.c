@@ -7,7 +7,7 @@ void	add_heredoc_delimiter_with_quote(t_command *cmd, const char *delimiter,
 	int		i;
 
 	if (!cmd || !delimiter)
-		return;
+		return ;
 	new_delimiters = malloc((cmd->heredoc_count + 2) * sizeof(char *));
 	if (!new_delimiters)
 		return ;

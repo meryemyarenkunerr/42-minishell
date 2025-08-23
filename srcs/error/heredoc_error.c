@@ -1,9 +1,10 @@
 #include "../../includes/minishell.h"
 
-void print_eof_warning(char *delimiter)
+void	print_eof_warning(char *delimiter)
 {
-	write(STDERR_FILENO, "\nminishell: warning: here-document delimited by ", 48);
-	write(STDERR_FILENO, "end-of-file (wanted `", 21);
-	write(STDERR_FILENO, delimiter, ft_strlen(delimiter));
-	write(STDERR_FILENO, "')\n", 3);
+	ft_putstr_fd("\nminishell: warning: ", STDERR_FILENO);
+	ft_putstr_fd("here-document delimited by ", STDERR_FILENO);
+	ft_putstr_fd("end-of-file (wanted `", STDERR_FILENO);
+	ft_putstr_fd(delimiter, STDERR_FILENO);
+	ft_putstr_fd("')\n", STDERR_FILENO);
 }

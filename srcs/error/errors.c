@@ -1,10 +1,10 @@
 #include "../../includes/minishell.h"
 
-void	handle_export_error(t_shell *shell, const char *arg)
+void	handle_export_error(t_shell *shell, char *arg)
 {
-	write(STDERR_FILENO, "export `", 8);
-	write(STDERR_FILENO, arg, ft_strlen(arg));
-	write(STDERR_FILENO, "': not a valid identifier\n", 26);
+	ft_putstr_fd("export `", STDERR_FILENO);
+	ft_putstr_fd(arg, STDERR_FILENO);
+	ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 	shell->exit_status = 1;
 }
 
@@ -16,10 +16,17 @@ int	handle_fork_error(int fds[2])
 	return (FALSE);
 }
 
+pid_t	*handle_fork_error_multiple(pid_t *pids, int i)
+{
+	perror("fork");
+	cleanup_partial_processes(pids, i);
+	return (NULL);
+}
+
 void	command_not_found_error(t_shell *shell, char *cmd)
 {
-	write(STDERR_FILENO, cmd, ft_strlen(cmd));
-	write(STDERR_FILENO, ": command not found\n", 20);
+	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	shell->exit_status = 127;
 }
 
@@ -27,17 +34,16 @@ void	handle_execve_error(char *cmd)
 {
 	if (errno == ENOENT)
 	{
-		write(STDERR_FILENO, "minishell: ", 11);
-		write(STDERR_FILENO, cmd, ft_strlen(cmd));
-		write(STDERR_FILENO, ": No such file or directory\n", 28);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(cmd, STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 	}
 	else if (errno == EACCES)
 	{
-		write(STDERR_FILENO, "minishell: ", 11);
-		write(STDERR_FILENO, cmd, ft_strlen(cmd));
-		write(STDERR_FILENO, ": Permission denied\n", 20);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(cmd, STDERR_FILENO);
+		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
 	}
 	else
 		perror("minishell: execve");
 }
-

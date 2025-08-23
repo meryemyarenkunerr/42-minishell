@@ -26,9 +26,9 @@ static char	*char_to_string(char c)
 
 static char	*extract_and_expand_var(char *str, int *index, t_shell *shell)
 {
-	char *var_name;
-	char *var_value;
-	int start;
+	char	*var_name;
+	char	*var_value;
+	int		start;
 
 	if (str[0] == '?')
 	{
@@ -40,7 +40,6 @@ static char	*extract_and_expand_var(char *str, int *index, t_shell *shell)
 		start++;
 	if (start == 0)
 		return (ft_strdup("$"));
-
 	var_name = ft_substr(str, 0, start);
 	var_value = get_env_value(shell->environment, var_name);
 	*index += start;

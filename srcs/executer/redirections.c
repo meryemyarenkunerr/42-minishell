@@ -1,33 +1,46 @@
 #include "../../includes/minishell.h"
 
-int	setup_input_redirection(t_command *cmd)
+int	setup_input_redirection(t_shell *shell, t_command *cmd)
 {
-	if (!cmd || !cmd->input_file)
+	int	i;
+	int	fd;
+
+	if (!cmd || !cmd->input_files || cmd->input_count == 0)
 		return (TRUE);
-	cmd->fd_in = open(cmd->input_file, O_RDONLY);
-	if (cmd->fd_in == -1)
+	i = 0;
+	while (i < cmd->input_count)
 	{
-		perror(cmd->input_file);
-		return (FALSE);
+		printf("file name: %s\n", cmd->input_files[i]);
+		fd = open(cmd->input_files[i], O_RDONLY);
+		if (fd == -1)
+		{
+			perror(cmd->input_files[i]);
+			shell->exit_status = 1;
+			return (FALSE);
+		}
+		if (cmd->fd_in != STDIN_FILENO && cmd->fd_in != -1)
+			close(cmd->fd_in);
+		cmd->fd_in = fd;
+		i++;
 	}
 	return (TRUE);
 }
 
-int	setup_output_redirection(t_command *cmd)
+int	setup_output_redirection(t_shell *shell, t_command *cmd)
 {
-	int	flags;
+	int	i;
+	int	fd;
 
-	if (!cmd || !cmd->output_file)
+	if (!cmd || !cmd->output_files || cmd->output_count == 0)
 		return (TRUE);
-	if (cmd->append_mode)
-		flags = O_WRONLY | O_CREAT | O_APPEND;
-	else
-		flags = O_WRONLY | O_CREAT | O_TRUNC;
-	cmd->fd_out = open(cmd->output_file, flags, 0644);
-	if (cmd->fd_out == -1)
+	i = -1;
+	while (++i < cmd->output_count)
 	{
-		perror(cmd->output_file);
-		return (FALSE);
+		fd = open_output_file(shell, cmd, i);
+		if (fd == -1)
+			return (FALSE);
+		close_old_fd(&cmd->fd_out);
+		cmd->fd_out = fd;
 	}
 	return (TRUE);
 }
@@ -36,9 +49,9 @@ int	setup_command_fds(t_shell *shell, t_command *cmd)
 {
 	if (!cmd)
 		return (FALSE);
-	if (!setup_output_redirection(cmd))
+	if (!setup_output_redirection(shell, cmd))
 		return (FALSE);
-	if (!setup_input_redirection(cmd))
+	if (!setup_input_redirection(shell, cmd))
 		return (FALSE);
 	if (!setup_heredoc_fds(shell, cmd))
 		return (FALSE);

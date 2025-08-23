@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-char	*build_prompt()
+char	*build_prompt(void)
 {
 	char	*cwd;
 	char	*colored_path;
