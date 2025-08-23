@@ -1,7 +1,5 @@
 #include "../../includes/minishell.h"
 
-int	g_sigint_received = 0;
-
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	shell;

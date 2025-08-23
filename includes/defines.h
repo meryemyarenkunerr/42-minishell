@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:02:06 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 17:02:12 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/23 17:47:14 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,10 @@
 # define ENV "env"
 # define EXIT "exit"
 
-# define IN_HEREDOC 4
+# define IN_HEREDOC 2
+# define AFTER_HEREDOC 3
+# define IN_CMD 4
+# define AFTER_CMD 5
+# define IN_READLINE 6
 
 #endif

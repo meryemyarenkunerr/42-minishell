@@ -3,7 +3,7 @@
 int	setup_heredoc_fds(t_shell *shell, t_command *cmd)
 {
 	int		pipe_fds[2];
-	pid_t	pid;
+	pid_t	pid = 0;
 
 	if (!cmd || cmd->heredoc_count == 0)
 		return (TRUE);
@@ -12,12 +12,7 @@ int	setup_heredoc_fds(t_shell *shell, t_command *cmd)
 		perror("pipe");
 		return (FALSE);
 	}
-	pid = fork();
-	if (pid == -1)
-		return (handle_fork_error(pipe_fds));
-	if (pid == 0)
-		execute_heredoc_child(shell, cmd, pipe_fds);
-	else
-		execute_heredoc_parent(cmd, pipe_fds, pid);
+	handle_heredoc_input(shell, cmd, pipe_fds);
+	execute_heredoc_parent(cmd, pipe_fds, pid);
 	return (TRUE);
 }

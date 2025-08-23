@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:01:40 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 17:09:39 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/23 20:14:59 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,19 @@ extern int	g_sigint_received;
 
 /* Functions */
 
+char			*safe_readline(const char *prompt, t_shell *shell, char *content, int fds[2]);
+
 /* SIGNAL */
 /* signals.c */
-int				handle_signal_and_exit(t_shell *shell, char **command);
-void			check_and_warn(int ret, const char *msg);
-void			handle_sigint(int signo);
-void			sigint_received(t_shell *shell);
+// int			handle_signal_and_exit(t_shell *shell, char **command);
+// void			check_and_warn(int ret, const char *msg);
+// void			handle_sigint(int signo);
+// void			sigint_received(t_shell *shell);
+
+void			handle_signals(void);
+void			ctrl_c(int sig);
+void			ctrl_d(int sig);
+void			tcseta(void);
 
 /* heredoc_signal.c */
 void			heredoc_signal_handler(int signo);
@@ -256,11 +263,11 @@ void			execute_heredoc_parent(t_command *cmd, int fds[2], pid_t pid);
 /* heredoc_child.c */
 void			execute_heredoc_child(t_shell *shell, t_command *cmd,
 					int fds[2]);
-void			handle_heredoc_input(t_shell *shell, t_command *cmd,
-					int write_fd);
+void	handle_heredoc_input(t_shell *shell, t_command *cmd, int fds[2]);
 void			process_single_heredoc(t_shell *shell, char *delimiter,
-					int write_fd);
-void			process_single_heredoc_ignore(char *delimiter, int write_fd);
+					int fds[2]);
+void			process_single_heredoc_ignore(t_shell *shell, char *delimiter,
+					int fds[2]);
 
 /* heredoc_utils.c */
 int				is_heredoc_interrupted(void);

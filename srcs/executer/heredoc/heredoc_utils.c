@@ -2,20 +2,26 @@
 
 int	is_heredoc_interrupted(void)
 {
-	return (g_sigint_received == SIGINT);
+	if (g_sigint_received == IN_HEREDOC)
+		return (FALSE);
+	else
+		return (TRUE);
 }
 
 int	check_line_conditions(char *line, char *delimiter)
 {
+	if (!line)
+	{
+		if (errno == SIGQUIT)
+			print_eof_warning(delimiter);
+		g_sigint_received = AFTER_HEREDOC;
+		handle_signals();
+		return (1);
+	}
 	if (is_heredoc_interrupted())
 	{
 		if (line)
 			free(line);
-		return (1);
-	}
-	if (!line)
-	{
-		print_eof_warning(delimiter);
 		return (1);
 	}
 	if (ft_strcmp(line, delimiter) == 0)
@@ -37,5 +43,5 @@ char	*process_line_content(t_shell *shell, char *line)
 void	write_processed_line(int write_fd, char *processed_line)
 {
 	write(write_fd, processed_line, ft_strlen(processed_line));
-	write(write_fd, "\n", 1);
+	// write(write_fd, "\n", 1);
 }

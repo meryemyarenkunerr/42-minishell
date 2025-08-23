@@ -2,7 +2,7 @@
 
 NAME			= minishell
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror
+CFLAGS			= -Wall -Wextra -Werror -g -fsanitize=address
 INCLUDES		= -I./includes -I./libft
 LIBS			= -L./libft -lft
 
@@ -16,7 +16,6 @@ else
 	# Linux için
 	LIBS		+= -lreadline
 endif
-
 # =============================== DIRECTORIES =============================== #
 
 SRCDIR			= srcs
@@ -48,7 +47,8 @@ HD_DIR			= $(SRCDIR)/executer/heredoc
 HD_SRCS			= heredoc_handler.c \
 				  heredoc_child.c \
 				  heredoc_parent.c \
-				  heredoc_utils.c
+				  heredoc_utils.c \
+				  heredoc_safe_readline.c
 
 # Command module
 CMD_DIR			= $(SRCDIR)/executer/command
@@ -196,8 +196,8 @@ ALL_SRCS		= $(MAIN_FILES) $(EXEC_FILES) $(HD_FILES) $(CMD_FILES) $(BUILTIN_FILES
 				  $(EXTERNAL_FILES) $(SIGNAL_FILES) $(CLEANUP_FILES) $(ERROR_FILES) \
 				  $(TEST_FILES) $(MULTIPLE_FILES) $(A_LEXER_FILES) $(C_REDIRECT_FILES) \
 				  $(EOF_CHECK_FILES) $(I_EXPANDER_FILES) $(T_CLASS_FILES) $(M_PARSER_FILES) \
-				  $(P_TOKEN_FILES) $(POST_EXPANDER_FILES) $(Q_REMOVE_FILES) $(S_CHECK_FILES) 
-				  
+				  $(P_TOKEN_FILES) $(POST_EXPANDER_FILES) $(Q_REMOVE_FILES) $(S_CHECK_FILES)
+
 
 # Generate object files
 OBJS			= $(ALL_SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
@@ -227,7 +227,7 @@ header:
 
 $(NAME): libft $(OBJS)
 	@echo "$(GREEN)🔗 Linking $(NAME)...$(RESET)"
-	@$(CC) $(OBJS) $(LIBS) -o $(NAME)
+	@$(CC) $(OBJS) $(LIBS) $(CFLAGS) -o $(NAME)
 	@echo "$(GREEN)✅ $(NAME) compiled successfully!$(RESET)"
 	@echo "$(WHITE)Usage: ./$(NAME)$(RESET)"
 
