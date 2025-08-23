@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 00:28:27 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/22 14:36:35 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/23 15:25:39 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static t_token	*prepare_tokens(char *input, t_shell *shell)
 	if (!tokens)
 		return (NULL);
 	mark_eof_tokens(tokens);
-	improved_expand_tokens(tokens, shell->environment);
+	improved_expand_tokens(tokens, shell);
 	post_expansion_tokenize(&tokens);
 	remove_quotes_from_tokens(tokens);
 	return (tokens);

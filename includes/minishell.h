@@ -292,7 +292,7 @@ void			mark_eof_tokens(t_token *tokens);
 
 /* IMPROVED EXPANDER */
 /* improved_expander.c */
-void			improved_expand_tokens(t_token *tokens, t_env *env);
+void			improved_expand_tokens(t_token *tokens, t_shell *shell);
 /* improved_expander_utils.c */
 int				is_valid_var_char(char c);
 char			*extract_var_name(char *str, int start, int *end);
