@@ -1,5 +1,26 @@
 #include "../includes/minishell.h"
 
+// Helper function to get token type name for debugging
+const char *get_token_type_name(t_token_types type)
+{
+    switch (type)
+    {
+        case TOKEN_NONE:        return "NONE";
+        case TOKEN_WORD:        return "WORD";
+        case TOKEN_COMMAND:     return "COMMAND";
+        case TOKEN_ARGUMENT:    return "ARGUMENT";
+        case TOKEN_FILE:        return "FILE";
+        case TOKEN_PIPE:        return "PIPE";
+        case TOKEN_REDIRECT_IN: return "REDIRECT_IN";
+        case TOKEN_REDIRECT_OUT:return "REDIRECT_OUT";
+        case TOKEN_APPEND:      return "APPEND";
+        case TOKEN_HEREDOC:     return "HEREDOC";
+        case TOKEN_EOF:         return "EOF";
+        case TOKEN_EOF_QUOTE:   return "EOF_QUOTE";
+        default:                return "UNKNOWN";
+    }
+}
+
 void	print_shell_info(t_shell *shell)
 {
     printf("\n==============================================\n");
@@ -94,9 +115,27 @@ void	print_shell_info(t_shell *shell)
             printf("\n");
 
             // Redirections
-            printf("  │ input_file: %s\n", cmd->input_file ? cmd->input_file : "(null)");
-            printf("  │ output_file: %s\n", cmd->output_file ? cmd->output_file : "(null)");
-            printf("  │ append_mode: %d\n", cmd->append_mode);
+            // Input files
+            printf("  │ input_files (%d): \n", cmd->input_count);
+            if (cmd->input_count == 0)
+                printf("  | (null)\n");
+            else
+            {
+                for (int i = 0; i < cmd->input_count; i++)
+                printf("  │   [%d]: %s\n", i, cmd->input_files[i]);
+            }
+
+            // Output files
+            printf("  │ output_files (%d): ", cmd->output_count);
+            if (cmd->output_count == 0)
+                printf("  | (null)\n");
+            else
+            {
+                printf("\n");
+                for (int i = 0; i < cmd->output_count; i++)
+                printf("  │   [%d]: %s\n", i, cmd->output_files[i]);
+            }
+            // printf("  │ append_mode: %d\n", cmd->append_mode);
 
             // SAFETY: Check heredocs with bounds
             if (cmd->heredoc_count > 0)
@@ -215,25 +254,4 @@ void	print_shell_info(t_shell *shell)
     }
 
     printf("\n==============================================\n");
-}
-
-// Helper function to get token type name for debugging
-const char *get_token_type_name(t_token_types type)
-{
-    switch (type)
-    {
-        case TOKEN_NONE:        return "NONE";
-        case TOKEN_WORD:        return "WORD";
-        case TOKEN_COMMAND:     return "COMMAND";
-        case TOKEN_ARGUMENT:    return "ARGUMENT";
-        case TOKEN_FILE:        return "FILE";
-        case TOKEN_PIPE:        return "PIPE";
-        case TOKEN_REDIRECT_IN: return "REDIRECT_IN";
-        case TOKEN_REDIRECT_OUT:return "REDIRECT_OUT";
-        case TOKEN_APPEND:      return "APPEND";
-        case TOKEN_HEREDOC:     return "HEREDOC";
-        case TOKEN_EOF:         return "EOF";
-        case TOKEN_EOF_QUOTE:   return "EOF_QUOTE";
-        default:                return "UNKNOWN";
-    }
 }

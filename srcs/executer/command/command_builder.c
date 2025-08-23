@@ -18,7 +18,8 @@ static void	initialize_command_chain(t_shell *shell)
 	}
 }
 
-static void	link_command_to_chain(t_shell *shell, t_command *cmd, t_command **prev)
+static void	link_command_to_chain(t_shell *shell, t_command *cmd,
+	t_command **prev)
 {
 	if (*prev)
 		(*prev)->next = cmd;

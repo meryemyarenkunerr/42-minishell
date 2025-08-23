@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 00:16:27 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/22 00:39:11 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/23 14:23:26 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 void	redirects_error(char *text, t_shell *shell)
 {
-	write(2, "minishell: syntax error near unexpected token `", 47);
-	write(2, text, strlen(text));
-	write(2, "'\n", 2);
+	ft_putstr_fd("minishell: syntax error ", STDERR_FILENO);
+	ft_putstr_fd("near unexpected token `", STDERR_FILENO);
+	ft_putstr_fd(text, STDERR_FILENO);
+	ft_putstr_fd("'\n", STDERR_FILENO);
 	shell->exit_status = 2;
 }
 
 void	quote_error(void)
 {
-	write(2, "minishell: unexpected end of file while", 39);
-	write(2, " looking for matching quote\n", 28);
+	ft_putstr_fd("minishell: unexpected end of file while", STDERR_FILENO);
+	ft_putstr_fd(" looking for matching quote\n", STDERR_FILENO);
 }

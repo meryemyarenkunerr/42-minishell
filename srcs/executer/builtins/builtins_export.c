@@ -68,7 +68,8 @@ void	print_export_variables(t_env *env)
 	while (i < count)
 	{
 		if (ft_strlen(env_array[i]->value) > 0)
-			printf("declare -x %s=\"%s\"\n", env_array[i]->key, env_array[i]->value);
+			printf("declare -x %s=\"%s\"\n", env_array[i]->key,
+				env_array[i]->value);
 		else
 			printf("declare -x %s\n", env_array[i]->key);
 		i++;

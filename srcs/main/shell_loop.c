@@ -6,19 +6,15 @@ int	is_exit(t_shell *shell)
 	char	*prompt;
 
 	prompt = build_prompt();
-	cmd =readline(prompt);
+	cmd = readline(prompt);
 	free(prompt);
 	if (!cmd)
-	{
-		//printf("bye bye <3\n");
 		return (TRUE);
-	}
 	if (ft_strlen(cmd) == 0)
 		return (FALSE);
 	if (*cmd && ft_strlen(cmd) > 0)
 		add_history(cmd);
 	process_command(shell, cmd);
-	// free(cmd);
 	return (FALSE);
 }
 

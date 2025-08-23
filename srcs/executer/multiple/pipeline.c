@@ -29,23 +29,18 @@ void	setup_pipeline_child(t_command *cmd, int **pipes,
 pid_t	*execute_pipeline_processes(t_shell *shell, int **pipes, int cmd_count)
 {
 	pid_t		*pids;
-	t_command	*current_cmd;
+	t_command	*cmd;
 	int			i;
 
 	pids = malloc(cmd_count * sizeof(pid_t));
 	if (!pids)
 		return (NULL);
-	current_cmd = shell->commands;
-	i = 0;
-	while (i < cmd_count && current_cmd)
+	cmd = shell->commands;
+	i = -1;
+	while (++i < cmd_count && cmd)
 	{
-		if (!current_cmd->cmd)
-		{
-			pids[i] = 0;
-			current_cmd = current_cmd->next;
-			i++;
+		if (skip_empty_command(pids, &cmd, i))
 			continue ;
-		}
 		pids[i] = fork();
 		if (pids[i] == -1)
 		{
@@ -54,13 +49,8 @@ pid_t	*execute_pipeline_processes(t_shell *shell, int **pipes, int cmd_count)
 			return (NULL);
 		}
 		if (pids[i] == 0)
-		{
-			setup_pipeline_child(current_cmd, pipes, cmd_count, i);
-			execute_pipeline_child(shell, current_cmd);
-			exit(127);
-		}
-		current_cmd = current_cmd->next;
-		i++;
+			handle_child(shell, cmd, pipes, i);
+		cmd = cmd->next;
 	}
 	return (pids);
 }
@@ -80,16 +70,11 @@ int	**create_pipeline_pipes(int cmd_count)
 	{
 		pipes[i] = malloc(2 * sizeof(int));
 		if (!pipes[i])
-		{
-			cleanup_partial_pipes(pipes, i);
-			return (NULL);
-		}
+			return (cleanup_partial_pipes(pipes, i), NULL);
 		if (pipe(pipes[i]) == -1)
 		{
-			perror("pipe");
-			free(pipes[i]);
-			cleanup_partial_pipes(pipes, i);
-			return (NULL);
+			if (handle_pipe_error(pipes, i))
+				return (NULL);
 		}
 		i++;
 	}

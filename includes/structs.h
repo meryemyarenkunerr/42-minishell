@@ -46,12 +46,14 @@ typedef struct s_command
 {
 	char				*cmd;
 	char				**arguments;
-	char				*input_file;
-	char				*output_file;
+	char				**input_files;
+	char				**output_files;
+	int					input_count;
+	int					output_count;
 	char				**heredoc_delimiter;
 	int					heredoc_count;
 	int					quote_flag;
-	int					append_mode;
+	int					*append_modes;
 	int					fd_in;
 	int					fd_out;
 	pid_t				pid;

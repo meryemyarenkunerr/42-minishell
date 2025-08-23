@@ -6,7 +6,7 @@ void	add_new_env_node(t_env **env, t_env *tail)
 
 	if (!env || !tail)
 		return ;
-	if (!*env) // head
+	if (!*env)
 	{
 		*env = tail;
 		return ;
@@ -17,7 +17,7 @@ void	add_new_env_node(t_env **env, t_env *tail)
 	curr->next = tail;
 }
 
-t_env	*create_env_node_empty()
+t_env	*create_env_node_empty(void)
 {
 	t_env	*node;
 

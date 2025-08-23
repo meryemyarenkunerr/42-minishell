@@ -1,10 +1,5 @@
 #include "../../../includes/minishell.h"
 
-static int	is_heredoc_interrupted(void)
-{
-	return (g_sigint_received == SIGINT);
-}
-
 void	process_single_heredoc_ignore(char *delimiter, int write_fd)
 {
 	char	*line;
@@ -38,32 +33,13 @@ void	process_single_heredoc(t_shell *shell, char *delimiter, int write_fd)
 	char	*line;
 	char	*processed_line;
 
-	processed_line = NULL;
 	while (!is_heredoc_interrupted())
 	{
 		line = readline(BLUE PROMPT_HEREDOC RESET);
-		if (is_heredoc_interrupted())
-		{
-			if (line)
-				free(line);
+		if (check_line_conditions(line, delimiter))
 			break ;
-		}
-		if (!line)
-		{
-			print_eof_warning(delimiter);
-			break ;
-		}
-		if (ft_strcmp(line, delimiter) == 0)
-		{
-			free(line);
-			break ;
-		}
-		if (shell->commands->quote_flag == 1)
-			processed_line = line;
-		else
-			processed_line = expand_variable(line, shell);
-		write(write_fd, processed_line, ft_strlen(processed_line));
-		write(write_fd, "\n", 1);
+		processed_line = process_line_content(shell, line);
+		write_processed_line(write_fd, processed_line);
 		if (shell->commands->quote_flag != 1)
 			free(processed_line);
 		free(line);
@@ -93,7 +69,6 @@ void	execute_heredoc_child(t_shell *shell, t_command *cmd, int fds[2])
 	handle_heredoc_input(shell, cmd, fds[1]);
 	rl_clear_history();
 	restore_heredoc_signals();
-	//free_at_exit(shell);
 	if (is_heredoc_interrupted())
 		complete_cleanup_and_exit(shell, 130);
 	else
