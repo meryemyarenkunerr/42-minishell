@@ -10,7 +10,6 @@ int	setup_input_redirection(t_shell *shell, t_command *cmd)
 	i = 0;
 	while (i < cmd->input_count)
 	{
-		printf("file name: %s\n", cmd->input_files[i]);
 		fd = open(cmd->input_files[i], O_RDONLY);
 		if (fd == -1)
 		{
