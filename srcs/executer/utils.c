@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/23 17:59:44 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/23 17:59:47 by iaktas           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	ft_strcmp(const char *s1, const char *s2)
@@ -11,14 +23,16 @@ int	ft_strcmp(const char *s1, const char *s2)
 		i++;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
+
 int	open_output_file(t_shell *shell, t_command *cmd, int i)
 {
 	int	flags;
 	int	fd;
 
-	flags = (cmd->append_modes && cmd->append_modes[i])
-		? O_WRONLY | O_CREAT | O_APPEND
-		: O_WRONLY | O_CREAT | O_TRUNC;
+	if (cmd->append_modes && cmd->append_modes[i])
+		flags = O_WRONLY | O_CREAT | O_APPEND;
+	else
+		flags = O_WRONLY | O_CREAT | O_TRUNC;
 	fd = open(cmd->output_files[i], flags, 0644);
 	if (fd == -1)
 	{

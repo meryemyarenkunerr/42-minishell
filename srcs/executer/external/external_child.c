@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   external_child.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/23 20:06:44 by iaktas           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
 
 char	*create_env_string(char *key, char *val)
@@ -21,7 +33,7 @@ char	*create_env_string(char *key, char *val)
 	return (env_str);
 }
 
-int	fill_env_array(char **env_array, t_env *env)
+static int	fill_env_array(char **env_array, t_env *env)
 {
 	t_env	*curr;
 	int		i;

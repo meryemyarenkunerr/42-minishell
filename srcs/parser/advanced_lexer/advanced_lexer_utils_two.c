@@ -6,13 +6,13 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 12:23:47 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/19 15:22:00 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/23 20:20:37 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-int	find_quote_end(char *input, int start, char quote_char)
+static int	find_quote_end(char *input, int start, char quote_char)
 {
 	int	i;
 
