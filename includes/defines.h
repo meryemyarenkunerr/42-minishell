@@ -42,4 +42,6 @@
 # define ENV "env"
 # define EXIT "exit"
 
+# define IN_HEREDOC 4
+
 #endif

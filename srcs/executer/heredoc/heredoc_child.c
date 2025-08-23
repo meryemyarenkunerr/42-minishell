@@ -1,13 +1,24 @@
 #include "../../../includes/minishell.h"
 
+static int	is_heredoc_interrupted(void)
+{
+	return (g_sigint_received == SIGINT);
+}
+
 void	process_single_heredoc_ignore(char *delimiter, int write_fd)
 {
 	char	*line;
 
 	(void)write_fd;
-	while (1)
+	while (!is_heredoc_interrupted())
 	{
 		line = readline(BLUE PROMPT_HEREDOC RESET);
+		if (is_heredoc_interrupted())
+		{
+			if (line)
+				free(line);
+			break ;
+		}
 		if (!line)
 		{
 			print_eof_warning(delimiter);
@@ -28,9 +39,15 @@ void	process_single_heredoc(t_shell *shell, char *delimiter, int write_fd)
 	char	*processed_line;
 
 	processed_line = NULL;
-	while (1)
+	while (!is_heredoc_interrupted())
 	{
 		line = readline(BLUE PROMPT_HEREDOC RESET);
+		if (is_heredoc_interrupted())
+		{
+			if (line)
+				free(line);
+			break ;
+		}
 		if (!line)
 		{
 			print_eof_warning(delimiter);
@@ -58,7 +75,7 @@ void	handle_heredoc_input(t_shell *shell, t_command *cmd, int write_fd)
 	int	i;
 
 	i = 0;
-	while (i < cmd->heredoc_count)
+	while (i < cmd->heredoc_count && !is_heredoc_interrupted())
 	{
 		if (i == cmd->heredoc_count - 1)
 			process_single_heredoc(shell, cmd->heredoc_delimiter[i], write_fd);
@@ -67,14 +84,18 @@ void	handle_heredoc_input(t_shell *shell, t_command *cmd, int write_fd)
 		i++;
 	}
 	close(write_fd);
-	rl_clear_history();
-	exit(0);
 }
 
 void	execute_heredoc_child(t_shell *shell, t_command *cmd, int fds[2])
 {
 	close(fds[0]);
+	setup_heredoc_signals();
 	handle_heredoc_input(shell, cmd, fds[1]);
-	free_at_exit(shell);
-	exit(0);
+	rl_clear_history();
+	restore_heredoc_signals();
+	//free_at_exit(shell);
+	if (is_heredoc_interrupted())
+		complete_cleanup_and_exit(shell, 130);
+	else
+		complete_cleanup_and_exit(shell, 0);
 }

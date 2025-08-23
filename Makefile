@@ -86,7 +86,7 @@ MULTIPLE_SRCS	= pipeline.c \
 # Signal handling
 SIGNAL_DIR		= $(SRCDIR)/signal
 SIGNAL_SRCS		= signals.c \
-				  signals_2.c
+				  heredoc_signal.c
 
 # Cleanup tools
 CLEANUP_DIR		= $(SRCDIR)/cleanup_tools
@@ -97,7 +97,8 @@ CLEANUP_SRCS	= free_command.c \
 				  close_fds.c \
 				  free_builtins.c \
 				  close_pipes.c \
-				  free_pipes.c
+				  free_pipes.c \
+				  free_heredoc.c
 
 # PARSER
 M_PARSER_DIR		= $(SRCDIR)/parser

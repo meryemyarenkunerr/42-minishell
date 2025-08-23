@@ -32,8 +32,10 @@ void			check_and_warn(int ret, const char *msg);
 void			handle_sigint(int signo);
 void			sigint_received(t_shell *shell);
 
-/* signals_2.c */
+/* heredoc_signal.c */
 void			heredoc_signal_handler(int signo);
+void			setup_heredoc_signals(void);
+void			restore_heredoc_signals(void);
 
 /* MAIN */
 /* init_env.c */
@@ -111,6 +113,9 @@ void			close_all_command_fds(t_shell *shell);
 
 /* free_builtins.c */
 void			cleanup_cd_memory(char *old_pwd, char *target_dir);
+
+/* free_heredoc.c */
+void	complete_cleanup_and_exit(t_shell *shell, int exit_code);
 
 /* EXECUTER */
 /* executer.c */
