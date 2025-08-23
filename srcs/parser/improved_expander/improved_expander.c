@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 00:00:00 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 15:24:09 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/23 17:08:36 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,24 +49,11 @@ static char	*process_variable_expansion(char *content, char *result,
 	return (temp);
 }
 
-static char	*append_exit_status(char *result, t_shell *shell, int *i)
-{
-	char	*var_value;
-	char	*temp;
-
-	var_value = ft_itoa(shell->exit_status);
-	temp = ft_strjoin(result, var_value);
-	free(result);
-	free(var_value);
-	*i = *i + 2;
-	return (temp);
-}
-
-static char	*process_character(char *content, char *result, t_shell *shell, int *quotesi)
+static char	*process_character(char *content, char *result,
+	t_shell *shell, int *quotesi)
 {
 	if (content[quotesi[0]] == '"' && !quotesi[1])
 	{
-		
 		quotesi[2] = !quotesi[2];
 		result = append_char_to_result(result, content[quotesi[0]]);
 		(quotesi[0])++;
@@ -79,14 +66,11 @@ static char	*process_character(char *content, char *result, t_shell *shell, int 
 	}
 	else if (content[quotesi[0]] == '$' && !quotesi[1]
 		&& content[quotesi[0] + 1] && content[quotesi[0] + 1] == '?')
-	{
 		result = append_exit_status(result, shell, &quotesi[0]);
-	}
-	else if (content[quotesi[0]] == '$' && !quotesi[1]
-		&& content[quotesi[0] + 1] && is_valid_var_char(content[quotesi[0] + 1]))
-	{
-		result = process_variable_expansion(content, result, shell->environment, &quotesi[0]);
-	}
+	else if (content[quotesi[0]] == '$' && content[quotesi[0] + 1]
+		&& !quotesi[1] && is_valid_var_char(content[quotesi[0] + 1]))
+		result = process_variable_expansion(content, result,
+				shell->environment, &quotesi[0]);
 	else
 	{
 		result = append_char_to_result(result, content[quotesi[0]]);

@@ -72,4 +72,3 @@ t_pipeline	*split_by_pipes(t_token *tokens)
 	fill_pipeline_segments(pipeline, tokens);
 	return (pipeline);
 }
-

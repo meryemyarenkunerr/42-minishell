@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 00:00:00 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/19 14:35:18 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/23 16:44:00 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ static char	*remove_paired_quotes_loop(char *str, char *res)
 		else
 		{
 			res[j] = str[i];
-			(j)++;
-			i = i + 1;
+			j++;
+			i++;
 		}
 	}
 	res[j] = '\0';

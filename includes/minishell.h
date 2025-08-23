@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/23 17:01:40 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/23 17:09:39 by iaktas           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -282,6 +294,10 @@ char			*extract_quoted_string(char *input, int *i);
 char			*extract_word_until_delimiter(char *input, int *i);
 char			*extract_operator(char *input, int *i);
 
+/* advanced lexer utils three */
+void			add_token_to_list(t_token **head, t_token *new_token);
+t_token			*create_token(char *content, t_token_types type);
+
 /* REDIRECTS CHECK */
 /* redirects Check */
 char			*check_redirects_strings(t_token *tokens);
@@ -297,11 +313,7 @@ void			improved_expand_tokens(t_token *tokens, t_shell *shell);
 int				is_valid_var_char(char c);
 char			*extract_var_name(char *str, int start, int *end);
 char			*get_var_value(char *var_name, t_env *env);
-
-/* LEXER */
-/* lexer.c */
-void			add_token_to_list(t_token **head, t_token *new_token);
-t_token			*create_token(char *content, t_token_types type);
+char			*append_exit_status(char *result, t_shell *shell, int *i);
 
 /* PIPELINE TOKENIZER */
 /* pipeline_tokenizer.c */
@@ -315,8 +327,6 @@ void			fill_pipeline_segments(t_pipeline *pipeline, t_token *tokens);
 void			post_expansion_tokenize(t_token **head);
 /* post_expander_utils.c*/
 char			**split_by_whitespace_respect_quotes(char *str);
-/* post_expander_utils_two.c */
-int				skip_ws(char *s, int i);
 
 /* QUOTE REMOVER */
 /* quote_remover.c */
@@ -329,10 +339,6 @@ int				syntax_check(char *input);
 /* TOKEN CLASSIFIER */
 /* token_classifier.c */
 void			classify_pipeline_tokens(t_pipeline *pipeline);
-
-/* UTILS */
-/* utils.c */
-void			free_array(char **array);
 
 /* PARSER */
 /* router_parser.c */

@@ -108,7 +108,8 @@ M_PARSER_SRCS		= router_parser.c
 A_LEXER_DIR		= $(SRCDIR)/parser/advanced_lexer
 A_LEXER_SRCS	= advanced_lexer.c \
 				  advanced_lexer_utils.c \
-				  advanced_lexer_utils_two.c
+				  advanced_lexer_utils_two.c \
+				  advanced_lexer_utils_three.c
 
 # Check redirects
 C_REDIRECT_DIR	= $(SRCDIR)/parser/check_redirects
@@ -123,10 +124,6 @@ I_EXPANDER_DIR	= $(SRCDIR)/parser/improved_expander
 I_EXPANDER_SRCS	= improved_expander.c \
 				  improved_expander_utils.c
 
-# Lexer
-LEXER_DIR		= $(SRCDIR)/parser/lexer
-LEXER_SRCS		= lexer.c
-
 # Parser
 PARSER_DIR		= $(SRCDIR)/parser/parser
 PARSER_SRCS		= parser.c \
@@ -140,8 +137,7 @@ P_TOKEN_SRCS	= pipeline_tokenizer.c \
 # Post expander
 POST_EXPANDER_DIR	= $(SRCDIR)/parser/post_expander
 POST_EXPANDER_SRCS	= post_expander.c \
-					  post_expander_utils.c \
-					  post_expander_utils_two.c
+					  post_expander_utils.c
 
 # Quote remover
 Q_REMOVE_DIR	= $(SRCDIR)/parser/quote_remover
@@ -154,10 +150,6 @@ S_CHECK_SRCS	= syntax_check.c
 # Token classifier
 T_CLASS_DIR		= $(SRCDIR)/parser/token_classifier
 T_CLASS_SRCS	= token_classifier.c
-
-# Utils
-UTILS_DIR		= $(SRCDIR)/parser/utils
-UTILS_SRCS		= utils.c
 
 # Error handling
 ERROR_DIR		= $(SRCDIR)/error
@@ -188,23 +180,21 @@ A_LEXER_FILES		= $(addprefix $(A_LEXER_DIR)/, $(A_LEXER_SRCS))
 C_REDIRECT_FILES	= $(addprefix $(C_REDIRECT_DIR)/, $(C_REDIRECT_SRCS))
 EOF_CHECK_FILES		= $(addprefix $(EOF_CHECK_DIR)/, $(EOF_CHECK_SRCS))
 I_EXPANDER_FILES	= $(addprefix $(I_EXPANDER_DIR)/, $(I_EXPANDER_SRCS))
-LEXER_FILES			= $(addprefix $(LEXER_DIR)/, $(LEXER_SRCS))
 PARSER_FILES		= $(addprefix $(PARSER_DIR)/, $(PARSER_SRCS))
 P_TOKEN_FILES		= $(addprefix $(P_TOKEN_DIR)/, $(P_TOKEN_SRCS))
 POST_EXPANDER_FILES	= $(addprefix $(POST_EXPANDER_DIR)/, $(POST_EXPANDER_SRCS))
 Q_REMOVE_FILES		= $(addprefix $(Q_REMOVE_DIR)/, $(Q_REMOVE_SRCS))
 S_CHECK_FILES		= $(addprefix $(S_CHECK_DIR)/, $(S_CHECK_SRCS))
 T_CLASS_FILES		= $(addprefix $(T_CLASS_DIR)/, $(T_CLASS_SRCS))
-UTILS_FILES			= $(addprefix $(UTILS_DIR)/, $(UTILS_SRCS))
 M_PARSER_FILES		= $(addprefix $(M_PARSER_DIR)/, $(M_PARSER_SRCS))
 
 # Combine all source files
 ALL_SRCS		= $(MAIN_FILES) $(EXEC_FILES) $(HD_FILES) $(CMD_FILES) $(BUILTIN_FILES) \
 				  $(EXTERNAL_FILES) $(SIGNAL_FILES) $(CLEANUP_FILES) $(ERROR_FILES) \
 				  $(TEST_FILES) $(MULTIPLE_FILES) $(A_LEXER_FILES) $(C_REDIRECT_FILES) \
-				  $(EOF_CHECK_FILES) $(I_EXPANDER_FILES) $(LEXER_FILES) \
-				  $(P_TOKEN_FILES) $(POST_EXPANDER_FILES) $(Q_REMOVE_FILES) $(S_CHECK_FILES) \
-				  $(T_CLASS_FILES) $(UTILS_FILES) $(M_PARSER_FILES)
+				  $(EOF_CHECK_FILES) $(I_EXPANDER_FILES) $(T_CLASS_FILES) $(M_PARSER_FILES) \
+				  $(P_TOKEN_FILES) $(POST_EXPANDER_FILES) $(Q_REMOVE_FILES) $(S_CHECK_FILES) 
+				  
 
 # Generate object files
 OBJS			= $(ALL_SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)

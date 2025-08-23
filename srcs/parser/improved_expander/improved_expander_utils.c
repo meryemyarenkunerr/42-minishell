@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 15:21:14 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/19 14:27:05 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/23 17:09:21 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,17 @@ char	*get_var_value(char *var_name, t_env *env)
 	if (value)
 		return (ft_strdup(value));
 	return (ft_strdup(""));
+}
+
+char	*append_exit_status(char *result, t_shell *shell, int *i)
+{
+	char	*var_value;
+	char	*temp;
+
+	var_value = ft_itoa(shell->exit_status);
+	temp = ft_strjoin(result, var_value);
+	free(result);
+	free(var_value);
+	*i = *i + 2;
+	return (temp);
 }

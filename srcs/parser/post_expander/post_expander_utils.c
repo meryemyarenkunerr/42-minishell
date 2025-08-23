@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 16:22:19 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/19 14:34:20 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/23 17:00:01 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static int	fill_result_array(char **result, char *str, int wc)
 	in_i[1] = 0;
 	while (str[i] && j < wc)
 	{
-		i = skip_ws(str, i);
+		skip_whitespace(str, &i);
 		if (!str[i])
 			break ;
 		start = i;
@@ -107,7 +107,7 @@ char	**split_by_whitespace_respect_quotes(char *str)
 		return (NULL);
 	if (!fill_result_array(result, str, wc))
 	{
-		free_array(result);
+		free_string_array(result);
 		return (NULL);
 	}
 	return (result);

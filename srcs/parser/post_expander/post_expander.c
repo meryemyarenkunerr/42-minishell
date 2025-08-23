@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 00:00:00 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/19 14:34:25 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/23 16:56:37 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	process_token_content(t_token *current)
 		free(current->content);
 		current->content = ft_strdup(words[0]);
 	}
-	free_array(words);
+	free_string_array(words);
 }
 
 void	post_expansion_tokenize(t_token **head)
