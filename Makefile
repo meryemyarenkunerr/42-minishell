@@ -47,7 +47,8 @@ EXEC_SRCS		= executer.c \
 HD_DIR			= $(SRCDIR)/executer/heredoc
 HD_SRCS			= heredoc_handler.c \
 				  heredoc_child.c \
-				  heredoc_parent.c
+				  heredoc_parent.c \
+				  heredoc_utils.c
 
 # Command module
 CMD_DIR			= $(SRCDIR)/executer/command
@@ -55,6 +56,7 @@ CMD_SRCS		= command_builder.c \
 				  command_creation.c \
 				  heredoc_management.c \
 				  utils.c \
+				  utils2.c \
 				  token_analysis.c \
 				  expander.c
 
@@ -81,7 +83,8 @@ EXTERNAL_SRCS	= external.c \
 MULTIPLE_DIR	= $(SRCDIR)/executer/multiple
 MULTIPLE_SRCS	= pipeline.c \
 				  pipeline_child.c \
-				  pipeline_external.c
+				  pipeline_external.c \
+				  multiple_utils.c
 
 # Signal handling
 SIGNAL_DIR		= $(SRCDIR)/signal
