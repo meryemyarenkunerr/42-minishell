@@ -17,6 +17,8 @@ void	handle_child(t_shell *shell, t_command *cmd, int **pipes,
 {
 	setup_pipeline_child(cmd, pipes, shell->pipeline->count, i);
 	execute_pipeline_child(shell, cmd);
+	free_single_command(cmd);
+	free_at_exit(shell);
 	exit(127);
 }
 

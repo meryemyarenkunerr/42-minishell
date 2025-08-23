@@ -33,6 +33,7 @@ pid_t	fork_and_execute(t_shell *shell, t_command *cmd, char *exec_path)
 {
 	pid_t	pid;
 
+	g_sigint_received = IN_CMD;
 	pid = fork();
 	if (pid == -1)
 	{
@@ -65,4 +66,6 @@ void	execute_external(t_shell *shell, t_command *cmd)
 	if (pid > 0)
 		wait_for_child(shell, pid);
 	free(exec_path);
+	g_sigint_received = AFTER_CMD;
+	handle_signals();
 }

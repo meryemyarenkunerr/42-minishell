@@ -49,6 +49,7 @@ pid_t	*execute_pipeline_processes(t_shell *shell, int **pipes, int cmd_count)
 		return (NULL);
 	cmd = shell->commands;
 	i = -1;
+	g_sigint_received = IN_CMD;
 	while (++i < cmd_count && cmd)
 	{
 		if (skip_empty_command(pids, &cmd, i))
@@ -61,9 +62,14 @@ pid_t	*execute_pipeline_processes(t_shell *shell, int **pipes, int cmd_count)
 			return (NULL);
 		}
 		if (pids[i] == 0)
+		{
+			cleanup_partial_processes(pids, i);
 			handle_child(shell, cmd, pipes, i);
+		}
 		cmd = cmd->next;
 	}
+	g_sigint_received = AFTER_CMD;
+	handle_signals();
 	return (pids);
 }
 
