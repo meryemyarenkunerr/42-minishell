@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc_management.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iaktas    <iaktas@student.42istanbul>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/23 17:35:22 by iaktas           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
 
 void	add_heredoc_delimiter_with_quote(t_command *cmd, const char *delimiter,

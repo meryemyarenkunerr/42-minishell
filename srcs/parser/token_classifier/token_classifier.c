@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_classifier.c                                :+:      :+:    :+:   */
+/*   token_classifier.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/01 00:00:00 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/01 00:00:00 by iaktas           ###   ########.fr       */
+/*   Created: 2025/08/23 20:25:10 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/24 15:07:01 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	classify_token_in_segment_loop(t_token *current, int *cmd_assigned)
 			if (!*cmd_assigned)
 			{
 				current->type = TOKEN_COMMAND;
-				*cmd_assigned = 1;
+				*cmd_assigned = 1;	
 			}
 			else
 				current->type = TOKEN_ARGUMENT;

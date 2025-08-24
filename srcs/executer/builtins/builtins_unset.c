@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins_unset.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/24 13:03:42 by iaktas           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
 
-int	is_valid_flag_unset(t_shell *shell, char *cmd)
+static int	is_valid_flag_unset(t_shell *shell, char *cmd)
 {
 	int	i;
 	int	count;

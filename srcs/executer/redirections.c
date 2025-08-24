@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/23 17:43:56 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/24 14:22:36 by iaktas           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
+#include <unistd.h>
 
 int	setup_input_redirection(t_shell *shell, t_command *cmd)
 {
@@ -13,7 +26,9 @@ int	setup_input_redirection(t_shell *shell, t_command *cmd)
 		fd = open(cmd->input_files[i], O_RDONLY);
 		if (fd == -1)
 		{
-			perror(cmd->input_files[i]);
+			ft_putstr_fd(cmd->input_files[i], STDERR_FILENO);
+			ft_putstr_fd(": No such file or directory", STDERR_FILENO);
+			//perror(cmd->input_files[i]);
 			shell->exit_status = 1;
 			return (FALSE);
 		}

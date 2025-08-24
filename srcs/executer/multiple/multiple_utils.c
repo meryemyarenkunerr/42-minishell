@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   multiple_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/24 13:56:52 by iaktas           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
 
 //static void	handle_empty_command_child(t_command *cmd, t_pipeline_ctx *ctx)
@@ -43,8 +55,6 @@ int	skip_empty_command(pid_t *pids, t_command **cmd, t_pipeline_ctx *ctx)
 		// Normal execution'a devam et (skip etme)
 		return (0);
 	}
-
-	// Normal command - skip etme
 	return (0);
 
 	//if (!(*cmd)->cmd)

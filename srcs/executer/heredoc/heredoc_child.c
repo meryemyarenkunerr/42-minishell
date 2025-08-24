@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc_child.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/24 14:06:27 by iaktas           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
 
 void	process_single_heredoc_ignore(t_shell *shell, char *delimiter, int fds[2])
@@ -63,7 +75,8 @@ void	process_single_heredoc(t_shell *shell, char *delimiter, int fds[2])
 			break ;
 		temp = process_line_content(shell, line);
 		processed_line = heredoc_join_line(processed_line, temp);
-		free(line);
+		// if(line)
+		// 	free(line);
 	}
 	if (!is_heredoc_interrupted())
 		write_processed_line(fds[1], processed_line);

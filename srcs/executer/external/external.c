@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   external.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/24 14:49:35 by iaktas           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
 
 void	wait_for_child(t_shell *shell, pid_t pid)
@@ -43,6 +55,8 @@ void	execute_external(t_shell *shell, t_command *cmd)
 	pid_t	pid;
 
 	if (!shell || !cmd || !cmd->cmd)
+		return ;
+	if (cmd->cmd[0] == '\0')
 		return ;
 	exec_path = find_executable_path(shell, cmd->cmd);
 	if (!exec_path)
