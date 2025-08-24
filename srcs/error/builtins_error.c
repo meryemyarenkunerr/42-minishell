@@ -11,7 +11,7 @@ void	numeric_argument_error_exit(t_shell *shell, t_command *cmd)
 	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 	ft_putstr_fd(cmd->arguments[1], STDERR_FILENO);
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-	shell->exit_status = 2;
+	shell->exit_status = 255;
 	shell->exit = 1;
 }
 

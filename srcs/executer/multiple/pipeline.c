@@ -28,19 +28,24 @@ void	setup_pipeline_child(t_command *cmd, int **pipes,
 
 pid_t	*execute_pipeline_processes(t_shell *shell, int **pipes, int cmd_count)
 {
-	pid_t		*pids;
-	t_command	*cmd;
-	int			i;
+	pid_t			*pids;
+	t_command		*cmd;
+	t_pipeline_ctx	ctx;
+	int				i;
 
 	pids = malloc(cmd_count * sizeof(pid_t));
 	if (!pids)
 		return (NULL);
+	ctx.shell = shell;
+	ctx.pipes = pipes;
+	ctx.cmd_count = cmd_count;
 	cmd = shell->commands;
 	i = -1;
 	g_sigint_received = IN_CMD;
 	while (++i < cmd_count && cmd)
 	{
-		if (skip_empty_command(pids, &cmd, i))
+		ctx.index = i;
+		if (skip_empty_command(pids, &cmd, &ctx))
 			continue ;
 		pids[i] = fork();
 		if (pids[i] == -1)

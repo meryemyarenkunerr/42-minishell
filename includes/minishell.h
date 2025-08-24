@@ -317,7 +317,7 @@ int				**create_pipeline_pipes(int cmd_count);
 /* multiple_utils.c */
 void			handle_child(t_shell *shell, t_command *cmd, int **pipes,
 					int i);
-int				skip_empty_command(pid_t *pids, t_command **cmd, int i);
+int				skip_empty_command(pid_t *pids, t_command **cmd, t_pipeline_ctx *ctx);
 int				handle_pipe_error(int **pipes, int i);
 
 /* ADVANCED LEXER */

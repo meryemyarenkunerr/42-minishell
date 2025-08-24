@@ -85,4 +85,13 @@ typedef struct s_shell
 	t_pipeline		*pipeline;
 }	t_shell;
 
+/* Pipeline Contsxt Struct */
+typedef struct s_pipeline_ctx
+{
+	t_shell	*shell;
+	int		**pipes;
+	int		cmd_count;
+	int		index;
+}	t_pipeline_ctx;
+
 #endif
