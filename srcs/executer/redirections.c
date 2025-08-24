@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:43:56 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/24 14:22:36 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/24 20:45:14 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	setup_input_redirection(t_shell *shell, t_command *cmd)
 		if (fd == -1)
 		{
 			ft_putstr_fd(cmd->input_files[i], STDERR_FILENO);
-			ft_putstr_fd(": No such file or directory", STDERR_FILENO);
+			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 			//perror(cmd->input_files[i]);
 			shell->exit_status = 1;
 			return (FALSE);
@@ -63,11 +63,11 @@ int	setup_command_fds(t_shell *shell, t_command *cmd)
 {
 	if (!cmd)
 		return (FALSE);
+	if (!setup_heredoc_fds(shell, cmd))
+		return (FALSE);
 	if (!setup_output_redirection(shell, cmd))
 		return (FALSE);
 	if (!setup_input_redirection(shell, cmd))
-		return (FALSE);
-	if (!setup_heredoc_fds(shell, cmd))
 		return (FALSE);
 	return (TRUE);
 }

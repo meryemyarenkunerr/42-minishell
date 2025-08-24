@@ -2,7 +2,7 @@
 
 NAME			= minishell
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror
+CFLAGS			= -Wall -Wextra -Werror -g #-fsanitize=address
 INCLUDES		= -I./includes -I./libft
 LIBS			= -L./libft -lft
 
@@ -227,7 +227,7 @@ header:
 
 $(NAME): libft $(OBJS)
 	@echo "$(GREEN)🔗 Linking $(NAME)...$(RESET)"
-	@$(CC) $(OBJS) $(LIBS) -o $(NAME)
+	@$(CC) $(OBJS) $(CFLAGS) $(LIBS) -o $(NAME)
 	@echo "$(GREEN)✅ $(NAME) compiled successfully!$(RESET)"
 	@echo "$(WHITE)Usage: ./$(NAME)$(RESET)"
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_error.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/24 13:57:18 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/24 19:29:33 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	numeric_argument_error_exit(t_shell *shell, t_command *cmd)
 	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 	ft_putstr_fd(cmd->arguments[1], STDERR_FILENO);
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-	shell->exit_status = 1;
+	shell->exit_status = 2;
 	shell->exit = 1;
 }
 

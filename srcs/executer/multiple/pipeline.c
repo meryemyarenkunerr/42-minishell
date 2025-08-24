@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas    <iaktas@student.42istanbul>      +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 17:35:22 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/24 20:10:28 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ pid_t	*execute_pipeline_processes(t_shell *shell, int **pipes, int cmd_count)
 		}
 		if (pids[i] == 0)
 		{
-			cleanup_partial_processes(pids, i);
 			handle_child(shell, cmd, pipes, i);
+			cleanup_partial_processes(pids, i);
 		}
 		cmd = cmd->next;
 	}

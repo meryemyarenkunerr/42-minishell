@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas    <iaktas@student.42istanbul>      +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 17:35:22 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/24 21:14:01 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ int	process_assignment(t_shell *shell, const char *arg, char *equal_pos)
 {
 	char	*key;
 	int		key_len;
+	char	*temp_val;
 
+	temp_val = NULL;
 	key_len = equal_pos - arg;
 	key = ft_substr(arg, 0, key_len);
 	if (!is_valid_identifier_export(key))
@@ -46,7 +48,15 @@ int	process_assignment(t_shell *shell, const char *arg, char *equal_pos)
 		free(key);
 		return (FALSE);
 	}
-	set_env_variable(&shell->environment, key, (equal_pos + 1));
+	// printf("%s --- %s \n", key, (equal_pos + 1));
+	if (*(equal_pos + 1) == '\0')
+	{
+		temp_val = ft_strdup("\1");
+		set_env_variable(&shell->environment, key, temp_val);
+		free(temp_val);
+	}
+	else
+		set_env_variable(&shell->environment, key, (equal_pos + 1));
 	free(key);
 	return (TRUE);
 }
@@ -104,11 +114,10 @@ void	execute_builtin_export(t_shell *shell, t_command *cmd)
 	i = 1;
 	while (cmd->arguments[i])
 	{
-		if (!process_export_arguments(shell, cmd->arguments[i]))
-			error_flag = 1;
+		error_flag = process_export_arguments(shell, cmd->arguments[i]);
 		i++;
 	}
-	if (error_flag == 1)
+	if (error_flag == FALSE)
 		shell->exit_status = 1;
 	else
 		shell->exit_status = 0;

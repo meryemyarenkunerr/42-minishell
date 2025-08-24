@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas    <iaktas@student.42istanbul>      +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 17:35:22 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/24 18:51:52 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static char	*char_to_string(char c)
 	return (str);
 }
 
-static char	*extract_and_expand_var(char *str, int *index, t_shell *shell)
+static char	*extract_and_expand_var(const char *str, int *index, t_shell *shell)
 {
 	char	*var_name;
 	char	*var_value;
@@ -86,6 +86,11 @@ char	*expand_variable(char *line, t_shell *shell)
 			result = join_and_free(result, temp);
 			i++;
 		}
+	}
+	if (line)
+	{
+		free(line);
+		line = NULL;
 	}
 	return (result);
 }

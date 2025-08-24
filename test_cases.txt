@@ -1,0 +1,13 @@
+cat < asd222 << asd -> cat çalışmayacak
+
+ls > asd < asd1 > asd2 | wc -c -> herhangi bir dosya açılamadığında diğerleri devam etmemeli
+
+unset PATH
+cd /bin
+ls
+
+echo "" | ""
+
+""
+
+env | grep baba -> leak

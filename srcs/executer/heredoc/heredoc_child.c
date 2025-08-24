@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_child.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/24 14:06:27 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/24 19:03:16 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,11 @@ static char	*heredoc_join_line(char *content, char *line)
 	}
 	joined = ft_strjoin(tmp, "\n");
 	free(tmp);
-	free(line);
+	if (line)
+	{
+		free(line);
+		line = NULL;
+	}
 	if (!joined)
 		return (NULL);
 	return (joined);
@@ -73,10 +77,13 @@ void	process_single_heredoc(t_shell *shell, char *delimiter, int fds[2])
 		line = safe_readline(BLUE PROMPT_HEREDOC RESET, shell, processed_line, fds);
 		if (check_line_conditions(line, delimiter))
 			break ;
-		temp = process_line_content(shell, line);
+		temp = process_line_content(shell, ft_strdup(line));
 		processed_line = heredoc_join_line(processed_line, temp);
-		// if(line)
-		// 	free(line);
+		if(line)
+		{
+			free(line);
+			line = NULL;
+		}
 	}
 	if (!is_heredoc_interrupted())
 		write_processed_line(fds[1], processed_line);

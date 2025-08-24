@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_basics.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas    <iaktas@student.42istanbul>      +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 15:14:28 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/24 16:02:06 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	execute_builtin_pwd(t_shell *shell, t_command *cmd)
 		shell->exit_status = 1;
 		return ;
 	}
-	printf("%s\n", cwd);
+	ft_putstr_fd(cwd, STDOUT_FILENO);
+	ft_putchar_fd('\n', STDOUT_FILENO);
 	free(cwd);
 	shell->exit_status = 0;
 }
