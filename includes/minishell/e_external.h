@@ -20,6 +20,7 @@ void			execute_external(t_shell *shell, t_command *cmd);
 pid_t			fork_and_execute(t_shell *shell, t_command *cmd,
 					char *exec_path);
 void			wait_for_child(t_shell *shell, pid_t pid);
+char			*current_directory(t_shell *shell, char *cmd);
 
 /* path.c */
 char			*find_executable_path(t_shell *shell, char *cmd);

@@ -2,7 +2,7 @@
 
 NAME			= minishell
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS			= -Wall -Wextra -Werror -g -fsanitize=address
 INCLUDES		= -I./includes -I./libft
 LIBS			= -L./libft -lft
 
@@ -40,7 +40,8 @@ EXEC_SRCS		= executer.c \
 				  multiple_command.c \
 				  redirections.c \
 				  single_command.c \
-				  utils.c
+				  utils.c \
+				  utils2.c
 
 # Heredoc module
 HD_DIR			= $(SRCDIR)/executer/heredoc

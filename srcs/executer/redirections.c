@@ -6,69 +6,61 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:43:56 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/24 20:45:14 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/25 17:03:54 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <unistd.h>
 
-int	setup_input_redirection(t_shell *shell, t_command *cmd)
+static int	get_append_mode(t_command *cmd, char *filename)
 {
 	int	i;
-	int	fd;
 
-	if (!cmd || !cmd->input_files || cmd->input_count == 0)
-		return (TRUE);
+	if (!cmd->output_files || !cmd->append_modes)
+		return (0);
 	i = 0;
-	while (i < cmd->input_count)
+	while (i < cmd->output_count)
 	{
-		fd = open(cmd->input_files[i], O_RDONLY);
-		if (fd == -1)
-		{
-			ft_putstr_fd(cmd->input_files[i], STDERR_FILENO);
-			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-			//perror(cmd->input_files[i]);
-			shell->exit_status = 1;
-			return (FALSE);
-		}
-		if (cmd->fd_in != STDIN_FILENO && cmd->fd_in != -1)
-			close(cmd->fd_in);
-		cmd->fd_in = fd;
+		if (ft_strcmp(cmd->output_files[i], filename) == 0)
+			return (cmd->append_modes[i]);
 		i++;
 	}
-	return (TRUE);
+	return (0);
 }
 
-int	setup_output_redirection(t_shell *shell, t_command *cmd)
+static int	process_file_in_order(t_shell *shell, t_command *cmd, char *filename)
 {
-	int	i;
-	int	fd;
-
-	if (!cmd || !cmd->output_files || cmd->output_count == 0)
-		return (TRUE);
-	i = -1;
-	while (++i < cmd->output_count)
+	if (is_input_file(cmd, filename))
 	{
-		fd = open_output_file(shell, cmd, i);
-		if (fd == -1)
+		if (!setup_single_input_file(shell, cmd, filename))
 			return (FALSE);
-		close_old_fd(&cmd->fd_out);
-		cmd->fd_out = fd;
+	}
+	else if (is_output_file(cmd, filename))
+	{
+		int append_mode = get_append_mode(cmd, filename);
+		if (!setup_single_output_file(shell, cmd, filename, append_mode))
+			return (FALSE);
 	}
 	return (TRUE);
 }
 
 int	setup_command_fds(t_shell *shell, t_command *cmd)
 {
+	int	i;
+
 	if (!cmd)
 		return (FALSE);
 	if (!setup_heredoc_fds(shell, cmd))
 		return (FALSE);
-	if (!setup_output_redirection(shell, cmd))
-		return (FALSE);
-	if (!setup_input_redirection(shell, cmd))
-		return (FALSE);
+	if (!cmd->ordered_all_files)
+		return (TRUE);
+	i = 0;
+	while (cmd->ordered_all_files[i])
+	{
+		if (!process_file_in_order(shell, cmd, cmd->ordered_all_files[i]))
+			return (FALSE);
+		i++;
+	}
 	return (TRUE);
 }
 
@@ -84,8 +76,11 @@ int	setup_file_descriptors(t_shell *shell)
 		if (!setup_command_fds(shell, curr))
 		{
 			shell->exit_status = 1;
-			close_all_command_fds(shell);
-			return (FALSE);
+			close_command_fds(curr);
+			free(curr->cmd);
+			curr->cmd = NULL;
+			if (shell->pipeline->count == 1)
+				return (FALSE);
 		}
 		curr = curr->next;
 	}

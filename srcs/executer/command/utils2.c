@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas    <iaktas@student.42istanbul>      +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 17:35:22 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:24:53 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,33 @@ void	add_output_file(t_command *cmd, const char *filename, int append_mode)
 	new_files[cmd->output_count + 1] = NULL;
 	new_modes[cmd->output_count] = append_mode;
 	update_command_arrays(cmd, new_files, new_modes);
+	add_to_ordered_files(cmd, filename);
+}
+
+void	add_to_ordered_files(t_command *cmd, const char *filename)
+{
+	char	**new_files;
+	int		count;
+	int		i;
+
+	count = 0;
+	if (cmd->ordered_all_files)
+	{
+		while (cmd->ordered_all_files[count])
+			count++;
+	}
+	new_files = malloc((count + 2) * sizeof(char *));
+	if (!new_files)
+		return ;
+	i = 0;
+	while (i < count)
+	{
+		new_files[i] = cmd->ordered_all_files[i];
+		i++;
+	}
+	new_files[count] = ft_strdup(filename);
+	new_files[count + 1] = NULL;
+	if (cmd->ordered_all_files)
+		free(cmd->ordered_all_files);
+	cmd->ordered_all_files = new_files;
 }

@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:02:06 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 17:47:14 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/25 15:34:39 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 
 /* File */
 # define PERMISSION 0644
+// # define PIPE 2
 
 /* shell loop */
 # define EXIT "exit"

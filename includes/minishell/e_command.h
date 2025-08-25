@@ -42,5 +42,6 @@ t_command		*create_empty_command_with_redirections(t_token *token_list);
 /* utils2.c */
 void			add_output_file(t_command *cmd, const char *filename,
 					int append_mode);
+void			add_to_ordered_files(t_command *cmd, const char *filename);
 
 #endif // MINISHELL_COMMAND_H

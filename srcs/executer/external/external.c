@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   external.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/24 14:49:35 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/25 17:29:23 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,30 @@ pid_t	fork_and_execute(t_shell *shell, t_command *cmd, char *exec_path)
 	return (pid);
 }
 
+char	*current_directory(t_shell *shell, char *cmd)
+{
+	char	*current_dir;
+	char	*temp_path;
+	char	*exec_path;
+
+	(void)shell;
+	current_dir = getcwd(NULL, 0);
+	temp_path = ft_strjoin(current_dir, "/");
+	exec_path = ft_strjoin(temp_path, cmd);
+	free(current_dir);
+	free(temp_path);
+	if (exec_path && access(exec_path, X_OK) == 0)
+		return (exec_path);
+	free(exec_path);
+	return (NULL);
+}
+
 void	execute_external(t_shell *shell, t_command *cmd)
 {
 	char	*exec_path;
 	pid_t	pid;
 
 	if (!shell || !cmd || !cmd->cmd)
-		return ;
-	if (cmd->cmd[0] == '\0')
 		return ;
 	exec_path = find_executable_path(shell, cmd->cmd);
 	if (!exec_path)

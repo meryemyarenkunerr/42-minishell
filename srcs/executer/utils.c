@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:59:44 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 17:59:47 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:37:39 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,38 @@ void	close_old_fd(int *fd_out)
 {
 	if (*fd_out != STDOUT_FILENO && *fd_out != -1)
 		close(*fd_out);
+}
+
+int	is_input_file(t_command *cmd, char *filename)
+{
+	int	i;
+
+	if (!cmd->input_files)
+		return (FALSE);
+
+	i = 0;
+	while (i < cmd->input_count)
+	{
+		if (ft_strcmp(cmd->input_files[i], filename) == 0)
+			return (TRUE);
+		i++;
+	}
+	return (FALSE);
+}
+
+int	is_output_file(t_command *cmd, char *filename)
+{
+	int	i;
+
+	if (!cmd->output_files)
+		return (FALSE);
+
+	i = 0;
+	while (i < cmd->output_count)
+	{
+		if (ft_strcmp(cmd->output_files[i], filename) == 0)
+			return (TRUE);
+		i++;
+	}
+	return (FALSE);
 }

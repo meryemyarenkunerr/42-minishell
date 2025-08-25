@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/24 21:11:36 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/25 17:33:03 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	free_single_command(t_command *command)
 		free_string_array(command->input_files);
 	if (command->output_files)
 		free_string_array(command->output_files);
+	if (command->ordered_all_files)
+		free_string_array(command->ordered_all_files);
 	if (command->fd_in > STDERR_FILENO)
 		close(command->fd_in);
 	if (command->fd_out > STDERR_FILENO)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:02:09 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 17:02:10 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/25 15:53:21 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_command
 	char				**arguments;
 	char				**input_files;
 	char				**output_files;
+	char				**ordered_all_files;
 	int					input_count;
 	int					output_count;
 	char				**heredoc_delimiter;

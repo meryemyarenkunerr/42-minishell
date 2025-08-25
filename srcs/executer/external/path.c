@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/24 14:47:11 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/25 15:57:58 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ char	*search_in_path(t_shell *shell, char *cmd)
 
 	path_env = get_env_value(shell->environment, "PATH");
 	if (!path_env)
-		return (NULL);
+		return (current_directory(shell, cmd));
 	path_dirs = ft_split(path_env, ':');
 	if (!path_dirs)
-		return (NULL);
+		return (current_directory(shell, cmd));
 	res = check_path_directories(path_dirs, cmd);
 	free_string_array(path_dirs);
 	return (res);
@@ -80,5 +80,7 @@ char	*find_executable_path(t_shell *shell, char *cmd)
 {
 	if (cmd[0] == '/' || cmd[0] == '.')
 		return (check_direct_path(cmd));
+	if (cmd[0] == '\0')
+		return (ft_strdup("/bin/usr/true"));
 	return (search_in_path(shell, cmd));
 }

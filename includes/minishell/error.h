@@ -18,6 +18,7 @@ void			handle_execve_error(char *cmd);
 
 /* heredoc_error.c */
 void			print_eof_warning(char *delimiter);
+void			print_file_error(char *filename, char *error_msg);
 
 /* syntax_error.c */
 void			redirects_error(char *text, t_shell *shell);

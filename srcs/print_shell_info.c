@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_shell_info.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 17:53:14 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:26:04 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	print_shell_info(t_shell *shell)
 			}
 			else
 			{
-				printf("  │ cmd: %s\n", cmd->cmd);
+				printf("  │ cmd: '%s'\n", cmd->cmd);
 			}
 			printf("  │ arguments:");
 			if (!cmd->arguments)
@@ -127,6 +127,31 @@ void	print_shell_info(t_shell *shell)
 				for (int i = 0; i < cmd->output_count; i++)
 				printf("  │   [%d]: %s\n", i, cmd->output_files[i]);
 			}
+
+			// ordered_all_files debug bilgisi
+			printf("  │ ordered_all_files: ");
+			if (!cmd->ordered_all_files)
+			{
+				printf("(null)\n");
+			}
+			else
+			{
+				int count = 0;
+				while (cmd->ordered_all_files[count])
+					count++;
+				printf("(%d files)\n", count);
+
+				for (int i = 0; i < count; i++)
+				{
+					printf("  │   [%d]: %s\n", i, cmd->ordered_all_files[i]);
+					if (i > 20)
+					{
+						printf("  │   ... (truncated - too many files)\n");
+						break;
+					}
+				}
+			}
+
 			if (cmd->heredoc_count > 0)
 			{
 				if (!cmd->heredoc_delimiter)
