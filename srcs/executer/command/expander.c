@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/24 18:51:52 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/25 12:31:24 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ static char	*extract_and_expand_var(const char *str, int *index, t_shell *shell)
 		return (ft_strdup(""));
 }
 
+/*
 char	*expand_variable(char *line, t_shell *shell)
 {
 	char	*result;
@@ -86,6 +87,47 @@ char	*expand_variable(char *line, t_shell *shell)
 			result = join_and_free(result, temp);
 			i++;
 		}
+	}
+	if (line)
+	{
+		free(line);
+		line = NULL;
+	}
+	return (result);
+}
+*/
+
+static char	*process_variable(char *line, int *i, t_shell *shell)
+{
+	char	*temp;
+
+	if (line[*i] == '$' && line[*i + 1])
+	{
+		(*i)++;
+		temp = extract_and_expand_var(&line[*i], i, shell);
+	}
+	else
+	{
+		temp = char_to_string(line[*i]);
+		(*i)++;
+	}
+	return (temp);
+}
+
+char	*expand_variable(char *line, t_shell *shell)
+{
+	char	*result;
+	char	*temp;
+	int		i;
+
+	if (!line || !shell)
+		return (NULL);
+	result = ft_strdup("");
+	i = 0;
+	while (line[i])
+	{
+		temp = process_variable(line, &i, shell);
+		result = join_and_free(result, temp);
 	}
 	if (line)
 	{

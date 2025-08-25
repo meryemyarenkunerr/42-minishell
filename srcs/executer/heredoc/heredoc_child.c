@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_child.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/24 19:03:16 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/25 12:28:39 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-void	process_single_heredoc_ignore(t_shell *shell, char *delimiter, int fds[2])
+void	process_single_heredoc_ignore(t_shell *shell,
+		char *delimiter, int fds[2])
 {
 	char	*line;
 
@@ -74,12 +75,13 @@ void	process_single_heredoc(t_shell *shell, char *delimiter, int fds[2])
 	processed_line = ft_strdup("");
 	while (!is_heredoc_interrupted())
 	{
-		line = safe_readline(BLUE PROMPT_HEREDOC RESET, shell, processed_line, fds);
+		line = safe_readline(BLUE PROMPT_HEREDOC RESET,
+				shell, processed_line, fds);
 		if (check_line_conditions(line, delimiter))
 			break ;
 		temp = process_line_content(shell, ft_strdup(line));
 		processed_line = heredoc_join_line(processed_line, temp);
-		if(line)
+		if (line)
 		{
 			free(line);
 			line = NULL;
@@ -103,7 +105,8 @@ void	handle_heredoc_input(t_shell *shell, t_command *cmd, int fds[2])
 		if (i == cmd->heredoc_count - 1)
 			process_single_heredoc(shell, cmd->heredoc_delimiter[i], fds);
 		else
-			process_single_heredoc_ignore(shell, cmd->heredoc_delimiter[i], fds);
+			process_single_heredoc_ignore(shell,
+				cmd->heredoc_delimiter[i], fds);
 		i++;
 	}
 	g_sigint_received = AFTER_HEREDOC;

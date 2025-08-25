@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/24 20:10:28 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/25 12:38:49 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	setup_pipeline_child(t_command *cmd, int **pipes,
 	}
 }
 
+/*
 pid_t	*execute_pipeline_processes(t_shell *shell, int **pipes, int cmd_count)
 {
 	pid_t			*pids;
@@ -72,6 +73,54 @@ pid_t	*execute_pipeline_processes(t_shell *shell, int **pipes, int cmd_count)
 			cleanup_partial_processes(pids, i);
 		}
 		cmd = cmd->next;
+	}
+	g_sigint_received = AFTER_CMD;
+	handle_signals();
+	return (pids);
+}
+*/
+
+static int	process_command_p(pid_t *pids, t_command **cmd, t_pipeline_ctx *ctx)
+{
+	pids[ctx->index] = fork();
+	if (pids[ctx->index] == -1)
+	{
+		perror("fork");
+		cleanup_partial_processes(pids, ctx->index);
+		return (1);
+	}
+	if (pids[ctx->index] == 0)
+	{
+		handle_child(ctx->shell, *cmd, ctx->pipes, ctx->index);
+		cleanup_partial_processes(pids, ctx->index);
+	}
+	*cmd = (*cmd)->next;
+	return (0);
+}
+
+pid_t	*execute_pipeline_processes(t_shell *shell, int **pipes, int cmd_count)
+{
+	pid_t			*pids;
+	t_command		*cmd;
+	t_pipeline_ctx	ctx;
+	int				i;
+
+	pids = malloc(cmd_count * sizeof(pid_t));
+	if (!pids)
+		return (NULL);
+	ctx.shell = shell;
+	ctx.pipes = pipes;
+	ctx.cmd_count = cmd_count;
+	cmd = shell->commands;
+	i = -1;
+	g_sigint_received = IN_CMD;
+	while (++i < cmd_count && cmd)
+	{
+		ctx.index = i;
+		if (skip_empty_command(pids, &cmd, &ctx))
+			continue ;
+		if (process_command_p(pids, &cmd, &ctx))
+			return (NULL);
 	}
 	g_sigint_received = AFTER_CMD;
 	handle_signals();

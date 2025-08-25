@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_safe_readline.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 10:53:40 by kbatur            #+#    #+#             */
-/*   Updated: 2025/08/24 18:35:14 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/25 12:20:48 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ static char	*parent_receive(int rfd, pid_t pid, t_shell *shell)
 	return (result);
 }
 
-char	*safe_readline(const char *prompt, t_shell *shell, char *content, int fds[2])
+char	*safe_readline(const char *prompt, t_shell *shell,
+		char *content, int fds[2])
 {
 	int		pipefd[2];
 	pid_t	pid;

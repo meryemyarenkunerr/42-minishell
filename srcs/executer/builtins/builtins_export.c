@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/24 21:14:01 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/25 12:21:57 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	process_assignment(t_shell *shell, const char *arg, char *equal_pos)
 		free(key);
 		return (FALSE);
 	}
-	// printf("%s --- %s \n", key, (equal_pos + 1));
 	if (*(equal_pos + 1) == '\0')
 	{
 		temp_val = ft_strdup("\1");

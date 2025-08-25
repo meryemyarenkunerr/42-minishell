@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas    <iaktas@student.42istanbul>      +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 15:14:28 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/25 12:26:55 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 int	setup_heredoc_fds(t_shell *shell, t_command *cmd)
 {
 	int		pipe_fds[2];
-	pid_t	pid = 0;
+	pid_t	pid;
 
+	pid = 0;
 	if (!cmd || cmd->heredoc_count == 0)
 		return (TRUE);
 	if (pipe(pipe_fds) == -1)

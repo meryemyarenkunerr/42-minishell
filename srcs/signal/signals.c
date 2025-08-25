@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas    <iaktas@student.42istanbul>      +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 15:14:28 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/25 12:35:58 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	g_sigint_received = 0;
 // 	g_sigint_received = FALSE;
 // }
 
-// // Sinyal işlemi: Ctrl+C (SIGINT) geldiğinde promptu temizle ve yeni satır başlat
+// // Sinyal işlemi: Ctrl+C (SIGINT)
+// // geldiğinde promptu temizle ve yeni satır başlat
 // void	handle_sigint(int signo)
 // {
 // 	if (signo == SIGINT)
@@ -74,7 +75,8 @@ int	g_sigint_received = 0;
 // 		//write(STDOUT_FILENO, "bye bye <3\n", 11);
 // 		return 0;										// shell'den çık
 // 	}
-// 	if (g_sigint_received)								// Ctrl+C ile komut iptal edildiyse
+//  // Ctrl+C ile komut iptal edildiyse
+//  if (g_sigint_received)								
 // 	{
 // 		sigint_received(shell);
 // 		free(*command);
