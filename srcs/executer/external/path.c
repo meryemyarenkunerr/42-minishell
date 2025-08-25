@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/25 15:57:58 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/25 18:37:48 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,9 @@ char	*find_executable_path(t_shell *shell, char *cmd)
 {
 	if (cmd[0] == '/' || cmd[0] == '.')
 		return (check_direct_path(cmd));
-	if (cmd[0] == '\0')
+	if (cmd[0] == '\0' && shell->pipeline->count == 1)
 		return (ft_strdup("/bin/usr/true"));
+	if (cmd[0] == '\0')
+		return (NULL);
 	return (search_in_path(shell, cmd));
 }

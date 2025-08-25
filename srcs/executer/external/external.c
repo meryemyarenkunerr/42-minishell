@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/25 17:29:23 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/25 18:20:43 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,13 @@ void	execute_external(t_shell *shell, t_command *cmd)
 	char	*exec_path;
 	pid_t	pid;
 
-	if (!shell || !cmd || !cmd->cmd)
+	if (!shell || !cmd)
 		return ;
+	if (cmd->cmd[0] == '\0')
+	{
+		command_not_found_error(shell, "''");
+		return ;
+	}
 	exec_path = find_executable_path(shell, cmd->cmd);
 	if (!exec_path)
 	{

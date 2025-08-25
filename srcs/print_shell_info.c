@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/25 14:26:04 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/25 18:44:15 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,7 @@ void	print_shell_info(t_shell *shell)
 				printf("ERROR: Command %d points to itself! Breaking to prevent infinite loop\n", cmd_index);
 				break;
 			}
+			printf("  | file_handler : %d\n", cmd->file_handler);
 			printf("  └─────────────────────────\n");
 			cmd = cmd->next;
 			cmd_index++;

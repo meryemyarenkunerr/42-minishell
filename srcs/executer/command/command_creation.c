@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/25 15:58:16 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/25 18:41:18 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ t_command	*create_command_from_tokens(t_token *token_list)
 		return (NULL);
 	ft_memset(cmd, 0, sizeof(t_command));
 	cmd->fd_out = STDOUT_FILENO;
+	cmd->file_handler = 1;
 	curr = token_list;
 	while (curr && curr->prev)
 		curr = curr->prev;

@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/24 20:39:07 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/25 21:31:37 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,36 @@ void	update_exit_status(int idx, int *exit_stat, int cmd_count, int status)
 void	cleanup_pipeline(t_shell *shell, int **pipes, pid_t *pids,
 	int cmd_count)
 {
-	int	i;
-	int	status;
-	int	last_exit_status;
+	int i = 0, status;
+    int last_exit_status = 0;
 
-	last_exit_status = 0;
-	close_all_pipes_in_parent(pipes, cmd_count);
-	i = 0;
-	while (i < cmd_count)
-	{
-		if (pids[i] > 0)
-		{
-			if (waitpid(pids[i], &status, 0) == -1)
-				perror("waitpid");
-			else
-				update_exit_status(i, &last_exit_status, cmd_count, status);
-		}
-		i++;
-	}
-	shell->exit_status = last_exit_status;
-	cleanup_pipes(pipes, cmd_count);
-	free(pids);
+    if (!shell)
+        return;
+
+    // Parent, tüm pipe fd’lerini kapatmalı → downstream EOF alır
+    close_all_pipes_in_parent(pipes, cmd_count);
+
+    // Tüm child pid’lerini bekle
+    if (pids)
+    {
+        while (i < cmd_count)
+        {
+            if (pids[i] > 0)
+            {
+                if (waitpid(pids[i], &status, 0) == -1)
+                    perror("waitpid");
+                else
+                    update_exit_status(i, &last_exit_status, cmd_count, status);
+            }
+            i++;
+        }
+        free(pids);
+    }
+
+    shell->exit_status = last_exit_status;
+
+    // Pipes yapısını temizle
+    cleanup_pipes(pipes, cmd_count);
 }
 
 void	cleanup_pipes(int **pipes, int cmd_count)
@@ -55,7 +64,7 @@ void	cleanup_pipes(int **pipes, int cmd_count)
 	int	pipe_count;
 
 	if (!pipes)
-		return ;
+		return;
 	pipe_count = cmd_count - 1;
 	i = 0;
 	while (i < pipe_count)

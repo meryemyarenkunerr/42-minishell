@@ -9,7 +9,7 @@
 void			handle_child(t_shell *shell, t_command *cmd, int **pipes,
 					int i);
 int				skip_empty_command(pid_t *pids, t_command **cmd, t_pipeline_ctx *ctx);
-int				handle_pipe_error(int **pipes, int i);
+void			handle_pipe_error(int **pipes, int count);
 
 /* pipeline_child.c */
 void			execute_pipeline_child(t_shell *shell, t_command *cmd);
