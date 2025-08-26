@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_basics.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/24 16:02:06 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/26 13:01:49 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
+#include <unistd.h>
 
 void	execute_builtin_pwd(t_shell *shell, t_command *cmd)
 {
@@ -52,7 +53,12 @@ void	execute_builtin_env(t_shell *shell, t_command *cmd)
 	while (curr)
 	{
 		if (curr->key && ft_strlen(curr->value) > 0)
-			printf("%s=%s\n", curr->key, curr->value);
+		{
+			ft_putstr_fd(curr->key,  STDOUT_FILENO);
+			ft_putstr_fd("=",  STDOUT_FILENO);
+			ft_putstr_fd(curr->value,  STDOUT_FILENO);
+			ft_putstr_fd("\n",  STDOUT_FILENO);
+		}
 		curr = curr->next;
 	}
 	shell->exit_status = 0;
