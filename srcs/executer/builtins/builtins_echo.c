@@ -6,11 +6,12 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 17:07:43 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/26 18:12:11 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
+#include <unistd.h>
 
 int	is_dollar_question_mark(t_shell *shell, const char *arg)
 {
@@ -55,12 +56,12 @@ void	execute_builtin_echo(t_shell *shell, t_command *cmd)
 	while (cmd->arguments[i])
 	{
 		if (!is_dollar_question_mark(shell, cmd->arguments[i]))
-			ft_putstr_fd(cmd->arguments[i], cmd->fd_out);
+			ft_putstr_fd(cmd->arguments[i], STDOUT_FILENO);
 		if (cmd->arguments[i + 1])
-			ft_putstr_fd(" ", cmd->fd_out);
+			ft_putstr_fd(" ", STDOUT_FILENO);
 		i++;
 	}
 	if (nl_flag)
-		ft_putstr_fd("\n", cmd->fd_out);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 	shell->exit_status = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 17:10:48 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/26 18:10:33 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void	setup_pipeline_fds(t_command *cmd, int **pipes, int idx, int cmd_count)
 	// ÖNEMLİ DÜZELTME: Önce dosya yönlendirmelerini ayarla (redirection)
 	
 	// 1. Özel giriş yönlendirmesi (örn. <file)
-	if (cmd->fd_in != STDIN_FILENO && cmd->fd_in >= 0)
+	if (cmd->fd_in != STDIN_FILENO && cmd->fd_in >= 3)
 	{
 		// dup2 ile giriş yönlendirmesini ayarla
 		if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
@@ -161,7 +161,7 @@ void	setup_pipeline_fds(t_command *cmd, int **pipes, int idx, int cmd_count)
 	}
 	
 	// 1. Özel çıkış yönlendirmesi (örn. >file or >>file)
-	if (cmd->fd_out != STDOUT_FILENO && cmd->fd_out >= 0)
+	if (cmd->fd_out != STDOUT_FILENO && cmd->fd_out >= 3)
 	{
 		// dup2 ile çıkış yönlendirmesini ayarla
 		if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
@@ -173,11 +173,11 @@ void	setup_pipeline_fds(t_command *cmd, int **pipes, int idx, int cmd_count)
 		
 		// ÖNEMLİ DÜZELTME: Çıkış yönlendirmesi yapıldıysa ve bu pipe'ın ilk veya ortadaki komutu ise,
 		// pipe'ın yazma ucunu kapatmalıyız, çünkü artık çıktı dosyaya gidiyor
-		if (idx < cmd_count - 1 && pipes && pipes[idx] && pipes[idx][1] >= 0)
-		{
-			close(pipes[idx][1]);
-			pipes[idx][1] = -1;
-		}
+		// if (idx < cmd_count - 1 && pipes && pipes[idx] && pipes[idx][1] >= 3)
+		// {
+		// 	close(pipes[idx][1]);
+		// 	pipes[idx][1] = -1;
+		// }
 	}
 	
 	// Ardından pipe'ları ayarlayalım - Eğer dosya yönlendirmesi yapılmadıysa

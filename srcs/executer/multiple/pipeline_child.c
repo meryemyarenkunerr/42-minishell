@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 17:10:48 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/26 17:59:52 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,10 @@ static void	execute_pipeline_command(t_shell *shell, t_command *cmd,
 	char	*command_path;
 
 	cmd_count = shell->pipeline->count;
+	//print_shell_info(shell);
 	setup_pipeline_fds(cmd, pipes, idx, cmd_count);
-	
 	if (is_builtin_command(cmd->cmd))
-	{
 		execute_builtin_pipeline(shell, cmd, pipes);
-		// execute_builtin_pipeline fonksiyonu process'i exit ile sonlandırır
-	}
 	else
 	{
 		env_array = get_env_array(shell->environment);
@@ -107,7 +104,7 @@ static void	execute_pipeline_command(t_shell *shell, t_command *cmd,
 			       free_at_exit(shell);
 			       if (pipes && shell && shell->pipeline)
 				       cleanup_pipes(pipes, shell->pipeline->count - 1);
-			       _exit(127);
+			       exit(127);
 			}
 		}
 		execve(command_path, cmd->arguments, env_array);
@@ -117,7 +114,7 @@ static void	execute_pipeline_command(t_shell *shell, t_command *cmd,
 		free_string_array(env_array);
 		if (pipes && shell && shell->pipeline)
 			cleanup_pipes(pipes, shell->pipeline->count - 1);
-		_exit(127);
+		exit(127);
 	}
 }
 
@@ -137,10 +134,10 @@ static void	execute_failed_pipeline_command(t_shell *shell, t_command *cmd,
 	}
 	if (cmd->cmd[0] == '\0')
 		command_not_found_error(shell, "''");
-       free_at_exit(shell);
-       if (pipes && shell && shell->pipeline)
-	       cleanup_pipes(pipes, shell->pipeline->count - 1);
-       _exit(1);
+    if (pipes && shell && shell->pipeline)
+		cleanup_pipes(pipes, shell->pipeline->count - 1);
+	free_at_exit(shell);
+    exit(1);
 }
 
 void	execute_pipeline_child(t_shell *shell, t_command *cmd,
@@ -151,6 +148,5 @@ void	execute_pipeline_child(t_shell *shell, t_command *cmd,
 		execute_failed_pipeline_command(shell, cmd, pipes, idx);
 	else
 		execute_pipeline_command(shell, cmd, pipes, idx);
-	
-	_exit(1); // exit yerine _exit kullan
+	exit(1);
 }
