@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 14:15:48 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/26 17:10:48 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,55 +15,23 @@
 
 static void execute_builtin_pipeline(t_shell *shell, t_command *cmd, int **pipes)
 {
-	ft_putstr_fd("\nDEBUG BUILTIN: Starting built-in command: ", STDERR_FILENO);
-	ft_putstr_fd(cmd->cmd, STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-	
-	ft_putstr_fd("DEBUG BUILTIN: fd_in=", STDERR_FILENO);
-	ft_putnbr_fd(cmd->fd_in, STDERR_FILENO);
-	ft_putstr_fd(", fd_out=", STDERR_FILENO);
-	ft_putnbr_fd(cmd->fd_out, STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-	
-	ft_putstr_fd("DEBUG BUILTIN: Calling built-in function\n", STDERR_FILENO);
 	call_builtin_function(shell, cmd);
-	ft_putstr_fd("DEBUG BUILTIN: Built-in function completed\n", STDERR_FILENO);
 
-	// Tüm dosya tanımlayıcılarını kapatmayı deneyelim
-	ft_putstr_fd("DEBUG BUILTIN: Trying to close all possible file descriptors\n", STDERR_FILENO);
+	if (cmd->fd_out > 0 && cmd->fd_out != STDOUT_FILENO)
+		close(cmd->fd_out);
 	
-	// Standart output'u kapatma (opsiyonel bir test)
-	if (cmd->fd_out > 0 && cmd->fd_out != STDOUT_FILENO) {
-	    ft_putstr_fd("DEBUG BUILTIN: Closing cmd->fd_out\n", STDERR_FILENO);
-	    close(cmd->fd_out);
-	}
-	
-	// Standart input'u kapatma (opsiyonel bir test)
-	if (cmd->fd_in > 0 && cmd->fd_in != STDIN_FILENO) {
-	    ft_putstr_fd("DEBUG BUILTIN: Closing cmd->fd_in\n", STDERR_FILENO);
-	    close(cmd->fd_in);
-	}
+	if (cmd->fd_in > 0 && cmd->fd_in != STDIN_FILENO)
+		close(cmd->fd_in);
 
 	/* Cleanup resources before exit */
-	ft_putstr_fd("DEBUG BUILTIN: Cleaning up resources\n", STDERR_FILENO);
 	free_at_exit(shell);
 	
 	if (pipes && shell && shell->pipeline)
-	{
-		ft_putstr_fd("DEBUG BUILTIN: Cleaning up pipes\n", STDERR_FILENO);
 		cleanup_pipes(pipes, shell->pipeline->count - 1);
-	}
 	
-	ft_putstr_fd("DEBUG BUILTIN: Exit with status ", STDERR_FILENO);
-	ft_putnbr_fd(shell->exit_status, STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-	
-	// Standart çıkışları kapatmayı deneyelim
-	ft_putstr_fd("DEBUG BUILTIN: Trying to close standard file descriptors\n", STDERR_FILENO);
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 	
-	// Exit ile direkt çıkış yap (_exit kullan)
 	_exit(shell->exit_status);
 }
 
@@ -117,20 +85,6 @@ static void	execute_pipeline_command(t_shell *shell, t_command *cmd,
 
 	cmd_count = shell->pipeline->count;
 	setup_pipeline_fds(cmd, pipes, idx, cmd_count);
-	// ft_putstr_fd("char *s", STDERR_FILENO);
-	ft_putstr_fd("\nDEBUG: ", STDERR_FILENO);
-    ft_putstr_fd(cmd->cmd, STDERR_FILENO);
-    ft_putstr_fd(": fd_in -> ", STDERR_FILENO);
-	if (idx >= 1)
-    	ft_putnbr_fd(pipes[idx - 1][0], STDERR_FILENO);
-    ft_putstr_fd(" ---- fd_out -> ", STDERR_FILENO);
-	if (idx < cmd_count - 1)
-    	ft_putnbr_fd(pipes[idx][1], STDERR_FILENO);
-    ft_putstr_fd("\n", STDERR_FILENO);
-	
-	// Redirection sonrası cmd->fd_in ve cmd->fd_out değerleri 
-	// artık STDIN_FILENO ve STDOUT_FILENO'dur.
-	// O yüzden tekrar dup2 yapmaya gerek yok.
 	
 	if (is_builtin_command(cmd->cmd))
 	{
@@ -176,7 +130,6 @@ static void	execute_failed_pipeline_command(t_shell *shell, t_command *cmd,
 	cmd_count = shell->pipeline->count;
 	setup_pipeline_fds(cmd, pipes, idx, cmd_count);
 
-	
 	if (idx > 0)
 	{
 		while (read(STDIN_FILENO, &single_byte, 1) > 1)
@@ -193,23 +146,11 @@ static void	execute_failed_pipeline_command(t_shell *shell, t_command *cmd,
 void	execute_pipeline_child(t_shell *shell, t_command *cmd,
 	int **pipes, int idx)
 {
-	ft_putstr_fd("\nDEBUG CHILD: Starting child process for command: ", STDERR_FILENO);
-	ft_putstr_fd(cmd->cmd, STDERR_FILENO);
-	ft_putstr_fd(", index=", STDERR_FILENO);
-	ft_putnbr_fd(idx, STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-	
+
 	if (cmd->file_handler == 0 || cmd->cmd[0] == '\0')
-	{
-		ft_putstr_fd("DEBUG CHILD: Command has invalid file handler or empty command\n", STDERR_FILENO);
 		execute_failed_pipeline_command(shell, cmd, pipes, idx);
-	}
 	else
-	{
-		ft_putstr_fd("DEBUG CHILD: Executing pipeline command\n", STDERR_FILENO);
 		execute_pipeline_command(shell, cmd, pipes, idx);
-	}
 	
-	ft_putstr_fd("DEBUG CHILD: Child process reached end without executing - exiting\n", STDERR_FILENO);
 	_exit(1); // exit yerine _exit kullan
 }

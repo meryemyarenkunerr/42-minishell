@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/25 17:30:05 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/26 16:48:59 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ void	process_command(t_shell *shell, char *command)
 		return ;
 	if (!setup_file_descriptors(shell))
 		return ;
-	// print_shell_info(shell);
+	//print_shell_info(shell);
 	executer(shell);
 }

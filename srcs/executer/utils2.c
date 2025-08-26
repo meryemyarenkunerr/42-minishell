@@ -1,4 +1,5 @@
 #include "../../includes/minishell.h"
+#include <unistd.h>
 
 int	setup_single_input_file(t_shell *shell, t_command *cmd, char *filename)
 {
