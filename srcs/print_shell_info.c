@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_shell_info.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/25 14:26:04 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/26 21:58:57 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ const char *get_token_type_name(t_token_types type)
 	switch (type)
 	{
 		case TOKEN_NONE:        return "NONE";
-		case TOKEN_WORD:        return "WORD";
 		case TOKEN_COMMAND:     return "COMMAND";
 		case TOKEN_ARGUMENT:    return "ARGUMENT";
 		case TOKEN_FILE:        return "FILE";

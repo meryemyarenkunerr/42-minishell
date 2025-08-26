@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_builder.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/25 15:49:00 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/26 21:39:14 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,6 @@ static int	validate_pipeline(t_shell *shell)
 	if (shell->pipeline->count == 0)
 		return (FALSE);
 	return (TRUE);
-}
-
-static void	initialize_command_chain(t_shell *shell)
-{
-	if (shell->commands)
-	{
-		free_command_list(shell->commands);
-		shell->commands = NULL;
-	}
 }
 
 static void	link_command_to_chain(t_shell *shell, t_command *cmd,
@@ -65,7 +56,6 @@ int	builds_commands_from_pipeline(t_shell *shell)
 
 	if (!validate_pipeline(shell))
 		return (FALSE);
-	initialize_command_chain(shell);
 	prev = NULL;
 	i = 0;
 	while (i < shell->pipeline->count)

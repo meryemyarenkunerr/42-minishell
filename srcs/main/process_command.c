@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 17:21:25 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/26 20:09:38 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,5 @@ void	process_command(t_shell *shell, char *command)
 		return ;
 	if (!setup_file_descriptors(shell))
 		return ;
-	//print_shell_info(shell);
 	executer(shell);
 }

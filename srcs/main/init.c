@@ -3,32 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas    <iaktas@student.42istanbul>      +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 17:35:22 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/26 19:48:31 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-// void	init_simple_signal(int signo)
-// {
-// 	if (signo == SIGINT)
-// 	{
-// 		g_sigint_received = 0;
-// 		write(1, "\n", 1);
-// 		rl_on_new_line();
-// 		rl_replace_line("", 0);
-// 		rl_redisplay();
-// 	}
-// }
-
-// void	init_signal(void)
-// {
-// 	signal(SIGINT, init_simple_signal);
-// 	signal(SIGQUIT, SIG_IGN);
-// }
 
 t_env	*init_env(char **env)
 {
@@ -57,9 +39,8 @@ void	init_shell(t_shell *shell, char **env)
 		return ;
 	shell->environment = init_env(env);
 	shell->exit_status = 0;
-	shell->exit = FALSE;
+	shell->exit = 0;
 	shell->commands = NULL;
 	shell->pipeline = NULL;
-	// init_signal();
 	handle_signals();
 }

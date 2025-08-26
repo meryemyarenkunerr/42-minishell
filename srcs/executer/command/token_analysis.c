@@ -6,12 +6,11 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/24 14:49:56 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/26 21:57:46 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-#include <readline/history.h>
 
 int	is_redirection_file(t_token *token)
 {
@@ -37,14 +36,8 @@ char	*find_command_name(t_token *token_list)
 	curr = token_list;
 	while (curr)
 	{
-		if ((curr->type == TOKEN_COMMAND
-				|| curr->type == TOKEN_WORD
-				|| curr->type == TOKEN_FILE)
-			&& !is_redirection_file(curr)
-			&& !is_heredoc_delimeter(curr))
-		{
+		if (curr->type == TOKEN_COMMAND)
 			return (ft_strdup(curr->content));
-		}
 		curr = curr->next;
 	}
 	return (NULL);
@@ -63,14 +56,9 @@ int	argument_counter(t_token *token_list)
 	curr = token_list;
 	while (curr)
 	{
-		if ((curr->type == TOKEN_ARGUMENT && !is_heredoc_delimeter(curr))
-			|| ((curr->type == TOKEN_WORD || curr->type == TOKEN_FILE)
-				&& !is_redirection_file(curr)
-				&& !is_heredoc_delimeter(curr)
-				&& ft_strcmp(curr->content, cmd_name) != 0))
-		{
+		if (curr->type == TOKEN_ARGUMENT 
+			|| curr->type == TOKEN_COMMAND)
 			count++;
-		}
 		curr = curr->next;
 	}
 	free(cmd_name);

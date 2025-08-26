@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 00:00:00 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 20:43:46 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/26 20:43:29 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static char	*process_variable_expansion(char *content, char *result,
 }
 
 static char	*process_character(char *content, char *result,
-	t_shell *shell, int *quotesi)
+	t_shell *shell, int quotesi[3])
 {
 	if (content[quotesi[0]] == '"' && !quotesi[1])
 	{

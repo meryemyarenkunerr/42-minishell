@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 17:59:52 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/26 21:22:29 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ static void	execute_pipeline_command(t_shell *shell, t_command *cmd,
 	char	*command_path;
 
 	cmd_count = shell->pipeline->count;
-	//print_shell_info(shell);
 	setup_pipeline_fds(cmd, pipes, idx, cmd_count);
 	if (is_builtin_command(cmd->cmd))
 		execute_builtin_pipeline(shell, cmd, pipes);
@@ -101,19 +100,19 @@ static void	execute_pipeline_command(t_shell *shell, t_command *cmd,
 				if (env_array)
 					free_string_array(env_array);
 				command_not_found_error(shell, cmd->cmd);
-			       free_at_exit(shell);
-			       if (pipes && shell && shell->pipeline)
-				       cleanup_pipes(pipes, shell->pipeline->count - 1);
-			       exit(127);
+			    if (pipes)
+				    cleanup_pipes(pipes, shell->pipeline->count - 1);
+				free_at_exit(shell);
+			    exit(127);
 			}
 		}
 		execve(command_path, cmd->arguments, env_array);
 		command_not_found_error(shell, cmd->cmd);
-		free_at_exit(shell);
 		free(command_path);
 		free_string_array(env_array);
-		if (pipes && shell && shell->pipeline)
+		if (pipes)
 			cleanup_pipes(pipes, shell->pipeline->count - 1);
+		free_at_exit(shell);
 		exit(127);
 	}
 }
