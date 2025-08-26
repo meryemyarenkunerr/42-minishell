@@ -105,6 +105,8 @@ t_command	*create_command_from_tokens(t_token *token_list)
 		return (NULL);
 	ft_memset(cmd, 0, sizeof(t_command));
 	cmd->fd_out = STDOUT_FILENO;
+	cmd->fd_in = STDIN_FILENO;
+	cmd->file_handler = 1;
 	curr = token_list;
 	while (curr && curr->prev)
 		curr = curr->prev;

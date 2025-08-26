@@ -196,6 +196,7 @@ void	print_shell_info(t_shell *shell)
 				printf("ERROR: Command %d points to itself! Breaking to prevent infinite loop\n", cmd_index);
 				break;
 			}
+			printf(". | file_handler: %d\n", cmd->file_handler);
 			printf("  └─────────────────────────\n");
 			cmd = cmd->next;
 			cmd_index++;

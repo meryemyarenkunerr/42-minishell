@@ -28,13 +28,6 @@ int	handle_fork_error(int fds[2])
 	return (FALSE);
 }
 
-pid_t	*handle_fork_error_multiple(pid_t *pids, int i)
-{
-	perror("fork");
-	cleanup_partial_processes(pids, i);
-	return (NULL);
-}
-
 void	command_not_found_error(t_shell *shell, char *cmd)
 {
 	ft_putstr_fd(cmd, STDERR_FILENO);

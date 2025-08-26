@@ -33,13 +33,9 @@ void			free_token_array(t_token *tokens);
 void			free_pipeline(t_pipeline *pipeline);
 
 /* free_pipes.c */
-void			update_exit_status(int idx, int *exit_stat, int cmd_count,
-					int status);
-void			cleanup_pipeline(t_shell *shell, int **pipes, pid_t *pids,
-					int cmd_count);
-void			cleanup_pipes(int **pipes, int cmd_count);
-void			cleanup_partial_pipes(int **pipes, int created_count);
-void			cleanup_partial_processes(pid_t *pids, int created_count);
+void	cleanup_pipes(int **pipes, int count);
+void	close_all_pipe_fds(int **pipes, int count);
+void	close_remaining_pipe_fds(int **pipes, int pipe_count, int curr_idx);
 
 /* free.c */
 void			free_at_exit(t_shell *shell);

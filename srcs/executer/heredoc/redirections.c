@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 static int	get_append_mode(t_command *cmd, char *filename)
 {
@@ -77,8 +77,7 @@ int	setup_file_descriptors(t_shell *shell)
 		{
 			shell->exit_status = 1;
 			close_command_fds(curr);
-			free(curr->cmd);
-			curr->cmd = NULL;
+			curr->file_handler = 0;
 			if (shell->pipeline->count == 1)
 				return (FALSE);
 		}

@@ -55,12 +55,12 @@ void	execute_builtin_echo(t_shell *shell, t_command *cmd)
 	while (cmd->arguments[i])
 	{
 		if (!is_dollar_question_mark(shell, cmd->arguments[i]))
-			printf("%s", cmd->arguments[i]);
+			ft_putstr_fd(cmd->arguments[i], cmd->fd_out);
 		if (cmd->arguments[i + 1])
-			printf(" ");
+			ft_putstr_fd(" ", cmd->fd_out);
 		i++;
 	}
 	if (nl_flag)
-		printf("\n");
+		ft_putstr_fd("\n", cmd->fd_out);
 	shell->exit_status = 0;
 }

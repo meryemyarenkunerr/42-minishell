@@ -5,23 +5,17 @@
 
 /* EXECUTER/MULTIPLE */
 
-/* multiple_utils.c */
-void			handle_child(t_shell *shell, t_command *cmd, int **pipes,
-					int i);
-int				skip_empty_command(pid_t *pids, t_command **cmd, t_pipeline_ctx *ctx);
-int				handle_pipe_error(int **pipes, int i);
+/* multiple_command.c */
+void	execute_multiple_commands(t_shell *shell, int cmd_count);
 
 /* pipeline_child.c */
-void			execute_pipeline_child(t_shell *shell, t_command *cmd);
+void	execute_pipeline_child(t_shell *shell, t_command *cmd,
+	int **pipes, int idx);
 
-/* pipeline_external.c */
-void			execute_external_in_pipeline(t_shell *shell, t_command *cmd);
-
-/* pipeline.c */
-void			setup_pipeline_child(t_command *cmd, int **pipes,
-					int cmd_count, int cmd_index);
-pid_t			*execute_pipeline_processes(t_shell *shell, int **pipes,
-					int cmd_count);
-int				**create_pipeline_pipes(int cmd_count);
+/* pipeline_utils.c */
+void	setup_pipeline_fds(t_command *cmd, int **pipes, int idx,
+	int cmd_count);
+void	wait_pipeline_processes(t_shell * shell, t_command *cmds,
+	int cmd_count);
 
 #endif

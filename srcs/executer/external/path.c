@@ -81,6 +81,6 @@ char	*find_executable_path(t_shell *shell, char *cmd)
 	if (cmd[0] == '/' || cmd[0] == '.')
 		return (check_direct_path(cmd));
 	if (cmd[0] == '\0')
-		return (ft_strdup("/bin/usr/true"));
+		return (NULL);
 	return (search_in_path(shell, cmd));
 }

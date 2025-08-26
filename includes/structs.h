@@ -59,6 +59,7 @@ typedef struct s_command
 	int					fd_out;
 	pid_t				pid;
 	struct s_command	*next;
+	int					file_handler;
 }	t_command;
 
 /* Pipeline Structure - Token Lists seperated by pipes */

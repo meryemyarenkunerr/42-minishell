@@ -37,29 +37,28 @@ MAIN_SRCS		= init_env.c \
 # Executer module
 EXEC_DIR		= $(SRCDIR)/executer
 EXEC_SRCS		= executer.c \
-				  multiple_command.c \
-				  redirections.c \
 				  single_command.c \
 				  utils.c \
 				  utils2.c
 
 # Heredoc module
 HD_DIR			= $(SRCDIR)/executer/heredoc
-HD_SRCS			= heredoc_handler.c \
-				  heredoc_child.c \
+HD_SRCS			= heredoc_child.c \
+				  heredoc_handler.c \
 				  heredoc_parent.c \
+				  heredoc_safe_readline.c \
 				  heredoc_utils.c \
-				  heredoc_safe_readline.c
+				  redirections.c
 
 # Command module
 CMD_DIR			= $(SRCDIR)/executer/command
 CMD_SRCS		= command_builder.c \
 				  command_creation.c \
+				  expander.c \
 				  heredoc_management.c \
-				  utils.c \
-				  utils2.c \
 				  token_analysis.c \
-				  expander.c
+				  utils.c \
+				  utils2.c
 
 # Built-ins module
 BUILTIN_DIR		= $(SRCDIR)/executer/builtins
@@ -67,25 +66,24 @@ BUILTIN_SRCS	= builtins_basics.c \
 				  builtins_cd.c \
 				  builtins_echo.c \
 				  builtins_exit.c \
-				  builtins_export.c \
 				  builtins_export_util.c \
+				  builtins_export.c \
 				  builtins_unset.c \
 				  builtins_utils.c \
 				  builtins_utils2.c
 
 # External module
 EXTERNAL_DIR	= $(SRCDIR)/executer/external
-EXTERNAL_SRCS	= external.c \
-				  child_utils.c \
+EXTERNAL_SRCS	= child_utils.c \
 				  external_child.c \
+				  external.c \
 				  path.c
 
 # Multiple module
 MULTIPLE_DIR	= $(SRCDIR)/executer/multiple
-MULTIPLE_SRCS	= pipeline.c \
+MULTIPLE_SRCS	= multiple_command.c \
 				  pipeline_child.c \
-				  pipeline_external.c \
-				  multiple_utils.c
+				  pipeline_utils.c
 
 # Signal handling
 SIGNAL_DIR		= $(SRCDIR)/signal
@@ -160,7 +158,8 @@ ERROR_DIR		= $(SRCDIR)/error
 ERROR_SRCS		= errors.c \
 				  builtins_error.c \
 				  heredoc_error.c \
-				  syntax_error.c
+				  syntax_error.c \
+				  pipeline_errors.c
 
 # Test creators (Mock data)
 TEST_DIR		= $(SRCDIR)

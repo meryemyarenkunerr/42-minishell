@@ -14,8 +14,6 @@
 
 void	process_command(t_shell *shell, char *command)
 {
-	//int	fd_flag;
-
 	if (!shell || !command)
 		return ;
 	cleanup_previous_state(shell);
@@ -27,5 +25,6 @@ void	process_command(t_shell *shell, char *command)
 		return ;
 	if (!setup_file_descriptors(shell))
 		return ;
+	// print_shell_info(shell);
 	executer(shell);
 }
