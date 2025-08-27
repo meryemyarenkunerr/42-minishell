@@ -1,5 +1,0 @@
-cat < asd222 << asd -> cat çalışmayacak
-
-ls > asd < asd1 > asd2 | wc -c -> herhangi bir dosya açılamadığında diğerleri devam etmemeli
-
-cat < 12345 -> dosya ayarlarında sıkıntı var

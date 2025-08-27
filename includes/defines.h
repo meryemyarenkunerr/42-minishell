@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:02:06 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/25 15:34:39 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/27 08:09:43 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,37 +16,23 @@
 # define TRUE 1
 # define FALSE 0
 # define FAIL 999
-
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
-
-/* Colors */
 # define GREEN	"\033[0;32m"
 # define BLUE	"\033[0;34m"
 # define RESET	"\033[0m"
-
 # define PROMPT "\x1b[1;32mminishell$\x1b[0m  "
 # define PROMPT_WO_DOLLAR "minishell > "
 # define DOLLAR_SIGN "$ "
 # define PROMPT_HEREDOC "heredoc> "
-
 # define MAX_TOKENS 1024
-
-/* File */
 # define PERMISSION 0644
-// # define PIPE 2
-
-/* shell loop */
 # define EXIT "exit"
-
-/* Redirection Signs */
 # define REDIRECTION_IN "<"
 # define REDIRECTION_OUT ">"
 # define REDIRECTION_APPEND ">>"
 # define REDIRECTION_HEREDOC "<<"
-
-/* Builtins */
 # define ECHO_ "echo"
 # define CD "cd"
 # define PWD "pwd"
@@ -54,7 +40,6 @@
 # define UNSET "unset"
 # define ENV "env"
 # define EXIT "exit"
-
 # define IN_HEREDOC 2
 # define AFTER_HEREDOC 3
 # define IN_CMD 4

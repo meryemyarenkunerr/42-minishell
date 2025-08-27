@@ -39,26 +39,29 @@ EXEC_DIR		= $(SRCDIR)/executer
 EXEC_SRCS		= executer.c \
 				  single_command.c \
 				  utils.c \
-				  utils2.c
 
 # Heredoc module
 HD_DIR			= $(SRCDIR)/executer/heredoc
-HD_SRCS			= heredoc_child.c \
-				  heredoc_handler.c \
-				  heredoc_parent.c \
-				  heredoc_safe_readline.c \
+HD_SRCS			= heredoc_handler.c \
+				  heredoc_readline.c \
 				  heredoc_utils.c \
-				  redirections.c
+				  process_heredoc.c
+
+# Redirections module
+REDIR_DIR		= $(SRCDIR)/executer/redirections
+REDIR_SRCS		= file_setter.c \
+				  redirection.c \
+				  utils.c
 
 # Command module
 CMD_DIR			= $(SRCDIR)/executer/command
 CMD_SRCS		= command_builder.c \
-				  command_creation.c \
+				  command_creator.c \
+				  command_filler.c \
 				  expander.c \
+				  file_adder.c \
 				  heredoc_management.c \
-				  token_analysis.c \
 				  utils.c \
-				  utils2.c
 
 # Built-ins module
 BUILTIN_DIR		= $(SRCDIR)/executer/builtins
@@ -82,8 +85,11 @@ EXTERNAL_SRCS	= child_utils.c \
 # Multiple module
 MULTIPLE_DIR	= $(SRCDIR)/executer/multiple
 MULTIPLE_SRCS	= multiple_command.c \
+				  pipeline_child_utils.c \
 				  pipeline_child.c \
-				  pipeline_utils.c
+				  pipeline_waits.c \
+				  pipes_creation.c \
+				  setup_fds.c
 
 # Signal handling
 SIGNAL_DIR		= $(SRCDIR)/signal
@@ -94,7 +100,7 @@ SIGNAL_SRCS		= signals.c \
 CLEANUP_DIR		= $(SRCDIR)/cleanup_tools
 CLEANUP_SRCS	= free_command.c \
 				  free_env.c \
-				  free_pipeline.c \
+				  free_parser.c \
 				  free.c \
 				  close_fds.c \
 				  free_builtins.c \
@@ -159,11 +165,8 @@ ERROR_SRCS		= errors.c \
 				  builtins_error.c \
 				  heredoc_error.c \
 				  syntax_error.c \
-				  pipeline_errors.c
-
-# Test creators (Mock data)
-TEST_DIR		= $(SRCDIR)
-TEST_SRCS		= print_shell_info.c
+				  pipeline_errors.c \
+				  redirections_error.c
 
 # ============================== FILE PATHS =============================== #
 
@@ -178,7 +181,6 @@ MULTIPLE_FILES		= $(addprefix $(MULTIPLE_DIR)/, $(MULTIPLE_SRCS))
 SIGNAL_FILES		= $(addprefix $(SIGNAL_DIR)/, $(SIGNAL_SRCS))
 CLEANUP_FILES		= $(addprefix $(CLEANUP_DIR)/, $(CLEANUP_SRCS))
 ERROR_FILES			= $(addprefix $(ERROR_DIR)/, $(ERROR_SRCS))
-TEST_FILES			= $(addprefix $(TEST_DIR)/, $(TEST_SRCS))
 A_LEXER_FILES		= $(addprefix $(A_LEXER_DIR)/, $(A_LEXER_SRCS))
 C_REDIRECT_FILES	= $(addprefix $(C_REDIRECT_DIR)/, $(C_REDIRECT_SRCS))
 EOF_CHECK_FILES		= $(addprefix $(EOF_CHECK_DIR)/, $(EOF_CHECK_SRCS))
@@ -190,14 +192,14 @@ Q_REMOVE_FILES		= $(addprefix $(Q_REMOVE_DIR)/, $(Q_REMOVE_SRCS))
 S_CHECK_FILES		= $(addprefix $(S_CHECK_DIR)/, $(S_CHECK_SRCS))
 T_CLASS_FILES		= $(addprefix $(T_CLASS_DIR)/, $(T_CLASS_SRCS))
 M_PARSER_FILES		= $(addprefix $(M_PARSER_DIR)/, $(M_PARSER_SRCS))
+REDIR_FILES			= $(addprefix $(REDIR_DIR)/, $(REDIR_SRCS))
 
 # Combine all source files
 ALL_SRCS		= $(MAIN_FILES) $(EXEC_FILES) $(HD_FILES) $(CMD_FILES) $(BUILTIN_FILES) \
 				  $(EXTERNAL_FILES) $(SIGNAL_FILES) $(CLEANUP_FILES) $(ERROR_FILES) \
-				  $(TEST_FILES) $(MULTIPLE_FILES) $(A_LEXER_FILES) $(C_REDIRECT_FILES) \
+				  $(MULTIPLE_FILES) $(A_LEXER_FILES) $(C_REDIRECT_FILES) $(REDIR_FILES) \
 				  $(EOF_CHECK_FILES) $(I_EXPANDER_FILES) $(T_CLASS_FILES) $(M_PARSER_FILES) \
-				  $(P_TOKEN_FILES) $(POST_EXPANDER_FILES) $(Q_REMOVE_FILES) $(S_CHECK_FILES)
-
+				  $(P_TOKEN_FILES) $(POST_EXPANDER_FILES) $(Q_REMOVE_FILES) $(S_CHECK_FILES) \
 
 # Generate object files
 OBJS			= $(ALL_SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)

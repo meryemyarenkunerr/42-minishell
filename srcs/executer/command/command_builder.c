@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   command_builder.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 21:39:14 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 04:31:36 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-
-static int	validate_pipeline(t_shell *shell)
-{
-	if (!shell || !shell->pipeline || !shell->pipeline->token_lists)
-		return (FALSE);
-	if (shell->pipeline->count == 0)
-		return (FALSE);
-	return (TRUE);
-}
 
 static void	link_command_to_chain(t_shell *shell, t_command *cmd,
 	t_command **prev)
@@ -46,6 +37,15 @@ static int	process_pipeline_segment(t_shell *shell, int segment_index,
 			return (FALSE);
 	}
 	link_command_to_chain(shell, curr, prev);
+	return (TRUE);
+}
+
+static int	validate_pipeline(t_shell *shell)
+{
+	if (!shell || !shell->pipeline || !shell->pipeline->token_lists)
+		return (FALSE);
+	if (shell->pipeline->count == 0)
+		return (FALSE);
 	return (TRUE);
 }
 

@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 00:49:17 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 08:11:08 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-int	change_directory_safely(t_shell *shell, char *target_dir, char *old_pwd)
+static int	change_directory_safely(t_shell *shell, char *target_dir,
+	char *old_pwd)
 {
 	if (chdir(target_dir) == -1)
 	{
@@ -26,7 +27,7 @@ int	change_directory_safely(t_shell *shell, char *target_dir, char *old_pwd)
 	return (TRUE);
 }
 
-char	*expand_home_path(t_shell *shell, const char *target_path)
+static char	*expand_home_path(t_shell *shell, const char *target_path)
 {
 	char	*home_dir;
 	char	*target;
@@ -47,7 +48,7 @@ char	*expand_home_path(t_shell *shell, const char *target_path)
 	return (ft_strdup(target_path));
 }
 
-char	*get_home_directory(t_shell *shell)
+static char	*get_home_directory(t_shell *shell)
 {
 	char	*home_dir;
 
@@ -60,7 +61,7 @@ char	*get_home_directory(t_shell *shell)
 	return (ft_strdup(home_dir));
 }
 
-char	*get_target_directory(t_shell *shell, const char *target_path)
+static char	*get_target_directory(t_shell *shell, const char *target_path)
 {
 	if (!target_path)
 		return (get_home_directory(shell));

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas    <iaktas@student.42istanbul>      +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 17:35:22 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 08:01:33 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	add_new_env_node(t_env **env, t_env *tail)
+static void	add_new_env_node(t_env **env, t_env *tail)
 {
 	t_env	*curr;
 
@@ -29,7 +29,7 @@ void	add_new_env_node(t_env **env, t_env *tail)
 	curr->next = tail;
 }
 
-t_env	*create_env_node_empty(void)
+static t_env	*create_env_node_empty(void)
 {
 	t_env	*node;
 
@@ -42,7 +42,7 @@ t_env	*create_env_node_empty(void)
 	return (node);
 }
 
-t_env	*create_env_node(char *key, char *val)
+static t_env	*create_env_node(char *key, char *val)
 {
 	t_env	*node;
 
@@ -67,7 +67,7 @@ t_env	*create_env_node(char *key, char *val)
 	return (node);
 }
 
-int	extract_key_value(char *env_pair, char **key, char **val)
+static int	extract_key_value(char *env_pair, char **key, char **val)
 {
 	char	*equal_pos;
 	int		len;

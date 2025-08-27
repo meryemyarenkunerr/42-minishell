@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   e_redirections.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:22:50 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 08:02:10 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/27 05:37:44 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#ifndef E_REDIRECTIONS_H
+# define E_REDIRECTIONS_H
 
 # include "../structs.h"
-# include "../defines.h"
 
-int		add_key_value_pair(t_env **env, char *env_pair);
-void	init_shell(t_shell *shell, char **env);
-void	process_command(t_shell *shell, char *command);
-char	*build_prompt(void);
-void	shell_loop(t_shell *shell);
+int		setup_file_descriptors(t_shell *shell);
+int		setup_single_input_file(t_shell *shell, t_command *cmd, char *filename);
+int		setup_single_output_file(t_shell *shell, t_command *cmd, char *filename,
+			int append_mode);
+int		is_output_file(t_command *cmd, char *filename);
+int		is_input_file(t_command *cmd, char *filename);
 
 #endif

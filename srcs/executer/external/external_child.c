@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   external_child.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 02:40:46 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 07:48:42 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-char	*create_env_string(char *key, char *val)
+static char	*create_env_string(char *key, char *val)
 {
 	char	*env_str;
 	int		key_len;
@@ -58,7 +58,7 @@ static int	fill_env_array(char **env_array, t_env *env)
 	return (TRUE);
 }
 
-char	**convert_env_to_array(t_env *env)
+static char	**convert_env_to_array(t_env *env)
 {
 	char	**env_array;
 	int		count;

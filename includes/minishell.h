@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:01:40 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/24 13:20:36 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 08:10:11 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-/* Standard Libraries */
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -26,8 +25,8 @@
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <termios.h>
 
-/* Own Headers */
 # include "../libft/libft.h"
 # include "defines.h"
 # include "structs.h"
@@ -42,10 +41,8 @@
 # include "./minishell/main.h"
 # include "./minishell/parser.h"
 # include "./minishell/signal.h"
+# include "./minishell/e_redirections.h"
 
-/* Global Variable */
 extern int	g_sigint_received;
-
-void		print_shell_info(t_shell *shell);
 
 #endif

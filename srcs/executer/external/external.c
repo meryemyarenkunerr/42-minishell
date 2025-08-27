@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   external.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 02:53:13 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 08:10:51 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-void	wait_for_child(t_shell *shell, pid_t pid)
+static void	wait_for_child(t_shell *shell, pid_t pid)
 {
 	int	status;
 
@@ -28,7 +28,8 @@ void	wait_for_child(t_shell *shell, pid_t pid)
 		shell->exit_status = 128 + WTERMSIG(status);
 }
 
-pid_t	fork_and_execute(t_shell *shell, t_command *cmd, char *exec_path)
+static pid_t	fork_and_execute(t_shell *shell, t_command *cmd,
+	char *exec_path)
 {
 	pid_t	pid;
 
@@ -76,7 +77,7 @@ void	execute_external(t_shell *shell, t_command *cmd)
 		if (!access(cmd->cmd, F_OK))
 		{
 			perror("Permission denied");
-			shell->exit_status = 126;	
+			shell->exit_status = 126;
 		}
 		else
 			command_not_found_error(shell, cmd->cmd);

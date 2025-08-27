@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_heredoc.c                                     :+:      :+:    :+:   */
+/*   redirections_error.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas    <iaktas@student.42istanbul>      +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 17:35:22 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 05:28:28 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	complete_cleanup_and_exit(t_shell *shell, int exit_code)
+void	print_file_error(char *filename, char *error_msg)
 {
-	(void)shell;
-	(void)exit_code;
-	rl_clear_history();
-	restore_heredoc_signals();
-	// free_at_exit(shell);
-	// exit(exit_code);
+	write(STDERR_FILENO, "minishell: ", 11);
+	write(STDERR_FILENO, filename, ft_strlen(filename));
+	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, error_msg, ft_strlen(error_msg));
+	write(STDERR_FILENO, "\n", 1);
 }

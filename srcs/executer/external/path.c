@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 15:29:06 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 07:51:35 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-#include <unistd.h>
 
-char	*build_full_path(char *dir, char *cmd)
+static char	*build_full_path(char *dir, char *cmd)
 {
 	char	*full_path;
 	int		dir_len;
@@ -35,7 +34,7 @@ char	*build_full_path(char *dir, char *cmd)
 	return (full_path);
 }
 
-char	*check_path_directories(char **path_dirs, char *cmd)
+static char	*check_path_directories(char **path_dirs, char *cmd)
 {
 	char	*full_path;
 	int		i;
@@ -53,7 +52,7 @@ char	*check_path_directories(char **path_dirs, char *cmd)
 	return (NULL);
 }
 
-char	*search_in_path(t_shell *shell, char *cmd)
+static char	*search_in_path(t_shell *shell, char *cmd)
 {
 	char	*path_env;
 	char	**path_dirs;
@@ -70,7 +69,7 @@ char	*search_in_path(t_shell *shell, char *cmd)
 	return (res);
 }
 
-char	*check_direct_path(char *cmd)
+static char	*check_direct_path(char *cmd)
 {
 	if (access(cmd, X_OK) == 0)
 		return (ft_strdup(cmd));

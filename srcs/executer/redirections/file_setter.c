@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils2.c                                           :+:      :+:    :+:   */
+/*   file_setter.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas    <iaktas@student.42istanbul>      +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/26 12:22:50 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 17:14:15 by iaktas           ###   ########.fr       */
+/*   Created: 2025/08/27 05:25:10 by mkuner            #+#    #+#             */
+/*   Updated: 2025/08/27 07:08:27 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
-#include <unistd.h>
+#include "../../../includes/minishell.h"
 
 int	setup_single_input_file(t_shell *shell, t_command *cmd, char *filename)
 {
@@ -32,7 +31,8 @@ int	setup_single_input_file(t_shell *shell, t_command *cmd, char *filename)
 	return (TRUE);
 }
 
-int	setup_single_output_file(t_shell *shell, t_command *cmd, char *filename, int append_mode)
+int	setup_single_output_file(t_shell *shell, t_command *cmd,
+	char *filename, int append_mode)
 {
 	int	fd;
 	int	flags;

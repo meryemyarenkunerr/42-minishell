@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 22:54:45 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 05:06:13 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,43 +21,26 @@ t_command	*init_command(void)
 		return (NULL);
 	ft_memset(cmd, 0, sizeof(t_command));
 	cmd->fd_out = STDOUT_FILENO;
+	cmd->fd_in = STDIN_FILENO;
+	cmd->file_handler = 1;
 	return (cmd);
 }
 
-void	add_input_file(t_command *cmd, const char *filename)
+int	is_valid_argument_token(t_token *token, const char *cmd_name)
 {
-	char	**new_files;
-	int		i;
-
-	if (!cmd || !filename)
-		return ;
-	new_files = malloc((cmd->input_count + 2) * sizeof(char *));
-	if (!new_files)
-		return ;
-	i = 0;
-	while (i < cmd->input_count)
-	{
-		new_files[i] = cmd->input_files[i];
-		i++;
-	}
-	new_files[cmd->input_count] = ft_strdup(filename);
-	new_files[cmd->input_count + 1] = NULL;
-	if (cmd->input_files)
-		free(cmd->input_files);
-	cmd->input_files = new_files;
-	cmd->input_count++;
-	add_to_ordered_files(cmd, filename);
+	if (!token || !cmd_name)
+		return (FALSE);
+	if (token->type == TOKEN_ARGUMENT)
+		return (TRUE);
+	return (FALSE);
 }
 
-t_command	*create_empty_command_with_redirections(t_token *token_list)
+int	allocate_new_arrays(t_command *cmd, char ***new_files,
+	int **new_modes)
 {
-	t_command	*cmd;
-	t_token		*current;
-
-	cmd = init_command();
-	if (!cmd)
-		return (NULL);
-	current = token_list;
-	extract_redirections_and_heredocs(cmd, current);
-	return (cmd);
+	*new_files = malloc((cmd->output_count + 2) * sizeof(char *));
+	*new_modes = malloc((cmd->output_count + 1) * sizeof(int));
+	if (!*new_files || !*new_modes)
+		return (0);
+	return (1);
 }

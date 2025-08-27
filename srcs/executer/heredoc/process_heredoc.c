@@ -1,46 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc_child.c                                    :+:      :+:    :+:   */
+/*   process_heredoc.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 00:22:36 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 06:02:51 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-
-void	process_single_heredoc_ignore(t_shell *shell,
-		char *delimiter, int fds[2])
-{
-	char	*line;
-
-	while (!is_heredoc_interrupted())
-	{
-		line = safe_readline(BLUE PROMPT_HEREDOC RESET, shell, NULL, fds);
-		if (!line)
-		{
-			print_eof_warning(delimiter);
-			g_sigint_received = AFTER_HEREDOC;
-			handle_signals();
-			break ;
-		}
-		if (is_heredoc_interrupted())
-		{
-			if (line)
-				free(line);
-			break ;
-		}
-		if (ft_strcmp(line, delimiter) == 0)
-		{
-			free(line);
-			break ;
-		}
-		free(line);
-	}
-}
 
 static char	*heredoc_join_line(char *content, char *line)
 {
@@ -66,6 +36,38 @@ static char	*heredoc_join_line(char *content, char *line)
 	return (joined);
 }
 
+static char	*process_line_content(t_shell *shell, char *line)
+{
+	if (shell->commands->quote_flag == 1)
+		return (line);
+	else
+		return (expand_variable(line, shell));
+}
+
+static int	check_line_conditions(char *line, char *delimiter)
+{
+	if (!line)
+	{
+		if (errno == SIGQUIT)
+			print_eof_warning(delimiter);
+		g_sigint_received = AFTER_HEREDOC;
+		handle_signals();
+		return (1);
+	}
+	if (is_heredoc_interrupted())
+	{
+		if (line)
+			free(line);
+		return (1);
+	}
+	if (ft_strcmp(line, delimiter) == 0)
+	{
+		free(line);
+		return (1);
+	}
+	return (0);
+}
+
 void	process_single_heredoc(t_shell *shell, char *delimiter, int fds[2])
 {
 	char	*line;
@@ -75,7 +77,7 @@ void	process_single_heredoc(t_shell *shell, char *delimiter, int fds[2])
 	processed_line = ft_strdup("");
 	while (!is_heredoc_interrupted())
 	{
-		line = safe_readline(BLUE PROMPT_HEREDOC RESET,
+		line = read_line(BLUE PROMPT_HEREDOC RESET,
 				shell, processed_line, fds);
 		if (check_line_conditions(line, delimiter))
 			break ;
@@ -88,28 +90,37 @@ void	process_single_heredoc(t_shell *shell, char *delimiter, int fds[2])
 		}
 	}
 	if (!is_heredoc_interrupted())
-		write_processed_line(fds[1], processed_line);
+		write(fds[1], processed_line, ft_strlen(processed_line));
 	if (processed_line)
 		free(processed_line);
 }
 
-void	handle_heredoc_input(t_shell *shell, t_command *cmd, int fds[2])
+void	process_single_heredoc_ignore(t_shell *shell, char *delimiter,
+	int fds[2])
 {
-	int	i;
+	char	*line;
 
-	i = 0;
-	g_sigint_received = IN_HEREDOC;
-	handle_signals();
-	while (i < cmd->heredoc_count && !is_heredoc_interrupted())
+	while (!is_heredoc_interrupted())
 	{
-		if (i == cmd->heredoc_count - 1)
-			process_single_heredoc(shell, cmd->heredoc_delimiter[i], fds);
-		else
-			process_single_heredoc_ignore(shell,
-				cmd->heredoc_delimiter[i], fds);
-		i++;
+		line = read_line(BLUE PROMPT_HEREDOC RESET, shell, NULL, fds);
+		if (!line)
+		{
+			print_eof_warning(delimiter);
+			g_sigint_received = AFTER_HEREDOC;
+			handle_signals();
+			break ;
+		}
+		if (is_heredoc_interrupted())
+		{
+			if (line)
+				free(line);
+			break ;
+		}
+		if (ft_strcmp(line, delimiter) == 0)
+		{
+			free(line);
+			break ;
+		}
+		free(line);
 	}
-	g_sigint_received = AFTER_HEREDOC;
-	handle_signals();
-	close(fds[1]);
 }

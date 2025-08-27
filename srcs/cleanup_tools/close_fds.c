@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   close_fds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas    <iaktas@student.42istanbul>      +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 15:14:28 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 07:25:47 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,5 @@ void	close_command_fds(t_command *cmd)
 	{
 		close(cmd->fd_out);
 		cmd->fd_out = STDOUT_FILENO;
-	}
-}
-
-void	close_all_command_fds(t_shell *shell)
-{
-	t_command	*curr;
-
-	if (!shell || !shell->commands)
-		return ;
-	curr = shell->commands;
-	while (curr)
-	{
-		close_command_fds(curr);
-		curr = curr->next;
 	}
 }

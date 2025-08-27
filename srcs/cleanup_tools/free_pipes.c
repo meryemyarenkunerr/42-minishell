@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_pipes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 21:25:23 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 04:26:18 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 
 void	cleanup_pipes(int **pipes, int count)
 {
-	int i;
-	
+	int	i;
+
 	if (!pipes)
-		return;
-	
+		return ;
 	i = 0;
 	while (i < count)
 	{
@@ -43,11 +42,10 @@ void	cleanup_pipes(int **pipes, int count)
 
 void	close_all_pipe_fds(int **pipes, int count)
 {
-	int i;
-	
+	int	i;
+
 	if (!pipes)
-		return;
-	
+		return ;
 	i = 0;
 	while (i < count)
 	{
@@ -70,16 +68,17 @@ void	close_all_pipe_fds(int **pipes, int count)
 
 void	close_remaining_pipe_fds(int **pipes, int pipe_count, int curr_idx)
 {
-	int i;
+	int	i;
 
 	if (!pipes)
-		return;
-	
+		return ;
 	i = 0;
-	while (i < pipe_count) {
-		// Sadece curr_idx-1 ve curr_idx pipe'ları açık bırak
-		if (i != curr_idx - 1 && i != curr_idx) {
-			if (pipes[i]) {
+	while (i < pipe_count)
+	{
+		if (i != curr_idx - 1 && i != curr_idx)
+		{
+			if (pipes[i])
+			{
 				if (pipes[i][0] >= 0)
 				{
 					close(pipes[i][0]);

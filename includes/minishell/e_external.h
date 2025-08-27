@@ -3,42 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   e_external.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas    <iaktas@student.42istanbul>      +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:22:50 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 12:22:50 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 07:51:45 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_EXTERNAL_H
-#define MINISHELL_EXTERNAL_H
+#ifndef E_EXTERNAL_H
+# define E_EXTERNAL_H
 
-#include "../structs.h"
+# include "../structs.h"
 
-/* EXECUTER/EXTERNAL */
+int		count_env_entries(t_env *env);
+void	free_string_array_partial(char **array, int count);
+void	execute_child_process(t_shell *shell, t_command *cmd,
+			char *exec_path);
+void	execute_external(t_shell *shell, t_command *cmd);
+char	*current_directory(t_shell *shell, char *cmd);
+char	*find_executable_path(t_shell *shell, char *cmd);
 
-/* child_utils.c */
-void			free_string_array_partial(char **array, int count);
-int				count_env_entries(t_env *env);
-
-/* external_child.c */
-char			*create_env_string(char *key, char *val);
-char			**convert_env_to_array(t_env *env);
-void			execute_child_process(t_shell *shell, t_command *cmd,
-					char *exec_path);
-
-/* external.c */
-void			execute_external(t_shell *shell, t_command *cmd);
-pid_t			fork_and_execute(t_shell *shell, t_command *cmd,
-					char *exec_path);
-void			wait_for_child(t_shell *shell, pid_t pid);
-char			*current_directory(t_shell *shell, char *cmd);
-
-/* path.c */
-char			*find_executable_path(t_shell *shell, char *cmd);
-char			*check_direct_path(char *cmd);
-char			*search_in_path(t_shell *shell, char *cmd);
-char			*check_path_directories(char **path_dirs, char *cmd);
-char			*build_full_path(char *dir, char *cmd);
-
-#endif // MINISHELL_EXTERNAL_H
+#endif

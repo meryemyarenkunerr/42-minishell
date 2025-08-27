@@ -3,19 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:02:09 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 23:22:28 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 08:10:23 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
-# include <termios.h>
-
-/* Token Types */
 typedef enum e_token_types
 {
 	TOKEN_NONE,
@@ -31,7 +28,6 @@ typedef enum e_token_types
 	TOKEN_EOF_QUOTE,
 }	t_token_types;
 
-/* Token Structure */
 typedef struct s_token
 {
 	char			*content;
@@ -40,7 +36,6 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-/* Command Structure */
 typedef struct s_command
 {
 	char				*cmd;
@@ -61,14 +56,12 @@ typedef struct s_command
 	struct s_command	*next;
 }	t_command;
 
-/* Pipeline Structure - Token Lists seperated by pipes */
 typedef struct s_pipeline
 {
 	t_token	**token_lists;
 	int		count;
 }	t_pipeline;
 
-/* Environment Structure */
 typedef struct s_env
 {
 	char			*key;
@@ -76,7 +69,6 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-/* Shell Structure */
 typedef struct s_shell
 {
 	t_env			*environment;
@@ -86,7 +78,6 @@ typedef struct s_shell
 	t_pipeline		*pipeline;
 }	t_shell;
 
-/* Pipeline Contsxt Struct */
 typedef struct s_pipeline_ctx
 {
 	t_shell	*shell;

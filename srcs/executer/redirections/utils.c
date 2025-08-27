@@ -1,40 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc_utils.c                                    :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 06:01:08 by mkuner           ###   ########.fr       */
+/*   Created: 2025/08/27 05:25:10 by mkuner            #+#    #+#             */
+/*   Updated: 2025/08/27 05:31:49 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-int	is_heredoc_interrupted(void)
+int	is_input_file(t_command *cmd, char *filename)
 {
-	if (g_sigint_received == IN_HEREDOC)
+	int	i;
+
+	if (!cmd->input_files)
 		return (FALSE);
-	else
-		return (TRUE);
+	i = 0;
+	while (i < cmd->input_count)
+	{
+		if (ft_strcmp(cmd->input_files[i], filename) == 0)
+			return (TRUE);
+		i++;
+	}
+	return (FALSE);
 }
 
-int	handle_wait_status(int status, t_shell *shell)
+int	is_output_file(t_command *cmd, char *filename)
 {
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	int	i;
+
+	if (!cmd->output_files)
+		return (FALSE);
+	i = 0;
+	while (i < cmd->output_count)
 	{
-		g_sigint_received = AFTER_HEREDOC;
-		shell->exit_status = 130;
-		handle_signals();
-		return (1);
+		if (ft_strcmp(cmd->output_files[i], filename) == 0)
+			return (TRUE);
+		i++;
 	}
-	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
-	{
-		g_sigint_received = AFTER_HEREDOC;
-		shell->exit_status = 130;
-		handle_signals();
-		return (1);
-	}
-	return (0);
+	return (FALSE);
 }

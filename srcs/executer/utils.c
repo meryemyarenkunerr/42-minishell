@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:59:44 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 23:15:47 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 07:59:06 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,61 +22,4 @@ int	ft_strcmp(const char *s1, const char *s2)
 	while (s1[i] && s2[i] && s1[i] == s2[i])
 		i++;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-}
-
-int	open_output_file(t_shell *shell, t_command *cmd, int i)
-{
-	int	flags;
-	int	fd;
-
-	if (cmd->append_modes && cmd->append_modes[i])
-		flags = O_WRONLY | O_CREAT | O_APPEND;
-	else
-		flags = O_WRONLY | O_CREAT | O_TRUNC;
-	fd = open(cmd->output_files[i], flags, 0644);
-	if (fd == -1)
-	{
-		perror(cmd->output_files[i]);
-		shell->exit_status = 1;
-		return (-1);
-	}
-	return (fd);
-}
-
-void	close_old_fd(int *fd_out)
-{
-	if (*fd_out != STDOUT_FILENO && *fd_out != -1)
-		close(*fd_out);
-}
-
-int	is_input_file(t_command *cmd, char *filename)
-{
-	int	i;
-
-	if (!cmd->input_files)
-		return (FALSE);
-	i = 0;
-	while (i < cmd->input_count)
-	{
-		if (ft_strcmp(cmd->input_files[i], filename) == 0)
-			return (TRUE);
-		i++;
-	}
-	return (FALSE);
-}
-
-int	is_output_file(t_command *cmd, char *filename)
-{
-	int	i;
-
-	if (!cmd->output_files)
-		return (FALSE);
-	i = 0;
-	while (i < cmd->output_count)
-	{
-		if (ft_strcmp(cmd->output_files[i], filename) == 0)
-			return (TRUE);
-		i++;
-	}
-	return (FALSE);
 }

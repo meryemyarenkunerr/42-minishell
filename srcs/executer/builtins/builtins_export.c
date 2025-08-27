@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 01:07:46 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 07:40:30 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-#include <unistd.h>
 
-int	process_mark_for_export(t_shell *shell, const char *key)
+static int	process_mark_for_export(t_shell *shell, const char *key)
 {
 	char	*existing_val;
 
@@ -32,7 +31,7 @@ int	process_mark_for_export(t_shell *shell, const char *key)
 	return (TRUE);
 }
 
-int	process_assignment(t_shell *shell, const char *arg, char *equal_pos)
+static int	process_assignment(t_shell *shell, char *arg, char *equal_pos)
 {
 	char	*key;
 	int		key_len;
@@ -43,9 +42,7 @@ int	process_assignment(t_shell *shell, const char *arg, char *equal_pos)
 	key = ft_substr(arg, 0, key_len);
 	if (!is_valid_identifier_export(key))
 	{
-		write(STDERR_FILENO, "minishell: export: `", 20);
-		write(STDERR_FILENO, arg, ft_strlen(arg));
-		write(STDERR_FILENO, "': not a valid identifier\n", 26);
+		not_valid_identifier("export", arg);
 		free(key);
 		return (FALSE);
 	}
@@ -61,7 +58,7 @@ int	process_assignment(t_shell *shell, const char *arg, char *equal_pos)
 	return (TRUE);
 }
 
-int	process_export_arguments(t_shell *shell, const char *arg)
+static int	process_export_arguments(t_shell *shell, char *arg)
 {
 	char	*equal_pos;
 
@@ -72,7 +69,7 @@ int	process_export_arguments(t_shell *shell, const char *arg)
 		return (process_mark_for_export(shell, arg));
 }
 
-void	print_export_variables(t_env *env)
+static void	print_export_variables(t_env *env)
 {
 	t_env	**env_array;
 	int		count;
@@ -90,19 +87,9 @@ void	print_export_variables(t_env *env)
 	while (i < count)
 	{
 		if (ft_strlen(env_array[i]->value) > 0)
-		{
-			ft_putstr_fd("declare -x ", STDOUT_FILENO);
-			ft_putstr_fd(env_array[i]->key, STDOUT_FILENO);
-			ft_putstr_fd("=\"", STDOUT_FILENO);
-			ft_putstr_fd(env_array[i]->value, STDOUT_FILENO);
-			ft_putstr_fd("\"\n", STDOUT_FILENO);
-		}
+			check_and_print_export(1, env_array, i);
 		else
-		{
-			ft_putstr_fd("declare -x ", STDOUT_FILENO);
-			ft_putstr_fd(env_array[i]->key, STDOUT_FILENO);
-			ft_putstr_fd("\n", STDOUT_FILENO);
-		}
+			check_and_print_export(0, env_array, i);
 		i++;
 	}
 	free(env_array);

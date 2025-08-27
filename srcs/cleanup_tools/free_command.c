@@ -6,28 +6,13 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/25 17:33:03 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/27 07:29:39 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	free_string_array(char **array)
-{
-	int	i;
-
-	if (!array)
-		return ;
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
-
-void	free_single_command(t_command *command)
+static void	free_single_command(t_command *command)
 {
 	if (!command)
 		return ;
@@ -64,6 +49,21 @@ void	free_command_list(t_command *commands)
 		free_single_command(curr);
 		curr = next;
 	}
+}
+
+void	free_string_array(char **array)
+{
+	int	i;
+
+	if (!array)
+		return ;
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
 }
 
 int	cleanup_and_return_error(t_shell *shell)

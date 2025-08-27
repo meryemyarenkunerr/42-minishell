@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_echo.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 18:12:11 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 07:37:44 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-#include <unistd.h>
 
-int	is_dollar_question_mark(t_shell *shell, const char *arg)
+static int	is_dollar_question_mark(t_shell *shell, const char *arg)
 {
 	if (!ft_strcmp(arg, "$?"))
 	{
@@ -23,7 +22,7 @@ int	is_dollar_question_mark(t_shell *shell, const char *arg)
 	return (FALSE);
 }
 
-int	is_valid_echo_flag(const char *arg)
+static int	is_valid_echo_flag(const char *arg)
 {
 	int	i;
 
