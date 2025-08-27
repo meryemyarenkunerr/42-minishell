@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 09:46:11 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 15:30:41 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,13 @@ static void	handle_heredoc_input(t_shell *shell, t_command *cmd, int fds[2])
 	i = 0;
 	g_sigint_received = IN_HEREDOC;
 	handle_signals();
-	while (i < cmd->heredoc_count && !is_heredoc_interrupted())
+	while (i < cmd->heredoc_count)
 	{
+		if (is_heredoc_interrupted())
+		{
+			i++;
+			continue ;
+		}
 		if (i == cmd->heredoc_count - 1)
 			process_single_heredoc(shell, cmd->heredoc_delimiter[i], fds);
 		else

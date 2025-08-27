@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 08:10:51 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/27 15:53:40 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,13 @@ static void	wait_for_child(t_shell *shell, pid_t pid)
 	if (WIFEXITED(status))
 		shell->exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
+	{
 		shell->exit_status = 128 + WTERMSIG(status);
+		if (WTERMSIG(status) == SIGINT)
+			ft_putstr_fd("\n", STDOUT_FILENO);
+		else if (WTERMSIG(status) == SIGQUIT)
+			ft_putstr_fd("Quit: (core dumped)\n", STDOUT_FILENO);
+	}
 }
 
 static pid_t	fork_and_execute(t_shell *shell, t_command *cmd,
@@ -74,9 +80,9 @@ void	execute_external(t_shell *shell, t_command *cmd)
 	exec_path = find_executable_path(shell, cmd->cmd);
 	if (!exec_path)
 	{
-		if (!access(cmd->cmd, F_OK))
+		if (!access(cmd->cmd, X_OK))
 		{
-			perror("Permission denied");
+			perror("Is a directory\n");
 			shell->exit_status = 126;
 		}
 		else

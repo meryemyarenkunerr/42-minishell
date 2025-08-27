@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 06:02:51 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/27 15:31:37 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,12 +104,7 @@ void	process_single_heredoc_ignore(t_shell *shell, char *delimiter,
 	{
 		line = read_line(BLUE PROMPT_HEREDOC RESET, shell, NULL, fds);
 		if (!line)
-		{
-			print_eof_warning(delimiter);
-			g_sigint_received = AFTER_HEREDOC;
-			handle_signals();
 			break ;
-		}
 		if (is_heredoc_interrupted())
 		{
 			if (line)
