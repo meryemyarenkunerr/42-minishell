@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/23 20:06:44 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 02:40:46 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,6 @@ void	execute_child_process(t_shell *shell, t_command *cmd, char *exec_path)
 	{
 		handle_execve_error(cmd->cmd);
 		free_string_array(env_array);
-		exit(127);
+		exit(126);
 	}
 }

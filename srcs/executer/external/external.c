@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   external.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/25 17:29:23 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/27 02:53:13 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ void	wait_for_child(t_shell *shell, pid_t pid)
 
 	if (waitpid(pid, &status, 0) == -1)
 	{
-		if (errno != ECHILD)
-			perror("minishell: waitpid");
+		perror("minishell: waitpid");
 		shell->exit_status = 1;
 		return ;
 	}
@@ -42,10 +41,7 @@ pid_t	fork_and_execute(t_shell *shell, t_command *cmd, char *exec_path)
 		return (-1);
 	}
 	if (pid == 0)
-	{
 		execute_child_process(shell, cmd, exec_path);
-		exit(127);
-	}
 	return (pid);
 }
 
@@ -77,7 +73,13 @@ void	execute_external(t_shell *shell, t_command *cmd)
 	exec_path = find_executable_path(shell, cmd->cmd);
 	if (!exec_path)
 	{
-		command_not_found_error(shell, cmd->cmd);
+		if (!access(cmd->cmd, F_OK))
+		{
+			perror("Permission denied");
+			shell->exit_status = 126;	
+		}
+		else
+			command_not_found_error(shell, cmd->cmd);
 		return ;
 	}
 	pid = fork_and_execute(shell, cmd, exec_path);

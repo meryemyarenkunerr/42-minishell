@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 21:22:29 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 02:21:34 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,16 @@
 static void execute_builtin_pipeline(t_shell *shell, t_command *cmd, int **pipes)
 {
 	call_builtin_function(shell, cmd);
-
 	if (cmd->fd_out > 0 && cmd->fd_out != STDOUT_FILENO)
 		close(cmd->fd_out);
-	
 	if (cmd->fd_in > 0 && cmd->fd_in != STDIN_FILENO)
 		close(cmd->fd_in);
-
-	/* Cleanup resources before exit */
-	free_at_exit(shell);
-	
 	if (pipes && shell && shell->pipeline)
 		cleanup_pipes(pipes, shell->pipeline->count - 1);
-	
+	free_at_exit(shell);
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
-	
-	_exit(shell->exit_status);
+	exit(shell->exit_status);
 }
 
 static char	**get_env_array(t_env *environment)
@@ -110,7 +103,7 @@ static void	execute_pipeline_command(t_shell *shell, t_command *cmd,
 		command_not_found_error(shell, cmd->cmd);
 		free(command_path);
 		free_string_array(env_array);
-		if (pipes)
+		if (pipes && shell && shell->pipeline)
 			cleanup_pipes(pipes, shell->pipeline->count - 1);
 		free_at_exit(shell);
 		exit(127);
@@ -121,16 +114,9 @@ static void	execute_failed_pipeline_command(t_shell *shell, t_command *cmd,
 	int **pipes, int idx)
 {
 	int		cmd_count;
-	char	single_byte;
 
 	cmd_count = shell->pipeline->count;
 	setup_pipeline_fds(cmd, pipes, idx, cmd_count);
-
-	if (idx > 0)
-	{
-		while (read(STDIN_FILENO, &single_byte, 1) > 1)
-			;
-	}
 	if (cmd->cmd[0] == '\0')
 		command_not_found_error(shell, "''");
     if (pipes && shell && shell->pipeline)

@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/25 12:28:39 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 00:22:36 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,17 +113,3 @@ void	handle_heredoc_input(t_shell *shell, t_command *cmd, int fds[2])
 	handle_signals();
 	close(fds[1]);
 }
-
-// void	execute_heredoc_child(t_shell *shell, t_command *cmd, int fds[2])
-// {
-
-// 	// setup_heredoc_signals();
-
-// // 	rl_clear_history();
-// 	// restore_heredoc_signals();
-// // 	close(fds[0]);
-// /* 	if (is_heredoc_interrupted())
-// 		complete_cleanup_and_exit(shell, 130);
-// 	else
-// 		complete_cleanup_and_exit(shell, 0); */
-// }

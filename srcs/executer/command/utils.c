@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/25 14:23:55 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/26 22:54:45 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,35 +22,6 @@ t_command	*init_command(void)
 	ft_memset(cmd, 0, sizeof(t_command));
 	cmd->fd_out = STDOUT_FILENO;
 	return (cmd);
-}
-
-t_token	*handle_redirection(t_command *cmd, t_token *current)
-{
-	int	is_quoted;
-
-	if (current->type == TOKEN_REDIRECT_IN && current->next)
-	{
-		add_input_file(cmd, current->next->content);
-		return (current->next);
-	}
-	else if (current->type == TOKEN_REDIRECT_OUT && current->next)
-	{
-		add_output_file(cmd, current->next->content, 0);
-		return (current->next);
-	}
-	else if (current->type == TOKEN_APPEND && current->next)
-	{
-		add_output_file(cmd, current->next->content, 1);
-		return (current->next);
-	}
-	else if (current->type == TOKEN_HEREDOC && current->next)
-	{
-		is_quoted = (current->next->type == TOKEN_EOF_QUOTE);
-		add_heredoc_delimiter_with_quote(cmd, current->next->content,
-			is_quoted);
-		return (current->next);
-	}
-	return (current);
 }
 
 void	add_input_file(t_command *cmd, const char *filename)
@@ -87,10 +58,6 @@ t_command	*create_empty_command_with_redirections(t_token *token_list)
 	if (!cmd)
 		return (NULL);
 	current = token_list;
-	while (current)
-	{
-		current = handle_redirection(cmd, current);
-		current = current->next;
-	}
+	extract_redirections_and_heredocs(cmd, current);
 	return (cmd);
 }

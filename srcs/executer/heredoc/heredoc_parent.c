@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/25 12:31:57 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 00:34:08 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 void	execute_heredoc_parent(t_command *cmd, int fds[2], pid_t pid)
 {
-// 	int	status;
 	(void)pid;
 	close(fds[1]);
-/* 	waitpid(pid, &status, 0); */
 	if (cmd->fd_in != STDIN_FILENO)
 		close(cmd->fd_in);
 	cmd->fd_in = fds[0];

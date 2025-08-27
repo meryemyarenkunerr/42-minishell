@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 22:14:38 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/26 22:21:55 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,33 +19,6 @@ int	is_valid_argument_token(t_token *token, const char *cmd_name)
 	if (token->type == TOKEN_ARGUMENT)
 		return (TRUE);
 	return (FALSE);
-}
-
-void	extract_redirections_and_heredocs(t_command *cmd,
-	t_token *token_list)
-{
-	t_token	*curr;
-	int		is_quoted;
-
-	curr = token_list;
-	is_quoted = 0;
-	while (curr)
-	{
-		if (curr->type == TOKEN_REDIRECT_IN)
-			add_input_file(cmd, curr->next->content);
-		else if (curr->type == TOKEN_REDIRECT_OUT)
-			add_output_file(cmd, curr->next->content, 0);
-		else if (curr->type == TOKEN_APPEND)
-			add_output_file(cmd, curr->next->content, 1);
-		else if (curr->type == TOKEN_HEREDOC)
-		{
-			if (curr->next->type == TOKEN_EOF_QUOTE)
-				is_quoted = 1;
-			add_heredoc_delimiter_with_quote(cmd, curr->next->content,
-				is_quoted);
-		}
-		curr = curr->next;
-	}
 }
 
 int	fill_command_arguments(t_command *cmd, t_token *token_list,
@@ -113,4 +86,31 @@ t_command	*create_command_from_tokens(t_token *token_list)
 	}
 	extract_redirections_and_heredocs(cmd, curr);
 	return (cmd);
+}
+
+void	extract_redirections_and_heredocs(t_command *cmd,
+	t_token *token_list)
+{
+	t_token	*curr;
+	int		is_quoted;
+
+	curr = token_list;
+	is_quoted = 0;
+	while (curr)
+	{
+		if (curr->type == TOKEN_REDIRECT_IN)
+			add_input_file(cmd, curr->next->content);
+		else if (curr->type == TOKEN_REDIRECT_OUT)
+			add_output_file(cmd, curr->next->content, 0);
+		else if (curr->type == TOKEN_APPEND)
+			add_output_file(cmd, curr->next->content, 1);
+		else if (curr->type == TOKEN_HEREDOC)
+		{
+			if (curr->next->type == TOKEN_EOF_QUOTE)
+				is_quoted = 1;
+			add_heredoc_delimiter_with_quote(cmd, curr->next->content,
+				is_quoted);
+		}
+		curr = curr->next;
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/24 19:04:23 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/27 00:29:06 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,4 @@ char	*process_line_content(t_shell *shell, char *line)
 void	write_processed_line(int write_fd, char *processed_line)
 {
 	write(write_fd, processed_line, ft_strlen(processed_line));
-	// write(write_fd, "\n", 1);
 }

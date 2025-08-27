@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_command.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas    <iaktas@student.42istanbul>      +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:22:50 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 12:22:50 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/26 22:54:56 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int				argument_counter(t_token *token_list);
 
 /* utils.c */
 t_command		*init_command(void);
-t_token			*handle_redirection(t_command *cmd, t_token *current);
 void			add_input_file(t_command *cmd, const char *filename);
 t_command		*create_empty_command_with_redirections(t_token *token_list);
 

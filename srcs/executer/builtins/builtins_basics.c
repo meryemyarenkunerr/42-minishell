@@ -6,12 +6,11 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 13:01:49 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 00:45:45 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-#include <unistd.h>
 
 void	execute_builtin_pwd(t_shell *shell, t_command *cmd)
 {

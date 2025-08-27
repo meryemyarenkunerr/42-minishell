@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:43:56 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/25 17:03:54 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/26 23:18:47 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static int	get_append_mode(t_command *cmd, char *filename)
 
 static int	process_file_in_order(t_shell *shell, t_command *cmd, char *filename)
 {
+	int	append_mode;
+
 	if (is_input_file(cmd, filename))
 	{
 		if (!setup_single_input_file(shell, cmd, filename))
@@ -37,7 +39,7 @@ static int	process_file_in_order(t_shell *shell, t_command *cmd, char *filename)
 	}
 	else if (is_output_file(cmd, filename))
 	{
-		int append_mode = get_append_mode(cmd, filename);
+		append_mode = get_append_mode(cmd, filename);
 		if (!setup_single_output_file(shell, cmd, filename, append_mode))
 			return (FALSE);
 	}

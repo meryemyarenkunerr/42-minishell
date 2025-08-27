@@ -6,11 +6,12 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/25 12:21:57 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 01:07:46 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
+#include <unistd.h>
 
 int	process_mark_for_export(t_shell *shell, const char *key)
 {
@@ -89,10 +90,19 @@ void	print_export_variables(t_env *env)
 	while (i < count)
 	{
 		if (ft_strlen(env_array[i]->value) > 0)
-			printf("declare -x %s=\"%s\"\n", env_array[i]->key,
-				env_array[i]->value);
+		{
+			ft_putstr_fd("declare -x ", STDOUT_FILENO);
+			ft_putstr_fd(env_array[i]->key, STDOUT_FILENO);
+			ft_putstr_fd("=\"", STDOUT_FILENO);
+			ft_putstr_fd(env_array[i]->value, STDOUT_FILENO);
+			ft_putstr_fd("\"\n", STDOUT_FILENO);
+		}
 		else
-			printf("declare -x %s\n", env_array[i]->key);
+		{
+			ft_putstr_fd("declare -x ", STDOUT_FILENO);
+			ft_putstr_fd(env_array[i]->key, STDOUT_FILENO);
+			ft_putstr_fd("\n", STDOUT_FILENO);
+		}
 		i++;
 	}
 	free(env_array);

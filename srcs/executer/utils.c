@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:59:44 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/25 14:37:39 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/26 23:15:47 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	is_input_file(t_command *cmd, char *filename)
 
 	if (!cmd->input_files)
 		return (FALSE);
-
 	i = 0;
 	while (i < cmd->input_count)
 	{
@@ -72,7 +71,6 @@ int	is_output_file(t_command *cmd, char *filename)
 
 	if (!cmd->output_files)
 		return (FALSE);
-
 	i = 0;
 	while (i < cmd->output_count)
 	{

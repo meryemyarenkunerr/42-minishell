@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 17:40:55 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 01:39:31 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	execute_multiple_commands(t_shell *shell, int cmd_count)
 			break ;
 		}
 		if (cmd->pid == 0)
-			execute_pipeline_child(shell, cmd, pipes, i);		
+			execute_pipeline_child(shell, cmd, pipes, i);
 		if (i > 0 && pipes && pipes[i-1])
 		{
 			if (pipes[i-1][0] >= 0)

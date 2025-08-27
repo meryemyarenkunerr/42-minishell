@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:02:09 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 21:56:57 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/26 23:22:28 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,11 @@ typedef struct s_command
 	int					heredoc_count;
 	int					quote_flag;
 	int					*append_modes;
+	int					file_handler;
 	int					fd_in;
 	int					fd_out;
 	pid_t				pid;
 	struct s_command	*next;
-	int					file_handler;
 }	t_command;
 
 /* Pipeline Structure - Token Lists seperated by pipes */
