@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   external_child.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 07:48:42 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/27 10:30:38 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,14 @@ void	execute_child_process(t_shell *shell, t_command *cmd, char *exec_path)
 	if (!env_array)
 	{
 		perror("minishell: environment conversion failed");
+		free_at_exit(shell);
 		exit(127);
 	}
 	if (execve(exec_path, cmd->arguments, env_array) == -1)
 	{
 		handle_execve_error(cmd->cmd);
+		free_at_exit(shell);
+		free(exec_path);
 		free_string_array(env_array);
 		exit(126);
 	}

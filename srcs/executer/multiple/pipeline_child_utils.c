@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_child_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 06:59:45 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/27 10:32:11 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ char	*resolve_command_path(t_shell *shell, t_command *cmd,
 			if (env_array)
 				free_string_array(env_array);
 			command_not_found_error(shell, cmd->cmd);
+			free_at_exit(shell);
 			exit(127);
 		}
 	}

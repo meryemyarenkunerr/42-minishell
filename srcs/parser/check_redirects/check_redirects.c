@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 00:29:11 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/22 14:39:05 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 09:38:27 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ char	*check_redirects_strings(t_token *tokens)
 					|| current->next->type == TOKEN_PIPE))
 				return (current->next->content);
 		}
+		else if (current->type == TOKEN_PIPE)
+			if (!current->next || current->next->type == TOKEN_PIPE)
+				return ("|");
 		current = current->next;
 	}
 	return (NULL);

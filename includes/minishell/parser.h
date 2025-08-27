@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:22:50 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 08:08:03 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/27 08:41:17 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ char			*extract_quoted_string(char *input, int *i);
 void			add_token_to_list(t_token **head, t_token *new_token);
 t_token			*create_token(char *content, t_token_types type);
 char			*check_redirects_strings(t_token *tokens);
+int	            contains_char(const char *str, char c);
 void			mark_eof_tokens(t_token *tokens);
 void			improved_expand_tokens(t_token *tokens, t_shell *shell);
 int				is_valid_var_char(char c);

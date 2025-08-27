@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 19:54:54 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 10:34:15 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,20 @@ int	g_sigint_received = 0;
 void	ctrl_d(int sig)
 {
 	(void)sig;
-	rl_on_new_line();
-	printf("\033[K");
-	rl_redisplay();
-	g_sigint_received = 0;
+	if (g_sigint_received == IN_HEREDOC)
+	{
+		write(1, "\n", 1);
+		g_sigint_received = AFTER_HEREDOC;
+		return ;
+	}
+	else
+	{
+		rl_on_new_line();
+		printf("\033[K");
+		rl_redisplay();
+		g_sigint_received = 0;
+	}
+	
 }
 
 void	ctrl_c(int sig)

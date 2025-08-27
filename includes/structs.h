@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:02:09 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 08:10:23 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/27 08:40:13 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef enum e_token_types
 	TOKEN_HEREDOC,
 	TOKEN_EOF,
 	TOKEN_EOF_QUOTE,
+	TOKEN_SKIP,
 }	t_token_types;
 
 typedef struct s_token
@@ -77,13 +78,5 @@ typedef struct s_shell
 	t_command		*commands;
 	t_pipeline		*pipeline;
 }	t_shell;
-
-typedef struct s_pipeline_ctx
-{
-	t_shell	*shell;
-	int		**pipes;
-	int		cmd_count;
-	int		index;
-}	t_pipeline_ctx;
 
 #endif

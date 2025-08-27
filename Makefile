@@ -32,7 +32,8 @@ MAIN_SRCS		= init_env.c \
 				  main.c \
 				  process_command.c \
 				  prompt.c \
-				  shell_loop.c
+				  shell_loop.c \
+				  print_shell_info.c
 
 # Executer module
 EXEC_DIR		= $(SRCDIR)/executer
@@ -104,9 +105,7 @@ CLEANUP_SRCS	= free_command.c \
 				  free.c \
 				  close_fds.c \
 				  free_builtins.c \
-				  close_pipes.c \
 				  free_pipes.c \
-				  free_heredoc.c
 
 # PARSER
 M_PARSER_DIR		= $(SRCDIR)/parser

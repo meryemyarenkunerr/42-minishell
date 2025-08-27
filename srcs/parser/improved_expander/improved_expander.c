@@ -6,7 +6,7 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 00:00:00 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 03:52:45 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 09:05:09 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,11 +110,14 @@ void	improved_expand_tokens(t_token *tokens, t_shell *shell)
 		if (current->type == TOKEN_NONE)
 		{
 			expanded_content = expand_variables_only(current->content, shell);
+			if (contains_char(current->content, '$') && ft_strlen(expanded_content) == 0)
+				current->type = TOKEN_SKIP;
 			if (expanded_content)
 			{
 				free(current->content);
 				current->content = expanded_content;
 			}
+			
 		}
 		current = current->next;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_child.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 07:06:13 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/27 10:33:25 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ static void	execute_failed_pipeline_command(t_shell *shell, t_command *cmd,
 	if (pipes && shell && shell->pipeline)
 		cleanup_pipes(pipes, shell->pipeline->count - 1);
 	free_at_exit(shell);
-	exit(1);
 }
 
 void	execute_pipeline_child(t_shell *shell, t_command *cmd,

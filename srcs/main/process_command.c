@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 08:01:48 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/27 09:05:28 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	process_command(t_shell *shell, char *command)
 		return ;
 	cleanup_previous_state(shell);
 	shell->pipeline = process_input(command, shell);
+	//print_shell_info(shell);
 	free(command);
 	if (!shell->pipeline)
 		return ;
@@ -25,5 +26,6 @@ void	process_command(t_shell *shell, char *command)
 		return ;
 	if (!setup_file_descriptors(shell))
 		return ;
+	
 	executer(shell);
 }

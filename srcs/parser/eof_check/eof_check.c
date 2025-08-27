@@ -6,13 +6,13 @@
 /*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 14:26:10 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/26 20:39:16 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/27 08:41:12 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-static int	contains_char(const char *str, char c)
+int	contains_char(const char *str, char c)
 {
 	while (*str != '\0')
 	{
