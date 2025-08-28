@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 10:34:15 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/28 11:29:35 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ctrl_d(int sig)
 		rl_redisplay();
 		g_sigint_received = 0;
 	}
-	
+
 }
 
 void	ctrl_c(int sig)
@@ -79,4 +79,11 @@ void	handle_signals(void)
 	tcseta();
 	signal(SIGINT, ctrl_c);
 	signal(SIGQUIT, ctrl_d);
+}
+
+// SIGPIPE handler tanımla (fonksiyon dışında):
+void sigpipe_handler(int sig) {
+	(void)sig;
+    fprintf(stderr, "CHILD %d: SIGPIPE received!\n", getpid());
+    exit(1);
 }

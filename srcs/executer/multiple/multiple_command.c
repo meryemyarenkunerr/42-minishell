@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 16:31:48 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/28 12:12:38 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static int	fork_and_execute_pipeline(t_shell *shell, t_command *cmd,
 	}
 	if (cmd->pid == 0)
 		execute_pipeline_child(shell, cmd, pipes, i);
+	close_parent_pipe_ends(pipes, i, shell->pipeline->count);
 	return (TRUE);
 }
 
@@ -58,7 +59,6 @@ static void	execute_loop(t_shell *shell, int cmd_count, int **pipes)
 	{
 		if (!fork_and_execute_pipeline(shell, cmd, pipes, i))
 			break ;
-		close_parent_pipe_ends(pipes, i, cmd_count);
 		cmd = cmd->next;
 		i++;
 	}
@@ -77,9 +77,10 @@ void	execute_multiple_commands(t_shell *shell, int cmd_count)
 		return ;
 	}
 	execute_loop(shell, cmd_count, pipes);
-	if (pipes)
-		close_all_pipe_fds(pipes, cmd_count - 1);
 	wait_pipeline_processes(shell, shell->commands, cmd_count);
 	if (pipes)
+	{
+		close_all_pipe_fds(pipes, cmd_count - 1);
 		cleanup_pipes(pipes, cmd_count - 1);
+	}
 }

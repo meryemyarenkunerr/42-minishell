@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:22:50 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 06:57:13 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/28 10:19:01 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	setup_pipeline_fds(t_command *cmd, int **pipes, int idx,
 			int cmd_count);
 char	**get_env_array(t_env *environment);
 char	*resolve_command_path(t_shell *shell, t_command *cmd,
-			char **env_array);
+			char **env_array, int **pipes);
 void	wait_pipeline_processes(t_shell *shell, t_command *cmds,
 			int cmd_count);
 

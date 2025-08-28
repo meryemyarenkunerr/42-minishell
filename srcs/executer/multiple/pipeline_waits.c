@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 07:08:08 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/28 12:08:47 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,17 @@
 static void	wait_intermediate_processes(t_command *cmds)
 {
 	t_command	*cmd;
+	int			status;
 
 	cmd = cmds;
 	while (cmd && cmd->next)
 	{
 		if (cmd->pid > 0)
-			waitpid(cmd->pid, NULL, WNOHANG);
+		{
+			fprintf(stderr, "PARENT: About to wait for %s (pid=%d)\n", cmd->arguments[0], cmd->pid);
+			waitpid(cmd->pid, &status, 0);
+			fprintf(stderr, "PARENT: %s (pid=%d) finished with status %d\n", cmd->arguments[0], cmd->pid, status);
+		}
 		cmd = cmd->next;
 	}
 }
@@ -68,6 +73,7 @@ void	wait_pipeline_processes(t_shell *shell, t_command *cmds,
 	int			last_status;
 	t_command	*last_cmd;
 
+	fprintf(stderr, "PARENT: Starting to wait for ALL processes\n");
 	(void)cmd_count;
 	wait_intermediate_processes(cmds);
 	last_status = wait_last_process(cmds);

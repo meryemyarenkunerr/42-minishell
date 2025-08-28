@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 04:26:18 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/28 11:28:26 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,13 @@ void	close_all_pipe_fds(int **pipes, int count)
 		{
 			if (pipes[i][0] >= 0)
 			{
+				fprintf(stderr, "PARENT: Closing pipe[%d][%d]\n", i, 0);
 				close(pipes[i][0]);
 				pipes[i][0] = -1;
 			}
 			if (pipes[i][1] >= 0)
 			{
+				fprintf(stderr, "PARENT: Closing pipe[%d][%d]\n", i, 1);
 				close(pipes[i][1]);
 				pipes[i][1] = -1;
 			}

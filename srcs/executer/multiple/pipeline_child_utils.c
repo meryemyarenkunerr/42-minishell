@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_child_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 10:32:11 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/28 10:20:53 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	**get_env_array(t_env *environment)
 }
 
 char	*resolve_command_path(t_shell *shell, t_command *cmd,
-	char **env_array)
+	char **env_array, int **pipes)
 {
 	char	*command_path;
 
@@ -74,6 +74,8 @@ char	*resolve_command_path(t_shell *shell, t_command *cmd,
 			if (env_array)
 				free_string_array(env_array);
 			command_not_found_error(shell, cmd->cmd);
+			if (shell && shell->pipeline && pipes)
+				cleanup_pipes(pipes, shell->pipeline->count - 1);
 			free_at_exit(shell);
 			exit(127);
 		}

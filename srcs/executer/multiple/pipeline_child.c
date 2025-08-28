@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 16:19:45 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/28 11:48:18 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,17 @@ static void	exec_pipeline_external(t_shell *shell, t_command *cmd,
 	char	*command_path;
 
 	env_array = get_env_array(shell->environment);
-	command_path = resolve_command_path(shell, cmd, env_array);
-	execve(command_path, cmd->arguments, env_array);
-	free(command_path);
-	free_string_array(env_array);
-	if (pipes && shell && shell->pipeline)
-		cleanup_pipes(pipes, shell->pipeline->count - 1);
-	free_at_exit(shell);
-	exit(127);
+	command_path = resolve_command_path(shell, cmd, env_array, pipes);
+	signal(SIGPIPE, sigpipe_handler);
+	if (execve(command_path, cmd->arguments, env_array) == -1)
+	{
+		free(command_path);
+		free_string_array(env_array);
+		if (pipes && shell && shell->pipeline)
+			cleanup_pipes(pipes, shell->pipeline->count - 1);
+		free_at_exit(shell);
+		exit(127);
+	}
 }
 
 static void	execute_pipeline_command(t_shell *shell, t_command *cmd,
@@ -77,7 +80,8 @@ void	execute_pipeline_child(t_shell *shell, t_command *cmd,
 		execute_failed_pipeline_command(shell, cmd, pipes, idx);
 	else
 		execute_pipeline_command(shell, cmd, pipes, idx);
-	cleanup_pipes(pipes, shell->pipeline->count);
+	if (pipes && shell && shell->pipeline)
+		cleanup_pipes(pipes, shell->pipeline->count);
 	free_at_exit(shell);
 	exit(1);
 }
