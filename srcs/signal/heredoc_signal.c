@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_signal.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/23 16:16:57 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 07:10:32 by mkuner           ###   ########.fr       */
+/*   Created: 2025/08/28 20:31:14 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/28 20:31:16 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

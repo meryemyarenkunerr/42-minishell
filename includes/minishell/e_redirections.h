@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_redirections.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/26 12:22:50 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 05:37:44 by mkuner           ###   ########.fr       */
+/*   Created: 2025/08/28 20:29:50 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/28 20:29:52 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

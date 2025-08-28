@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   external.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 15:53:40 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/28 20:27:08 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ static void	wait_for_child(t_shell *shell, pid_t pid)
 	else if (WIFSIGNALED(status))
 	{
 		shell->exit_status = 128 + WTERMSIG(status);
-		if (WTERMSIG(status) == SIGINT)
-			ft_putstr_fd("\n", STDOUT_FILENO);
-		else if (WTERMSIG(status) == SIGQUIT)
+		if (WTERMSIG(status) == SIGQUIT)
 			ft_putstr_fd("Quit: (core dumped)\n", STDOUT_FILENO);
+		else if (WTERMSIG(status) == SIGINT)
+			ft_putstr_fd("\n", STDOUT_FILENO);
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_redirects.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/22 00:29:11 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/28 16:32:24 by mkuner           ###   ########.fr       */
+/*   Created: 2025/08/28 20:31:33 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/28 20:31:35 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

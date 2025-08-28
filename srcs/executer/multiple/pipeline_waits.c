@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_waits.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/28 16:56:52 by mkuner           ###   ########.fr       */
+/*   Created: 2025/08/28 20:33:20 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/28 20:33:22 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

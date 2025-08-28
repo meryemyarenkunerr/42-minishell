@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_child_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/28 10:20:53 by mkuner           ###   ########.fr       */
+/*   Created: 2025/08/28 20:33:12 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/28 20:33:14 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_readline.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/13 10:53:40 by kbatur            #+#    #+#             */
-/*   Updated: 2025/08/27 06:00:57 by mkuner           ###   ########.fr       */
+/*   Created: 2025/08/28 20:33:41 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/28 20:33:43 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

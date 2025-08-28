@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiple_command.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/28 17:14:21 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/28 19:47:52 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,9 @@ static int	fork_and_execute_pipeline(t_shell *shell, t_command *cmd,
 			setup_pipeline_fds(cmd, pipes, i, shell->pipeline->count);
 			execute_pipeline_child(shell, cmd, pipes, i);
 		}
+		if (shell && shell->pipeline && pipes)
+			cleanup_pipes(pipes, shell->pipeline->count - 1);
+		free_at_exit(shell);
 		exit(1);
 	}
 	return (TRUE);

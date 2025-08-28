@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 15:30:41 by mkuner           ###   ########.fr       */
+/*   Created: 2025/08/28 20:33:37 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/28 20:33:38 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

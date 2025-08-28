@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   improved_expander.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/01 00:00:00 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/28 15:56:01 by mkuner           ###   ########.fr       */
+/*   Created: 2025/08/28 20:31:44 by iaktas            #+#    #+#             */
+/*   Updated: 2025/08/28 20:31:45 by iaktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
