@@ -2,7 +2,7 @@
 
 NAME			= minishell
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS			= -Wall -Wextra -Werror #-g -fsanitize=address
 INCLUDES		= -I./includes -I./libft
 LIBS			= -L./libft -lft
 

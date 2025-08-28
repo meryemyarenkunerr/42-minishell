@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/28 15:23:54 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/28 17:14:21 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ void	execute_multiple_commands(t_shell *shell, int cmd_count)
 		pipes_creation_error(shell);
 		return ;
 	}
+	g_sigint_received = IN_CMD;
+	handle_signals();
 	execute_loop(shell, cmd_count, pipes);
 	wait_pipeline_processes(shell, shell->commands, cmd_count);
 	if (pipes)
@@ -90,4 +92,6 @@ void	execute_multiple_commands(t_shell *shell, int cmd_count)
 		close_all_pipe_fds(pipes, cmd_count - 1);
 		cleanup_pipes(pipes, cmd_count - 1);
 	}
+	g_sigint_received = AFTER_CMD;
+	handle_signals();
 }
