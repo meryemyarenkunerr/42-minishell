@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/28 11:29:35 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/28 13:18:12 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,6 @@ void	handle_signals(void)
 // SIGPIPE handler tanımla (fonksiyon dışında):
 void sigpipe_handler(int sig) {
 	(void)sig;
-    fprintf(stderr, "CHILD %d: SIGPIPE received!\n", getpid());
+    // fprintf(stderr, "CHILD %d: SIGPIPE received!\n", getpid());
     exit(1);
 }
