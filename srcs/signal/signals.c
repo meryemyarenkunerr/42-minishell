@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/28 13:18:12 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/28 14:47:15 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,4 @@ void	handle_signals(void)
 	tcseta();
 	signal(SIGINT, ctrl_c);
 	signal(SIGQUIT, ctrl_d);
-}
-
-// SIGPIPE handler tanımla (fonksiyon dışında):
-void sigpipe_handler(int sig) {
-	(void)sig;
-    // fprintf(stderr, "CHILD %d: SIGPIPE received!\n", getpid());
-    exit(1);
 }

@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:35:22 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/28 12:53:55 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/28 15:36:43 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,9 @@ static void	wait_intermediate_processes(t_command *cmds)
 	{
 		if (cmd->pid > 0)
 		{
-			fprintf(stderr, "PARENT: About to wait for %s (pid=%d)\n", cmd->arguments[0], cmd->pid);
-
-			// Non-blocking wait dene
-			result = waitpid(cmd->pid, &status, 0);
-			if (result == 0) {
-				// Process henüz bitmemiş, devam et
-				fprintf(stderr, "PARENT: %s still running, skipping for now\n", cmd->arguments[0]);
-			} else if (result > 0) {
-				fprintf(stderr, "PARENT: %s (pid=%d) finished with status %d\n", cmd->arguments[0], cmd->pid, status);
-			}
+			result = waitpid(cmd->pid, &status, WNOHANG);
+			if (result == -1)
+				perror("waitpid");
 		}
 		cmd = cmd->next;
 	}
@@ -50,12 +43,7 @@ static int	wait_last_process(t_command *cmds)
 		cmd = cmd->next;
 	if (cmd && cmd->pid > 0)
 	{
-		fprintf(stderr, "PARENT: About to wait for LAST process %s (pid=%d)\n", cmd->arguments[0], cmd->pid);
-
 		waitpid(cmd->pid, &status, 0);
-
-		fprintf(stderr, "PARENT: LAST process %s finished with status %d\n", cmd->arguments[0], status);
-
 		if (WIFEXITED(status))
 			last_exit_status = WEXITSTATUS(status);
 		else
@@ -86,7 +74,6 @@ void	wait_pipeline_processes(t_shell *shell, t_command *cmds,
 	int			last_status;
 	t_command	*last_cmd;
 
-	fprintf(stderr, "PARENT: Starting to wait for ALL processes\n");
 	(void)cmd_count;
 	wait_intermediate_processes(cmds);
 	last_status = wait_last_process(cmds);
@@ -95,7 +82,4 @@ void	wait_pipeline_processes(t_shell *shell, t_command *cmds,
 		last_cmd = last_cmd->next;
 	cleanup_other_processes(cmds, last_cmd);
 	shell->exit_status = last_status;
-
-	fprintf(stderr, "PARENT: All processes finished, pipeline complete\n");
-	fprintf(stderr, "PARENT: Returning to main shell loop\n");
 }

@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/28 13:03:36 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/28 15:29:06 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,7 @@ static void	exec_pipeline_external(t_shell *shell, t_command *cmd,
 static void	execute_pipeline_command(t_shell *shell, t_command *cmd,
 	int **pipes, int idx)
 {
-	//int	cmd_count;
 	(void)idx;
-	//cmd_count = shell->pipeline->count;
 	if (is_builtin_command(cmd->cmd))
 		exec_pipeline_builtin(shell, cmd, pipes);
 	else
@@ -60,10 +58,7 @@ static void	execute_pipeline_command(t_shell *shell, t_command *cmd,
 static void	execute_failed_pipeline_command(t_shell *shell, t_command *cmd,
 	int **pipes, int idx)
 {
-	//int		cmd_count;
 	(void)idx;
-	//cmd_count = shell->pipeline->count;
-	//setup_pipeline_fds(cmd, pipes, idx, cmd_count);
 	if (cmd->cmd[0] == '\0')
 		command_not_found_error(shell, "''");
 	if (pipes && shell && shell->pipeline)
@@ -74,13 +69,7 @@ static void	execute_failed_pipeline_command(t_shell *shell, t_command *cmd,
 void	execute_pipeline_child(t_shell *shell, t_command *cmd,
 	int **pipes, int idx)
 {
-	if (cmd == NULL)
-	{
-		if (pipes && shell && shell->pipeline)
-			cleanup_pipes(pipes, shell->pipeline->count);
-		free_at_exit(shell);
-		exit(1);
-	}
+	partial_cleanup_fds(pipes, shell->pipeline->count, idx);
 	if (cmd->file_handler == 0 || cmd->cmd[0] == '\0')
 		execute_failed_pipeline_command(shell, cmd, pipes, idx);
 	else

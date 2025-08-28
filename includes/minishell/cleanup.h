@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:22:50 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 07:33:02 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/28 15:31:56 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ void	close_all_pipe_fds(int **pipes, int count);
 void	cleanup_pipes(int **pipes, int count);
 void	cleanup_previous_state(t_shell *shell);
 void	free_at_exit(t_shell *shell);
+void	partial_cleanup_fds(int **pipes, int cmd_count, int idx);
 
 #endif
