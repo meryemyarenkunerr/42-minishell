@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/28 15:31:41 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/28 15:52:34 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@ void	close_command_fds(t_command *cmd)
 		close(cmd->fd_out);
 		cmd->fd_out = STDOUT_FILENO;
 	}
+}
+
+static void	cleanup_single_pipes(int **pipes, int i)
+{
+	if (pipes[i][0] >= 0)
+		close(pipes[i][0]);
+	if (pipes[i][1] >= 0)
+		close(pipes[i][1]);
 }
 
 void	partial_cleanup_fds(int **pipes, int cmd_count, int idx)
@@ -48,12 +56,7 @@ void	partial_cleanup_fds(int **pipes, int cmd_count, int idx)
 				close(pipes[i][0]);
 		}
 		else
-		{
-			if (pipes[i][0] >= 0)
-				close(pipes[i][0]);
-			if (pipes[i][1] >= 0)
-				close(pipes[i][1]);
-		}
+			cleanup_single_pipes(pipes, i);
 		i++;
 	}
 }

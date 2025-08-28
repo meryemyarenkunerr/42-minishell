@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 15:49:08 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/28 15:48:52 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,8 @@ static char	**convert_env_to_array(t_env *env)
 	return (env_array);
 }
 
-void	execute_child_process(t_shell *shell, t_command *cmd, char *exec_path)
+static void	set_fds_external(t_command *cmd)
 {
-	char	**env_array;
-
 	if (cmd->fd_in != STDIN_FILENO)
 	{
 		dup2(cmd->fd_in, STDIN_FILENO);
@@ -89,6 +87,13 @@ void	execute_child_process(t_shell *shell, t_command *cmd, char *exec_path)
 		dup2(cmd->fd_out, STDOUT_FILENO);
 		close(cmd->fd_out);
 	}
+}
+
+void	execute_child_process(t_shell *shell, t_command *cmd, char *exec_path)
+{
+	char	**env_array;
+
+	set_fds_external(cmd);
 	env_array = convert_env_to_array(shell->environment);
 	if (!env_array)
 	{

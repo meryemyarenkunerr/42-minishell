@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_redirects.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iaktas <iaktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 00:29:11 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/27 09:38:27 by iaktas           ###   ########.fr       */
+/*   Updated: 2025/08/28 16:16:17 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,17 @@ static int	is_special_operator_rs(t_token_types type)
 		|| type == TOKEN_APPEND
 		|| type == TOKEN_HEREDOC)
 		return (1);
+	return (0);
+}
+
+static int	sual(t_token *current)
+{
+	if (is_special_operator_rs(current->type))
+	{
+		if ((current->next) && (is_special_operator_rs(current->next->type)
+				|| current->next->type == TOKEN_PIPE))
+			return (1);
+	}
 	return (0);
 }
 
@@ -40,12 +51,8 @@ char	*check_redirects_strings(t_token *tokens)
 	current = tokens;
 	while (current)
 	{
-		if (is_special_operator_rs(current->type))
-		{
-			if ((current->next) && (is_special_operator_rs(current->next->type)
-					|| current->next->type == TOKEN_PIPE))
-				return (current->next->content);
-		}
+		if (sual(current))
+			return (current->next->content);
 		else if (current->type == TOKEN_PIPE)
 			if (!current->next || current->next->type == TOKEN_PIPE)
 				return ("|");

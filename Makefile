@@ -32,8 +32,7 @@ MAIN_SRCS		= init_env.c \
 				  main.c \
 				  process_command.c \
 				  prompt.c \
-				  shell_loop.c \
-				  print_shell_info.c
+				  shell_loop.c
 
 # Executer module
 EXEC_DIR		= $(SRCDIR)/executer

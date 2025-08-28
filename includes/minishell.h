@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:01:40 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/28 15:13:29 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/28 15:43:39 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,5 @@
 # include "./minishell/e_redirections.h"
 
 extern int	g_sigint_received;
-
-void	print_shell_info(t_shell *shell);
-
 
 #endif

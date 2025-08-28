@@ -6,7 +6,7 @@
 /*   By: mkuner <mkuner@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:14:28 by iaktas            #+#    #+#             */
-/*   Updated: 2025/08/28 14:47:15 by mkuner           ###   ########.fr       */
+/*   Updated: 2025/08/28 15:56:16 by mkuner           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	ctrl_d(int sig)
 		rl_redisplay();
 		g_sigint_received = 0;
 	}
-
 }
 
 void	ctrl_c(int sig)
