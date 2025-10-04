@@ -1,3 +1,0 @@
-make re
-clear
-valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=supress.supp ./minishell
