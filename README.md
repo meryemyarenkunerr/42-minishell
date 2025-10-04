@@ -25,7 +25,7 @@ Projenin amacı, shell’in temel mantığını anlamak ve C programlama beceril
 ### Proje Yapısı ve Modüller
 ```
 includes/				→ Header dosyaları
-libft/					→
+libft/					→ Harici fonksiyonlar
 srcs/					→ Kaynak kod dosyaları
 │
 ├─ executer/			→ Komut çalıştırma ve process yönetimi
@@ -34,6 +34,7 @@ srcs/					→ Kaynak kod dosyaları
 ├─ signal/				→ Signal handling fonksiyonları
 ├─ main/				→ main fonksiyonu ve shell loop
 └─ cleanup_tools/		→ Bellek yönetimi ve cleanup fonksiyonları
+Makefile				→ Derleme aracı
 ```
 
 ### Kurulum ve Çalıştırma
