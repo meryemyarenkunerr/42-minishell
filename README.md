@@ -1,12 +1,12 @@
 # 42 Minishell
 ---
-### Proje Hakkında
+### Proje Hakkında
 
 42 Minishell, basit bir Unix shell uygulamasıdır. Bu proje, kullanıcıdan komut alıp parse ederek işletim sistemi üzerinde çalıştırmayı sağlar. Pipe, yönlendirme, built-in komutlar ve signal handling gibi temel shell fonksiyonlarını içerir.
 
 Projenin amacı, shell’in temel mantığını anlamak ve C programlama becerilerini geliştirmektir.
 
-### Özellikler
+### Özellikler
 
 - Temel komutların çalıştırılması (ls, echo, cat, vb.)
 - Pipe (|) desteği
@@ -22,7 +22,7 @@ Projenin amacı, shell’in temel mantığını anlamak ve C programlama beceril
 	Ctrl+C → komutu iptal etme
 	Ctrl+\ → ignore
 
-### Proje Yapısı ve Modüller
+### Proje Yapısı ve Modüller
 ```
 includes/				→ Header dosyaları
 libft/					→
@@ -36,7 +36,7 @@ srcs/					→ Kaynak kod dosyaları
 └─ cleanup_tools/		→ Bellek yönetimi ve cleanup fonksiyonları
 ```
 
-### Kurulum ve Çalıştırma
+### Kurulum ve Çalıştırma
 
 1. Repository’i klonla:
 ```
@@ -54,7 +54,7 @@ make
 ./minishell
 ```
 
-### Kullanım Örnekleri
+### Kullanım Örnekleri
 
 #### Komutlar:
 ```
@@ -63,7 +63,7 @@ echo Hello World
 cat file.txt
 ```
 
-#### Pipe ve yönlendirme:
+#### Pipe ve yönlendirme:
 ```
 ls | grep src
 echo "Hello" > file.txt
